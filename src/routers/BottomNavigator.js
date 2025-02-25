@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image } from "react-native";
+import React,{useState, useEffect} from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, Keyboard } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Orders from "../screens/homescreens/Orders";
@@ -14,6 +14,24 @@ const { width, height } = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
 
 const CustomTabBar = ({ state, descriptors, navigation }) => {
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
+            setKeyboardVisible(true);
+        });
+        const keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", () => {
+            setKeyboardVisible(false);
+        });
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
+
+    if (isKeyboardVisible) return null;
+
     return (
         <View style={styles.tabBarContainer}>
             {state.routes.map((route, index) => {
@@ -64,9 +82,11 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
 export default function App() {
     return (
         <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}
+        
             initialRouteName="Home"
             screenOptions={{
-                headerShown: false
+                headerShown: false,
+                tabBarHideOnKeyboard: true
             }}
         >
             <Tab.Screen name="Orders" component={Orders} />

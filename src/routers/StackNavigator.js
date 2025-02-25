@@ -15,6 +15,9 @@ import OrderCompleted from '../screens/homescreens/home/OrderCompleted';
 import OrderFuel from '../screens/homescreens/home/OrderFuel';
 import PaymentMethod from '../screens/homescreens/home/PaymentMethod';
 import PlaceOrder from '../screens/homescreens/home/PlaceOrder';
+import EditProfile from '../screens/homescreens/profile/EditProfile';
+import ChangePasswordScreen from '../screens/homescreens/profile/ChangePassword';
+import Cards from '../screens/homescreens/profile/Cards';
 
 
 const Stack = createNativeStackNavigator();
@@ -38,6 +41,9 @@ const StackNavigator = () => {
                     <Stack.Screen name='FuelOrder' component={OrderFuel} />
                     <Stack.Screen name='PaymentMethod' component={PaymentMethod} />
                     <Stack.Screen name='PlaceOrder' component={PlaceOrder} />
+                    <Stack.Screen name='EditProfile' component={EditProfile} />
+                    <Stack.Screen name='ChangePasswordScreen' component={ChangePasswordScreen} />
+                    <Stack.Screen name='Cards' component={Cards} />
 
 
 

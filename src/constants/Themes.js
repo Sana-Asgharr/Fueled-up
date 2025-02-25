@@ -6,7 +6,9 @@ export const Colors = {
     gradient2 : 'rgba(255, 173, 71, 1)',
     inputFieldColor : 'rgba(229, 231, 235, 1)',
     heading : 'rgba(87, 83, 78, 1)',
-    fieldColor :'rgba(100, 116, 139, 1)'
+    fieldColor :'rgba(100, 116, 139, 1)',
+    brown : 'rgba(168, 162, 158, 1)',
+    profileField : 'rgba(243, 244, 246, 1)'
 
 }
 
@@ -32,9 +34,22 @@ export const Icons = {
     gasStatiion :  require('../assets/images/gas-station.png'),    
     timeLine2 :  require('../assets/images/TimeLine2.png'),    
     circle :  require('../assets/images/record-circle.png'), 
+    list :  require('../assets/images/list.png'), 
     card :    require('../assets/images/card.png'),
     visa :    require('../assets/images/visa.png'),
-    timeLine3 :  require('../assets/images/timeline3.png'),    
+    timeLine3 :  require('../assets/images/timeline3.png'),  
+    edit :  require('../assets/images/edit.png'),   
+    ProfileEdit :  require('../assets/images/profile-edit.png'),  
+    pushNotifications :  require('../assets/images/sms-notification.png'),    
+    cardEdit :  require('../assets/images/card-edit.png'),    
+    passwordChange :  require('../assets/images/key-square.png'),   
+    trash :  require('../assets/images/trash.png'),   
+
+
+
+  
+ 
+  
 }
 
 export const IMAGES = {
@@ -43,6 +58,7 @@ export const IMAGES = {
     onBoarding3 : require('../assets/images/onBoarding3.png'),
     logo : require('../assets/images/logo.png'),
     splash : require('../assets/images/splash.png'),
+    profile : require('../assets/images/ProfilePicture.png')
 }
 
 export const Fonts = {
