@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image } from 'react-native'
 import React, { useState } from 'react'
 import { Colors } from '../services/Colors'
 import { Fonts } from '../constants/Themes'
@@ -12,7 +12,7 @@ const EditField = (props) => {
         setVisible(!visible);
     };
     return (
-        <View style={styles.container} >
+        <View style={[styles.container,{...props.style}]} >
             <TextInput placeholder={props.placeholder} placeholderTextColor={Colors.secondaryText} style={{ color: Colors.secondaryText, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.5), }} secureTextEntry={!visible} />
             {
                 props.password && (
@@ -25,6 +25,11 @@ const EditField = (props) => {
                         </TouchableOpacity>
                     </>
                 )
+            }
+            {
+                props.card && (
+                    <Image  source={props.cardPic} resizeMode='contain' style={{width:20, height:20}} />
+                ) 
             }
 
         </View>
@@ -42,6 +47,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        borderRadius:6
     }
 })

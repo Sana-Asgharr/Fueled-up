@@ -44,6 +44,10 @@ export const Icons = {
     cardEdit :  require('../assets/images/card-edit.png'),    
     passwordChange :  require('../assets/images/key-square.png'),   
     trash :  require('../assets/images/trash.png'),   
+    privacy :  require('../assets/images/privacy.png'),    
+    terms :  require('../assets/images/terms.png'),    
+    faq :  require('../assets/images/faqs.png'),   
+    logout :  require('../assets/images/log-out.png'),   
 
 
 

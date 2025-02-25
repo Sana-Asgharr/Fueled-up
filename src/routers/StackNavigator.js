@@ -18,6 +18,10 @@ import PlaceOrder from '../screens/homescreens/home/PlaceOrder';
 import EditProfile from '../screens/homescreens/profile/EditProfile';
 import ChangePasswordScreen from '../screens/homescreens/profile/ChangePassword';
 import Cards from '../screens/homescreens/profile/Cards';
+import AddCard from '../screens/homescreens/profile/AddCard';
+import FAQS from '../screens/homescreens/settings/FAQ';
+import Terms from '../screens/homescreens/settings/Terms';
+import Privacy from '../screens/homescreens/settings/Privacy';
 
 
 const Stack = createNativeStackNavigator();
@@ -44,9 +48,10 @@ const StackNavigator = () => {
                     <Stack.Screen name='EditProfile' component={EditProfile} />
                     <Stack.Screen name='ChangePasswordScreen' component={ChangePasswordScreen} />
                     <Stack.Screen name='Cards' component={Cards} />
-
-
-
+                    <Stack.Screen name='AddCard' component={AddCard} />
+                    <Stack.Screen name='FAQS' component={FAQS} />
+                    <Stack.Screen name='Terms' component={Terms} />
+                    <Stack.Screen name='Privacy' component={Privacy} />
                 </Stack.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>

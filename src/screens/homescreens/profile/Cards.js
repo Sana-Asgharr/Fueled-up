@@ -1,21 +1,20 @@
-import { Dimensions, SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image, FlatList, Modal } from 'react-native'
+import { Dimensions, SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image, FlatList, Modal, } from 'react-native'
 import React, { useState } from 'react'
 import { Colors, Icons, Fonts, IMAGES } from '../../../constants/Themes'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 import NextButton from '../../../components/NextButton'
-import EditField from '../../../components/EditField'
+import SkipButton from '../../../components/SkipButton';
 import Entypo from 'react-native-vector-icons/Entypo'
 import { useNavigation } from '@react-navigation/native'
-import Tooltip from 'react-native-walkthrough-tooltip';
 import { Popable } from 'react-native-popable';
+import { BlurView } from "@react-native-community/blur";
 
 const { width, height } = Dimensions.get('window')
 
 const Cards = () => {
     const [modalVisible, setModalVisible] = useState(false)
-    const [toolTipVisible, setToolTipVisible] = useState(false);
-    const [selectedTooltipId, setSelectedTooltipId] = useState(null);
-
+    const [isVisible, setIsVisible] = useState(null);
+    const navigation = useNavigation()
     const card = [
         {
             id: 1,
@@ -33,7 +32,7 @@ const Cards = () => {
             cardImg: Icons.visa
         }
     ]
-    const navigation = useNavigation()
+
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
@@ -61,11 +60,11 @@ const Cards = () => {
 
                         <FlatList
                             data={card}
-                            keyExtractor={(item) => item.id}
+                            keyExtractor={(item) => item.id.toString()}
+                            contentContainerStyle={{paddingBottom:50}}
                             renderItem={({ item }) => {
-                                const isTooltipVisible = selectedTooltipId === item.id;
                                 return (
-                                    <TouchableOpacity>
+                                    <View>
                                         <View style={{
                                             width: width * 0.9,
                                             height: 50,
@@ -84,60 +83,90 @@ const Cards = () => {
                                                     {item.number}
                                                 </Text>
                                             </View>
-
-                                            <Popable
-                                                position="bottom"
-                                                content={
+                                            <TouchableOpacity onPress={() => isVisible === item.id ? setIsVisible(null) :  setIsVisible(item.id)}>
+                                                <Image source={Icons.list} style={{ width: 18, height: 18 }} resizeMode="contain" />
+                                            </TouchableOpacity>
+                                        </View>
+                                        {
+                                            isVisible === item.id && (
+                                                <>
                                                     <View style={{
-                                                        width: RFPercentage(14),
+                                                        width: RFPercentage(10),
                                                         backgroundColor: 'rgba(243, 244, 246, 1)',
                                                         borderRadius: RFPercentage(1),
                                                         paddingVertical: 5,
-                                                        paddingHorizontal: 10
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        alignSelf:'flex-end',
+                                                        right: 10,
+                                                        position:'absolute',
+                                                        zIndex:9999999999,
+                                                        top:RFPercentage(7)
                                                     }}>
                                                         <TouchableOpacity
-                                                            style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}
-                                                            onPress={() => console.log('Delete Card')}
+                                                            style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5, borderBottomColor: Colors.inputFieldColor, borderBottomWidth: 1 }}
+                                                            onPress={() => {
+                                                                setIsVisible(null)
+                                                                setModalVisible(true)
+
+                                                            }}
                                                         >
                                                             <Image source={Icons.trash} style={{ width: 12, height: 12 }} resizeMode="contain" />
                                                             <Text style={{ marginLeft: 5, fontSize: RFPercentage(1) }}>Delete Card</Text>
                                                         </TouchableOpacity>
                                                         <TouchableOpacity
                                                             style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}
-                                                            onPress={() => console.log('Edit Card')}
                                                         >
                                                             <Image source={Icons.cardEdit} style={{ width: 12, height: 12 }} resizeMode="contain" />
                                                             <Text style={{ marginLeft: 5, fontSize: RFPercentage(1) }}>Edit Card</Text>
                                                         </TouchableOpacity>
                                                     </View>
-                                                }
-                                            >
-                                                <TouchableOpacity onPress={() => setSelectedTooltipId(selectedTooltipId === item.id ? null : item.id)}>
-                                                    <Image source={Icons.list} style={{ width: 18, height: 18 }} resizeMode="contain" />
-                                                </TouchableOpacity>
-                                            </Popable>
-                                        </View>
-                                    </TouchableOpacity>
+                                                </>
+                                            )
+                                        }
+
+                                    </View>
                                 );
                             }}
                         />
+
                     </View>
 
                 </View>
 
                 <View style={{ marginTop: RFPercentage(40) }}>
-                    <NextButton title={'Add Cards'} style={{ width: '50%' }} color={Colors.background} />
+                    <NextButton title={'Add Cards'} style={{ width: '50%' }} color={Colors.background} onPress={() => navigation.navigate('AddCard')} />
                 </View>
 
 
             </View>
-            <Modal
-                visible={modalVisible}
 
-            >
+            {
+                modalVisible && (
+                    <BlurView style={{ width: '100%', height: '100%', position: 'absolute', }} blurType="light" blurAmount={1} />
+                )
+            }
+
+            {
+                modalVisible && (
+                    <View style={{ width: RFPercentage(35), height: RFPercentage(22), borderRadius: RFPercentage(2), backgroundColor: "rgba(243, 244, 246, 1)", alignSelf: 'center', alignItems: 'center', justifyContent: 'center', position: "absolute", paddingHorizontal: 16, top: RFPercentage(40) }}>
+                        <View>
+                            <Text style={{ textAlign: 'center', fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular, color: Colors.fieldColor }}>Are you sure you want to delete
+                                this card?</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
+                                <SkipButton title={'Cancel'} color={Colors.secondaryText} style={{ height: 35 }} style2={{ height: 30.5 }} onPress={() => setModalVisible(false)} />
+                                <NextButton title={'Delete'} color={Colors.background} style={{ height: 35 }} />
+
+                            </View>
+                        </View>
+
+                    </View>
+                )
+            }
 
 
-            </Modal>
+
+
         </SafeAreaView >
 
     )

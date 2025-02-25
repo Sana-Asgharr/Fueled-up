@@ -45,7 +45,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                         onPress={() => navigation.navigate(route.name)}
                         style={[styles.tabButton, isFocused && styles.activeTab]}
                     >
-                        {route.name === "Home" ? (
+                        {route.name === "HomeScreen" ? (
                             <View style={{ bottom: 24 }}>
                                 <Image source={isFocused ? Icons.home : Icons.homeInactive} style={{ width: 55, height: 55 }} resizeMode="contain" />
                             </View>
@@ -71,7 +71,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                                         )
 
                         }
-                        <Text style={{ color: isFocused ? "#ff9800" : "#777", fontSize: 11, top: 5, fontFamily:'Poppins-Regular' }}>{route.name === "Home" ? null : label}</Text>
+                        <Text style={{ color: isFocused ? "#ff9800" : "#777", fontSize: 11, top: 5, fontFamily:'Poppins-Regular' }}>{route.name === "HomeScreen" ? null : label}</Text>
                     </TouchableOpacity>
                 );
             })}
@@ -83,7 +83,7 @@ export default function App() {
     return (
         <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}
         
-            initialRouteName="Home"
+            initialRouteName="HomeScreen"
             screenOptions={{
                 headerShown: false,
                 tabBarHideOnKeyboard: true
@@ -91,7 +91,7 @@ export default function App() {
         >
             <Tab.Screen name="Orders" component={Orders} />
             <Tab.Screen name="Settings" component={Settings} />
-            <Tab.Screen name="Home" component={Home} />
+            <Tab.Screen name="HomeScreen" component={Home} />
             <Tab.Screen name="Vehicles" component={Vehicles} />
             <Tab.Screen name="Profile" component={Profile} />
         </Tab.Navigator>

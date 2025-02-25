@@ -17,9 +17,9 @@ const SkipButton = (props) => {
     return (
         <LinearGradient 
             colors={[Colors.gradient1, Colors.gradient2]}
-            style={styles.gradientBorder}
+            style={[styles.gradientBorder,{...props.style}]}
         >
-            <TouchableOpacity onPress={props.onPress} style={styles.nextButton}>
+            <TouchableOpacity onPress={props.onPress} style={[styles.nextButton, {...props.style2}]}>
                 <Text style={[styles.nextButtonText, { color: props.color }]}>
                     {props.title}
                 </Text>
