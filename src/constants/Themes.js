@@ -48,7 +48,9 @@ export const Icons = {
     terms :  require('../assets/images/terms.png'),    
     faq :  require('../assets/images/faqs.png'),   
     logout :  require('../assets/images/log-out.png'),   
-
+    clock :  require('../assets/images/clock.png'),    
+    calender :  require('../assets/images/calendar-2.png'),   
+    car :  require('../assets/images/smart-car.png'),  
 
 
   

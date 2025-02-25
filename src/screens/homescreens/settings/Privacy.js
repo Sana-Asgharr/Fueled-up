@@ -39,7 +39,7 @@ const Privacy = () => {
             <View style={styles.container}>
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between" }}>
-                    <TouchableOpacity style={{ bottom: 5 }} onPress={() => navigation.goBack()}>
+                    <TouchableOpacity style={{ bottom: 5 }} onPress={() => navigation.navigate('Home')}>
                         <Entypo name='chevron-thin-left' color={Colors.secondaryText} size={RFPercentage(1.9)} />
                     </TouchableOpacity>
                     <View>
