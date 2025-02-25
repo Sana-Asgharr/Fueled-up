@@ -1,6 +1,6 @@
 import { Dimensions, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
-import { Colors, Icons } from '../../constants/Themes'
+import { Colors, Fonts, Icons } from '../../constants/Themes'
 import SearchField from '../../components/SearchField'
 import NextButton from '../../components/NextButton'
 import OrderFuel from './home/OrderFuel'
@@ -19,13 +19,10 @@ const Home = () => {
       <View style={styles.container}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between" }}>
           <View>
-            {/* <TouchableOpacity style={{ bottom: 5 }}>
-                    <Entypo name='chevron-thin-left' color={Colors.secondaryText} size={RFPercentage(1.9)} />
-                  </TouchableOpacity> */}
             <Image source={Icons.logo2} resizeMode='contain' style={{ width: 26, height: 36 }} />
           </View>
           <View>
-            <Text style={{ color: 'rgba(87, 83, 78, 1)', fontFamily: 'Poppins-Bold', fontSize: RFPercentage(1.9) }}>
+            <Text style={{ color: Colors.heading, fontFamily: Fonts.fontBold, fontSize: RFPercentage(1.9) }}>
               Home
             </Text>
           </View>
@@ -41,10 +38,10 @@ const Home = () => {
 
         <View style={{ marginTop: 24 }}>
           <View>
-            <Text style={{ color: 'rgba(87, 83, 78, 1)', fontFamily: 'Poppins-Bold', fontSize: RFPercentage(1.8) }}>Welcome, Emma</Text>
+            <Text style={{ color: Colors.heading, fontFamily: Fonts.fontBold, fontSize: RFPercentage(1.8) }}>Welcome, Emma</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image source={Icons.location} resizeMode='contain' style={{ width: 14, height: 14 }} />
-              <Text style={{ color: Colors.primaryText, fontFamily: 'Poppins-Medium', fontSize: 11, marginLeft: 6, top: 1 }}>Main Street, Capital Center, CO, SC, USA</Text>
+              <Text style={{ color: Colors.primaryText, fontFamily: Fonts.fontMedium, fontSize:  RFPercentage(1.3), marginLeft: 6, top: 1 }}>Main Street, Capital Center, CO, SC, USA</Text>
 
             </View>
           </View>
@@ -54,11 +51,11 @@ const Home = () => {
         </View>
 
         <View>
-          <Image source={Icons.mapImage} resizeMode='contain' style={{ width: RFPercentage(49), height: RFPercentage(49), alignSelf: 'center' }} />
+          <Image source={Icons.mapImage} resizeMode='contain' style={{ width: RFPercentage(49), height:RFPercentage(49), alignSelf: 'center' }} />
         </View>
-        <View style={{ marginTop: RFPercentage(7) }}>
-          <NextButton title={'Order Fuel'} style={{ width: '50%' }} color={Colors.background} onPress={() => navigation.navigate('FuelOrder')} />
-        </View>
+        <NextButton title={'Order Fuel'} style={{ width: '48%', marginTop:RFPercentage(5) }} color={Colors.background} onPress={() => navigation.navigate('FuelOrder')} />
+
+        
 
 
 

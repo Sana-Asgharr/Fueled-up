@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity, FlatList, SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
-import { Colors, Icons } from '../../../constants/Themes'
+import { Colors, Fonts, Icons } from '../../../constants/Themes'
 import NextButton from '../../../components/NextButton'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import PlaceOrder from './PlaceOrder'
@@ -49,7 +49,7 @@ const PaymentMethod = () => {
                         </TouchableOpacity>
                     </View>
                     <View>
-                        <Text style={{ color: 'rgba(87, 83, 78, 1)', fontFamily: 'Poppins-Bold', fontSize: RFPercentage(1.9) }}>
+                        <Text style={{ color: Colors.heading, fontFamily: Fonts.fontBold, fontSize: RFPercentage(1.9) }}>
                             Order
                         </Text>
                     </View>
@@ -65,7 +65,7 @@ const PaymentMethod = () => {
                     <Image source={Icons.timeLine2} resizeMode='contain' style={{ width: width * 0.87, height: 50 }} />
                 </View>
                 <View style={{ marginTop: 6 }}>
-                    <Text style={{ color: 'rgba(87, 83, 78, 1)', fontFamily: 'Poppins-Medium' }}>Payment Method</Text>
+                    <Text style={{ color: Colors.heading, fontFamily: Fonts.fontMedium, }}>Payment Method</Text>
                 </View>
                 <View style={{}}>
                     <FlatList
@@ -76,7 +76,7 @@ const PaymentMethod = () => {
                                 <TouchableOpacity onPress={() => setSelected(item.id)}>
                                     <View style={{ width: width * 0.9, height: 50, alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', paddingHorizontal: 15, borderWidth: 1, borderColor: selected === item.id ? 'rgba(255, 143, 4, 1)' : 'rgba(243, 244, 246, 1)', marginTop: 15, borderRadius: 6 }}
                                     >
-                                        <Text style={{ color: 'rgba(100, 116, 139, 1)', fontFamily: 'Poppins-Medium' }}>{item.name}</Text>
+                                        <Text style={{color: Colors.fieldColor, fontFamily: Fonts.fontMedium, }}>{item.name}</Text>
                                         <View>
                                             <Image source={Icons.circle} style={{ width: 14, height: 14 }} resizeMode='contain' />
                                         </View>
@@ -93,7 +93,7 @@ const PaymentMethod = () => {
                     selected === 2 && (
                         <>
                             <View style={{ marginTop: 25 }}>
-                                <Text style={{ color: 'rgba(87, 83, 78, 1)', fontFamily: 'Poppins-Medium' }}>Select Card To Pay</Text>
+                                <Text style={{ color: Colors.heading, fontFamily: Fonts.fontMedium, }}>Select Card To Pay</Text>
                             </View>
                             <View style={{}}>
                                 <FlatList
@@ -106,7 +106,7 @@ const PaymentMethod = () => {
                                                 >
                                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                         <Image source={item.cardImg} style={{ width: 22, height: 40 }} resizeMode='contain' />
-                                                        <Text style={{ color: 'rgba(100, 116, 139, 1)', left: 10, fontFamily: 'Poppins-Bold', fontSize: 12, top: 2 }}>{item.number}</Text>
+                                                        <Text style={{ color: Colors.fieldColor, left: 10, fontFamily: Fonts.fontBold, fontSize: 12, top: 2 }}>{item.number}</Text>
                                                     </View>
                                                     <View>
                                                         <Image source={Icons.circle} style={{ width: 14, height: 14 }} resizeMode='contain' />
@@ -123,8 +123,8 @@ const PaymentMethod = () => {
                             <View style={{ marginTop: 12 }}>
                                 <TouchableOpacity>
                                     <View style={{ width: 114, height: 34, borderRadius: 20, borderWidth: 1, borderColor: 'rgba(243, 244, 246, 1)', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
-                                        <AntDesign name='pluscircleo' color={'rgba(100, 116, 139, 1)'} size={10} style={{ bottom: 1, right: 2 }} />
-                                        <Text style={{ color: 'rgba(87, 83, 78, 1)', fontFamily: 'Poppins-Regular', fontSize: 10, left: 2 }}>Add New Card</Text>
+                                        <AntDesign name='pluscircleo' color={Colors.fieldColor} size={RFPercentage(1.2)} style={{ bottom: 1, right: 2 }} />
+                                        <Text style={{ color: Colors.heading, fontFamily: Fonts.fontRegular, fontSize: 10, left: 2 }}>Add New Card</Text>
                                     </View>
                                 </TouchableOpacity>
                             </View>

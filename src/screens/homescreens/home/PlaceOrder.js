@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image, Dimensions, SafeAreaView , TouchableOpacity} from 'react-native'
 import React from 'react'
-import { Colors, Icons } from '../../../constants/Themes'
+import { Colors, Fonts, Icons } from '../../../constants/Themes'
 import OrderField from '../../../components/OrderedFiled'
 import NextButton from '../../../components/NextButton'
 import { useNavigation } from '@react-navigation/native'
@@ -25,7 +25,7 @@ const PlaceOrder = () => {
                         </TouchableOpacity>
                     </View>
                     <View>
-                        <Text style={{ color: 'rgba(87, 83, 78, 1)', fontFamily: 'Poppins-Bold', fontSize: RFPercentage(1.9) }}>
+                        <Text style={{ color: Colors.heading, fontFamily: Fonts.fontBold, fontSize: RFPercentage(1.9) }}>
                             Order
                         </Text>
                     </View>
@@ -40,7 +40,7 @@ const PlaceOrder = () => {
                     <Image source={Icons.timeLine3} resizeMode='contain' style={{ width: width * 0.87, height: 50 }} />
                 </View>
                 <View style={{ marginTop: 10 }}>
-                    <Text style={{ color: 'rgba(87, 83, 78, 1)', fontFamily: 'Poppins-Medium' }}>Order Summary</Text>
+                    <Text style={{ color: Colors.heading, fontFamily: Fonts.fontMedium, }}>Order Summary</Text>
                 </View>
                 <View>
                     <OrderField text1={'Payment Method '} text2={'Pay by card'} />
@@ -48,9 +48,9 @@ const PlaceOrder = () => {
                     <OrderField text1={'Fuel Quantity'} text2={'2 Tanks'} />
                     <OrderField text1={'Vehicle Selected'} text2={'Honda Civic 2019'} />
                     <OrderField text1={'Delivery Time And Date'} text2={'24/04/2024 | 8:00 AM'} />
-                    <OrderField text1={'Sub Total'} text2={'100$'} textStyle={{ fontFamily: 'Poppins-Bold' }} />
-                    <OrderField text1={'Service Fee'} text2={'30$'} textStyle={{ fontFamily: 'Poppins-Bold' }} />
-                    <OrderField text1={'Tax Fee'} text2={'20$'} textStyle={{ fontFamily: 'Poppins-Bold' }} />
+                    <OrderField text1={'Sub Total'} text2={'100$'} textStyle={{ fontFamily: Fonts.fontBold }} />
+                    <OrderField text1={'Service Fee'} text2={'30$'} textStyle={{ fontFamily: Fonts.fontBold }} />
+                    <OrderField text1={'Tax Fee'} text2={'20$'} textStyle={{ fontFamily: Fonts.fontBold }} />
                 </View>
                 <View style={{ marginTop: 50 }}>
                     <NextButton title={'Place Order'} style={{ width: '50%' }} color={Colors.background} onPress={() => navigation.navigate('OrderCompleted')} />

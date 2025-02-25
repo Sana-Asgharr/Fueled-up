@@ -4,7 +4,9 @@ export const Colors = {
     secondaryText : 'rgba(100, 116, 139, 1)',
     gradient1 : 'rgba(255, 143, 4, 1)',
     gradient2 : 'rgba(255, 173, 71, 1)',
-    inputFieldColor : 'rgba(229, 231, 235, 1)'
+    inputFieldColor : 'rgba(229, 231, 235, 1)',
+    heading : 'rgba(87, 83, 78, 1)',
+    fieldColor :'rgba(100, 116, 139, 1)'
 
 }
 
@@ -33,10 +35,7 @@ export const Icons = {
     card :    require('../assets/images/card.png'),
     visa :    require('../assets/images/visa.png'),
     timeLine3 :  require('../assets/images/timeline3.png'),    
-
-
 }
-
 
 export const IMAGES = {
     onBoarding1 : require('../assets/images/onBoarding1.png'),
