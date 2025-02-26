@@ -3,7 +3,7 @@ import React from 'react'
 import StackNavigator from './src/routers/StackNavigator'
 import 'react-native-gesture-handler'
 
-const App = () => {
+const App: React.FC = () => {
   return (
     
     <StackNavigator />

@@ -7,9 +7,10 @@ const { width, height } = Dimensions.get('window')
 import ToggleSwitch from 'toggle-switch-react-native';
 import { useNavigation } from '@react-navigation/native'
 
-const Profile = () => {
+const Profile:React.FC = () => {
   const navigation = useNavigation()
-  const [isPushEnabled, setIsPushEnabled] = useState(false);
+  const [isPushEnabled, setIsPushEnabled] = useState<boolean>(false);
+  
   const handleToggle2 = isOn => {
     setIsPushEnabled(isOn);
   };

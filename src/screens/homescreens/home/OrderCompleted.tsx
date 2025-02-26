@@ -6,9 +6,11 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 import NextButton from '../../../components/NextButton'
 import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../../routers/StackNavigator'
 
 const OrderCompleted = () => {
-    const navigation = useNavigation()
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList,'OrderCompleted'>>()
     return (
         <LinearGradient colors={[Colors.gradient1, Colors.gradient2]} style={styles.safeArea} >
             <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>

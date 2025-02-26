@@ -14,37 +14,45 @@ import NextButton from '../../components/NextButton';
 import { Fonts, Icons, IMAGES } from '../../constants/Themes';
 import { useNavigation } from '@react-navigation/native';
 import Entypo from 'react-native-vector-icons/Entypo'
-import { RFPercentage } from "react-native-responsive-fontsize";
-
 const { width, height } = Dimensions.get('window');
+import { RFPercentage } from "react-native-responsive-fontsize";
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../routers/StackNavigator';
 
-const OTP = () => {
+const ResetPassword = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'ResetPassword'>>()
 
-    const navigation = useNavigation()
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={{ paddingHorizontal: width * 0.08, paddingTop: 40 }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <TouchableOpacity onPress={() => navigation.goBack()} style={{ bottom: 5 }}>
+                    <TouchableOpacity onPress={()=> navigation.goBack()} style={{bottom:5}}>
                         <Entypo name='chevron-thin-left' color={Colors.secondaryText} size={18} />
                     </TouchableOpacity>
                     <Image
                         source={IMAGES.logo}
                         resizeMode="contain"
-                        style={{ width: 140, height: 90, alignSelf: 'center', right:8, }}
+                        style={{ width: 140, height: 90, alignSelf:'center', right:8 }}
                     />
                     <View></View>
                 </View>
             </View>
             <View style={styles.container}>
+
                 <Text style={styles.welcomeText}>Reset Password?</Text>
 
                 <View style={{ width: '100%', marginTop: 30 }}>
-                    <InputField placeholder="Enter Sent OTP" />
+                    <InputField placeholder="Enter Email" />
+                    <View style={{}}>
+                        <Text style={{ textAlign: 'center', color: Colors.secondaryText, marginTop: 40 }}>OR</Text>
+                    </View>
+                    <View style={{ marginTop: 5 }}>
+                        <InputField placeholder="Enter Phone Number" />
+                    </View>
 
                 </View>
                 <View style={{ width: '100%', marginTop: 50 }}>
-                    <NextButton title={'Verify'} color={Colors.background} style={{ width: '45%' }} onPress={() => navigation.navigate('ChangePassword')} />
+                    <NextButton title={'Send OTP'} color={Colors.background} style={{ width: '45%' }} onPress={() => navigation.navigate('OTP')} />
                 </View>
 
 
@@ -53,7 +61,7 @@ const OTP = () => {
     );
 };
 
-export default OTP;
+export default ResetPassword;
 
 const styles = StyleSheet.create({
     safeArea: {

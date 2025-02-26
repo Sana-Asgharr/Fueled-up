@@ -15,11 +15,14 @@ import { Fonts, Icons, IMAGES } from '../../constants/Themes';
 import Entypo from 'react-native-vector-icons/Entypo'
 import { useNavigation } from '@react-navigation/native';
 import { RFPercentage } from "react-native-responsive-fontsize";
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../routers/StackNavigator';
 
 const { width, height } = Dimensions.get('window');
 
 const ChangePassword = () => {
-   const navigation = useNavigation()
+   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'ChangePassword'>>()
+   
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={{ paddingHorizontal: width * 0.08, paddingTop: 40 }}>

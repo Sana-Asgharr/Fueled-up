@@ -4,24 +4,34 @@ import { Colors, Fonts, Icons } from '../../../constants/Themes'
 import Entypo from 'react-native-vector-icons/Entypo'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import NextButton from '../../../components/NextButton'
-import PaymentMethod from './PaymentMethod'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 import { useNavigation } from '@react-navigation/native'
+import DatePicker from 'react-native-date-picker'
+import CustomDropDown from '../../../components/CustomDropDown'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../../routers/StackNavigator'
 
 const { width, height } = Dimensions.get('window')
 
-const OrderFuel = () => {
-    const [value, setValue] = useState([]);
-    const [value2, setValue2] = useState([]);
-    const [value3, setValue3] = useState([]);
-    const [dropdownVisible, setDropDownVisible] = useState(false)
-    const [dropdownVisible2, setDropDownVisible2] = useState(false)
-    const [dropdownVisible3, setDropDownVisible3] = useState(false)
-    const [vehicle, setVehicle] = useState(false)
-    const [payment, setPayment] = useState(false)
-    const navigation = useNavigation()
+interface DropDown {
+    id : number,
+    label : string
+}
 
-    const category = [
+const OrderFuel: React.FC = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'FuelOrder'>>()
+    const [value, setValue] = useState<DropDown | null>(null);
+    const [value2, setValue2] =useState<DropDown | null>(null);
+    const [value3, setValue3] = useState<DropDown | null>(null);
+    const [dropdownVisible, setDropDownVisible] = useState<boolean>(false)
+    const [dropdownVisible2, setDropDownVisible2] = useState<boolean>(false)
+    const [dropdownVisible3, setDropDownVisible3] = useState<boolean>(false)
+    const [vehicle, setVehicle] = useState<boolean>(false)
+    const [date, setDate] = useState<Date>(new Date())
+    const [open, setOpen] = useState<boolean>(false)
+    //    console.log(date)
+  
+    const category: DropDown[] = [
         {
             id: 1,
             label: 'Petrol'
@@ -37,7 +47,7 @@ const OrderFuel = () => {
 
     ]
 
-    const fuel = [
+    const fuel: DropDown[] = [
         {
             id: 1,
             label: 'Half Tank'
@@ -87,7 +97,7 @@ const OrderFuel = () => {
                                         setDropDownVisible(true)
                                     }}
                                 >
-                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular }}>{value.label || 'Petrol'}</Text>
+                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular }}>{value?.label || 'Petrol'}</Text>
                                     <TouchableOpacity style={{}}
                                         onPress={() => {
                                             setDropDownVisible(!dropdownVisible)
@@ -104,23 +114,11 @@ const OrderFuel = () => {
                             {
                                 dropdownVisible && (
                                     <>
-                                        <View style={styles.dropDown}>
-                                            <FlatList data={category} keyExtractor={(item) => item.id.toString()} renderItem={({ item }) => {
-                                                return (
-                                                    <TouchableOpacity onPress={() => {
-
-                                                        setValue(item)
-                                                        setDropDownVisible(false)
-                                                    }
-                                                    }>
-                                                        <View style={{ paddingVertical: 8, backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 1, borderBottomColor: 'rgba(244, 244, 245, 1)' }}>
-                                                            <Text style={{ color: Colors.fieldColor, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.4) }}>{item.label}</Text>
-                                                            <Image source={Icons.gasStatiion} resizeMode='contain' style={{ width: 12, height: 12 }} />
-                                                        </View>
-                                                    </TouchableOpacity>
-                                                )
-                                            }} />
-                                        </View>
+                                        <CustomDropDown data={category} icon={Icons.gasStatiion} setValue={(item) => {
+                                            setValue(item);
+                                            setDropDownVisible(false)
+                                        }} />
+                                        
                                     </>
                                 )
                             }
@@ -147,7 +145,7 @@ const OrderFuel = () => {
                                         setDropDownVisible2(true)
                                     }}
                                 >
-                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular }}>{value2.label || '1 Full Tank'}</Text>
+                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular }}>{value2?.label || '1 Full Tank'}</Text>
                                     <TouchableOpacity style={{}}
                                         onPress={() => {
                                             setDropDownVisible2(!dropdownVisible2)
@@ -164,23 +162,10 @@ const OrderFuel = () => {
                             {
                                 dropdownVisible2 && (
                                     <>
-                                        <View style={styles.dropDown}>
-                                            <FlatList data={fuel} keyExtractor={(item) => item.id.toString()} renderItem={({ item }) => {
-                                                return (
-                                                    <TouchableOpacity onPress={() => {
-
-                                                        setValue2(item)
-                                                        setDropDownVisible2(false)
-                                                    }
-                                                    }>
-                                                        <View style={{ paddingVertical: 8, backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 1, borderBottomColor: 'rgba(244, 244, 245, 1)' }}>
-                                                            <Text style={{ color: Colors.fieldColor, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.2) }}>{item.label}</Text>
-                                                            <Image source={Icons.gasStatiion} resizeMode='contain' style={{ width: RFPercentage(1.2), height: RFPercentage(1.2) }} />
-                                                        </View>
-                                                    </TouchableOpacity>
-                                                )
-                                            }} />
-                                        </View>
+                                        <CustomDropDown data={fuel} icon={Icons.gasStatiion} setValue={(item) => {
+                                            setValue2(item);
+                                            setDropDownVisible2(false)
+                                        }} />
                                     </>
                                 )
                             }
@@ -189,15 +174,28 @@ const OrderFuel = () => {
                                 <Text style={styles.fieldTitle}>Date and Time<Text style={{ color: 'rgba(156, 163, 175, 1)', fontSize: 10 }}> (Optional)</Text></Text>
                                 <View style={styles.field}
                                 >
-                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.4), fontFamily: Fonts.fontRegular }}>Default date and time</Text>
-                                    <View style={{}}>
+                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.4), fontFamily: Fonts.fontRegular }}> {`Default date and time`} </Text>
+                                    <TouchableOpacity onPress={() => setOpen(true)}>
                                         <AntDesign name='calendar' color={Colors.fieldColor} size={RFPercentage(2)}
                                         />
-                                    </View>
+                                    </TouchableOpacity>
 
                                 </View>
 
                             </View>
+
+                            <DatePicker
+                                modal
+                                open={open}
+                                date={date}
+                                onConfirm={(date) => {
+                                    setOpen(false)
+                                    setDate(date)
+                                }}
+                                onCancel={() => {
+                                    setOpen(false)
+                                }}
+                            />
 
                             <View style={{ marginTop: 20 }}>
                                 <Text style={styles.fieldTitle}>Vehicle Details</Text>
@@ -210,7 +208,7 @@ const OrderFuel = () => {
                                                     setDropDownVisible3(true)
                                                 }}
                                             >
-                                                <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular }}>{value3.label || 'Choose'}</Text>
+                                                <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular }}>{value3?.label || 'Choose'}</Text>
                                                 <TouchableOpacity style={{}}
                                                     onPress={() => {
                                                         setDropDownVisible3(!dropdownVisible3)
@@ -244,23 +242,10 @@ const OrderFuel = () => {
                                 {
                                     dropdownVisible3 && (
                                         <>
-                                            <View style={styles.dropDown}>
-                                                <FlatList data={fuel} keyExtractor={(item) => item.id.toString()} renderItem={({ item }) => {
-                                                    return (
-                                                        <TouchableOpacity onPress={() => {
-
-                                                            setValue3(item)
-                                                            setDropDownVisible3(false)
-                                                        }
-                                                        }>
-                                                            <View style={{ paddingVertical: 8, backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 1, borderBottomColor: 'rgba(244, 244, 245, 1)' }}>
-                                                                <Text style={{ color: Colors.fieldColor, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.2) }}>{item.label}</Text>
-                                                                <Image source={Icons.gasStatiion} resizeMode='contain' style={{ width: RFPercentage(1.2), height: RFPercentage(1.2) }} />
-                                                            </View>
-                                                        </TouchableOpacity>
-                                                    )
-                                                }} />
-                                            </View>
+                                            <CustomDropDown data={category} setValue={(item) => {
+                                                setValue3(item);
+                                                setDropDownVisible3(false)
+                                            }} />
                                         </>
                                     )
                                 }

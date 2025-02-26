@@ -7,10 +7,41 @@ const { width, height } = Dimensions.get('window')
 import { useNavigation } from '@react-navigation/native'
 import Delivered from './orders/Delivered'
 
-const Orders = () => {
-  const navigation = useNavigation()
-  const [active, setActive] = useState(true)
-  const [deliver, setDeliver] = useState(false)
+interface Data {
+  id : number;
+  time: string;
+  vehicle: string;
+  fuel: string;
+  address: string
+}
+
+const data: Data[] = [
+  {
+    id: 1,
+    time: '24-04-2024 | 8:00 AM',
+    vehicle: 'Honda Civic',
+    fuel: '2 Tanks',
+    address: 'Main Street, Capital Center, CO, USA'
+  },
+  {
+    id: 2,
+    time: '24-04-2024 | 8:00 AM',
+    vehicle: 'Honda Civic',
+    fuel: '2 Tanks',
+    address: 'Main Street, Capital Center, CO, USA'
+  },
+  {
+    id: 3,
+    time: '24-04-2024 | 8:00 AM',
+    vehicle: 'Honda Civic',
+    fuel: '2 Tanks',
+    address: 'Main Street, Capital Center, CO, USA'
+  },
+]
+
+const Orders:React.FC = () => {
+  const [active, setActive] = useState<boolean>(true)
+  const [deliver, setDeliver] = useState<boolean>(false)
 
   const toggle1 = () => {
     setActive(false)
@@ -22,30 +53,7 @@ const Orders = () => {
     setDeliver(false)
   }
 
-  const data = [
-    {
-      id: 1,
-      time: '24-04-2024 | 8:00 AM',
-      vehicle: 'Honda Civic',
-      fuel: '2 Tanks',
-      address: 'Main Street, Capital Center, CO, USA'
-    },
-    {
-      id: 2,
-      time: '24-04-2024 | 8:00 AM',
-      vehicle: 'Honda Civic',
-      fuel: '2 Tanks',
-      address: 'Main Street, Capital Center, CO, USA'
-    },
-    {
-      id: 3,
-      time: '24-04-2024 | 8:00 AM',
-      vehicle: 'Honda Civic',
-      fuel: '2 Tanks',
-      address: 'Main Street, Capital Center, CO, USA'
-    },
-  ]
-
+  
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -145,12 +153,6 @@ const Orders = () => {
             :
             <Delivered />
         }
-
-
-
-
-
-
       </View>
     </SafeAreaView>
 

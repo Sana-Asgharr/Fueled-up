@@ -7,18 +7,27 @@ import NextButton from '../../../components/NextButton'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 import { useNavigation } from '@react-navigation/native'
 import EditField from '../../../components/EditField'
+import CustomDropDown from '../../../components/CustomDropDown'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../../routers/StackNavigator'
+
 
 const { width, height } = Dimensions.get('window')
 
-const AddVehicle = () => {
-    const [value, setValue] = useState([]);
-    const [value2, setValue2] = useState([]);
-    const [dropdownVisible, setDropDownVisible] = useState(false)
-    const [dropdownVisible2, setDropDownVisible2] = useState(false)
+interface DropDown {
+    id : number,
+    label : string
+}
 
-    const navigation = useNavigation()
+const AddVehicle:React.FC = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList,'AddVehicle'>>()
+    const [value, setValue] = useState<DropDown | null>(null);
+    const [value2, setValue2] = useState<DropDown | null>(null);
+    const [dropdownVisible, setDropDownVisible] = useState<boolean>(false)
+    const [dropdownVisible2, setDropDownVisible2] = useState<boolean>(false)
 
-    const category = [
+
+    const category : DropDown[] = [
         {
             id: 1,
             label: 'Petrol'
@@ -34,7 +43,7 @@ const AddVehicle = () => {
 
     ]
 
-    const fuel = [
+    const fuel:DropDown[] = [
         {
             id: 1,
             label: 'Half Tank'
@@ -55,7 +64,7 @@ const AddVehicle = () => {
             <View style={styles.container}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between" }}>
                     <View>
-                        <TouchableOpacity style={{ bottom: 5 }} onPress={() => navigation.goBack()}>
+                        <TouchableOpacity style={{ bottom: 5 }}>
                             <Entypo name='chevron-thin-left' color={Colors.secondaryText} size={RFPercentage(1.9)} />
                         </TouchableOpacity>
                     </View>
@@ -106,22 +115,11 @@ const AddVehicle = () => {
                             {
                                 dropdownVisible && (
                                     <>
-                                        <View style={styles.dropDown}>
-                                            <FlatList data={fuel} keyExtractor={(item) => item.id.toString()} renderItem={({ item }) => {
-                                                return (
-                                                    <TouchableOpacity onPress={() => {
 
-                                                        setValue(item)
-                                                        setDropDownVisible(false)
-                                                    }
-                                                    }>
-                                                        <View style={{ paddingVertical: 8, backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 1, borderBottomColor: 'rgba(244, 244, 245, 1)' }}>
-                                                            <Text style={{ color: Colors.fieldColor, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.4) }}>{item.label}</Text>
-                                                        </View>
-                                                    </TouchableOpacity>
-                                                )
-                                            }} />
-                                        </View>
+                                        <CustomDropDown data={fuel} icon={Icons.gasStatiion} setValue={(item) => {
+                                            setValue(item);
+                                            setDropDownVisible(false)
+                                        }} />
                                     </>
                                 )
                             }
@@ -153,22 +151,10 @@ const AddVehicle = () => {
                             {
                                 dropdownVisible2 && (
                                     <>
-                                        <View style={styles.dropDown}>
-                                            <FlatList data={category} keyExtractor={(item) => item.id.toString()} renderItem={({ item }) => {
-                                                return (
-                                                    <TouchableOpacity onPress={() => {
-
-                                                        setValue2(item)
-                                                        setDropDownVisible2(false)
-                                                    }
-                                                    }>
-                                                        <View style={{ paddingVertical: 8, backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 1, borderBottomColor: 'rgba(244, 244, 245, 1)' }}>
-                                                            <Text style={{ color: Colors.fieldColor, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.2) }}>{item.label}</Text>
-                                                        </View>
-                                                    </TouchableOpacity>
-                                                )
-                                            }} />
-                                        </View>
+                                        <CustomDropDown data={category} setValue={(item) => {
+                                            setValue2(item);
+                                            setDropDownVisible2(false)
+                                        }} />
                                     </>
                                 )
                             }

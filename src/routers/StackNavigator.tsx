@@ -25,9 +25,33 @@ import Privacy from '../screens/homescreens/settings/Privacy';
 import AddVehicle from '../screens/homescreens/vehicles/AddVehicle';
 
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+    SplashOne: undefined;
+    OnBoarding: undefined;
+    SignIn: undefined;
+    SignUp: undefined;
+    ResetPassword: undefined;
+    OTP: undefined;
+    ChangePassword: undefined;
+    Home: undefined;
+    OrderCompleted: undefined;
+    FuelOrder: undefined;
+    PaymentMethod: undefined;
+    PlaceOrder: undefined;
+    EditProfile: undefined;
+    ChangePasswordScreen: undefined;
+    Cards: undefined;
+    AddCard: undefined;
+    FAQS: undefined;
+    Terms: undefined;
+    Privacy: undefined;
+    AddVehicle: undefined;
+};
 
-const StackNavigator = () => {
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+const StackNavigator:React.FC = () => {
     return (
         <SafeAreaProvider>
             <NavigationContainer>

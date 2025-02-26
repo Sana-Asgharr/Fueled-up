@@ -9,13 +9,14 @@ import Vehicles from "../screens/homescreens/Vehicles";
 import Profile from "../screens/homescreens/Profile";
 import { Icons } from "../constants/Themes";
 import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 
 const { width, height } = Dimensions.get('window');
 
 const Tab = createBottomTabNavigator();
 
-const CustomTabBar = ({ state, descriptors, navigation }) => {
-    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+const CustomTabBar:React.FC<BottomTabBarProps> = ({ state, descriptors, navigation }) => {
+    const [isKeyboardVisible, setKeyboardVisible] = useState<boolean>(false);
     const screenFocused = useIsFocused();
 
     useEffect(() => {
@@ -99,7 +100,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
     );
 };
 
-export default function App() {
+const BottomNavigation: React.FC = () => {
     return (
         <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}
 
@@ -117,6 +118,8 @@ export default function App() {
         </Tab.Navigator>
     );
 }
+
+export default BottomNavigation;
 
 const styles = StyleSheet.create({
     screen: {

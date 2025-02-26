@@ -2,45 +2,52 @@ import { Dimensions, SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Ima
 import React, { useState } from 'react'
 import { Colors, Icons, Fonts, IMAGES } from '../../../constants/Themes'
 import { RFPercentage } from 'react-native-responsive-fontsize'
-import NextButton from '../../../components/NextButton'
-import EditField from '../../../components/EditField'
 import Entypo from 'react-native-vector-icons/Entypo'
 import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../../routers/StackNavigator'
 
 const { width, height } = Dimensions.get('window')
 
-const FAQS = () => {
-    const navigation = useNavigation()
-    const [explanation, setExplanation] = useState(null)
-    const [visible, setVisible] = useState(false)
+interface Data {
+    id : number,
+    q : string,
+    e : string
+}
 
-    const data = [
-        {
-            id: 1,
-            q: 'What areas do you serve?',
-            e: 'The fuel delivery service operates through a user-friendly mobile application that enables customers to order fuel directly to their desired location. '
-        },
-        {
-            id: 2,
-            q: 'What types of fuel do you deliver?',
-            e: 'The fuel delivery service operates through a user-friendly mobile application that enables customers to order fuel directly to their desired location. '
-        },
-        {
-            id: 3,
-            q: 'What are your delivery hours?',
-            e: 'The fuel delivery service operates through a user-friendly mobile application that enables customers to order fuel directly to their desired location. '
-        },
-        {
-            id: 4,
-            q: 'What areas do you serve?',
-            e: 'The fuel delivery service operates through a user-friendly mobile application that enables customers to order fuel directly to their desired location. '
-        },
-        {
-            id: 5,
-            q: 'How long does delivery take??',
-            e: 'The fuel delivery service operates through a user-friendly mobile application that enables customers to order fuel directly to their desired location. '
-        }
-    ]
+const data: Data[] = [
+    {
+        id: 1,
+        q: 'What areas do you serve?',
+        e: 'The fuel delivery service operates through a user-friendly mobile application that enables customers to order fuel directly to their desired location. '
+    },
+    {
+        id: 2,
+        q: 'What types of fuel do you deliver?',
+        e: 'The fuel delivery service operates through a user-friendly mobile application that enables customers to order fuel directly to their desired location. '
+    },
+    {
+        id: 3,
+        q: 'What are your delivery hours?',
+        e: 'The fuel delivery service operates through a user-friendly mobile application that enables customers to order fuel directly to their desired location. '
+    },
+    {
+        id: 4,
+        q: 'What areas do you serve?',
+        e: 'The fuel delivery service operates through a user-friendly mobile application that enables customers to order fuel directly to their desired location. '
+    },
+    {
+        id: 5,
+        q: 'How long does delivery take??',
+        e: 'The fuel delivery service operates through a user-friendly mobile application that enables customers to order fuel directly to their desired location. '
+    }
+]
+
+
+const FAQS:React.FC = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList,'FAQS'>>()
+    const [explanation, setExplanation] = useState<number | null>(null)
+    const [visible, setVisible] = useState<boolean>(false)
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -93,9 +100,6 @@ const FAQS = () => {
                         }}
                     />
                 </View>
-
-
-
             </View>
         </SafeAreaView>
 

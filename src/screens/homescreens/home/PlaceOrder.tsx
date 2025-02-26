@@ -7,11 +7,13 @@ import { useNavigation } from '@react-navigation/native'
 import Entypo from 'react-native-vector-icons/Entypo'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { RFPercentage } from 'react-native-responsive-fontsize'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../../routers/StackNavigator'
 
 const { width, height } = Dimensions.get('window')
 
-const PlaceOrder = () => {
-    const navigation = useNavigation()
+const PlaceOrder:React.FC = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList,'PlaceOrder'>>()
 
     return (
         <SafeAreaView style={styles.safeArea}>

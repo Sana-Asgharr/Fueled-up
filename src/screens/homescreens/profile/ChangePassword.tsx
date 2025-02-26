@@ -6,11 +6,13 @@ import NextButton from '../../../components/NextButton'
 import EditField from '../../../components/EditField'
 import Entypo from 'react-native-vector-icons/Entypo'
 import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../../routers/StackNavigator'
 
 const { width, height } = Dimensions.get('window')
 
 const ChangePasswordScreen = () => {
-    const navigation = useNavigation()
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList,'ChangePasswordScreen'>>()
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>

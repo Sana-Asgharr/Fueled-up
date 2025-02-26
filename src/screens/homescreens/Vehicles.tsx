@@ -10,34 +10,40 @@ import { BlurView } from "@react-native-community/blur";
 import SkipButton from '../../components/SkipButton'
 import NextButton from '../../components/NextButton'
 
-const Vehicles = () => {
+
+interface Data {
+  id : number;
+  vehicle: string;
+  fuel: string;
+  quantity: string
+}
+
+const data: Data[] = [
+  {
+    id: 1,
+    vehicle: 'Honda Civic 1.9',
+    fuel: 'Petrol | 2019',
+    quantity: '1 Full Tank | 20 US gal fuel'
+  },
+  {
+    id: 2,
+    vehicle: 'Prius',
+    fuel: 'Petrol | 2020',
+    quantity: '1 Full Tank | 20 US gal fuel'
+  },
+  {
+    id: 3,
+    time: '24-04-2024 | 8:00 AM',
+    vehicle: 'Audi A5',
+    fuel: 'Petrol | 2023',
+    quantity: '1 Full Tank | 20 US gal fuel'
+  },
+]
+
+const Vehicles:React.FC = () => {
   const navigation = useNavigation()
-  const [modalVisible, setModalVisible] = useState(false)
-  const [isVisible, setIsVisible] = useState(null);
-
-
-
-  const data = [
-    {
-      id: 1,
-      vehicle: 'Honda Civic 1.9',
-      fuel: 'Petrol | 2019',
-      quantity: '1 Full Tank | 20 US gal fuel'
-    },
-    {
-      id: 2,
-      vehicle: 'Prius',
-      fuel: 'Petrol | 2020',
-      quantity: '1 Full Tank | 20 US gal fuel'
-    },
-    {
-      id: 3,
-      time: '24-04-2024 | 8:00 AM',
-      vehicle: 'Audi A5',
-      fuel: 'Petrol | 2023',
-      quantity: '1 Full Tank | 20 US gal fuel'
-    },
-  ]
+  const [modalVisible, setModalVisible] = useState<boolean>(false)
+  const [isVisible, setIsVisible] = useState<null>(null);
 
   return (
     <SafeAreaView style={styles.safeArea}>

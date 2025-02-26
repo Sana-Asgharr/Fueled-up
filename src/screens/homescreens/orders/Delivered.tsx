@@ -3,42 +3,45 @@ import React, { useState } from 'react'
 import { Colors, Icons, Fonts, IMAGES } from '../../../constants/Themes'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 const { width, height } = Dimensions.get('window')
-import { useNavigation } from '@react-navigation/native'
 
-const Delivered = () => {
-    const navigation = useNavigation()
+interface Data{
+    id: number,
+    time: string,
+    vehicle: string,
+    fuel: string,
+    address: string
+}
 
 
+const data: Data[] = [
+    {
+        id: 1,
+        time: '24-04-2024 | 8:00 AM',
+        vehicle: 'Honda Civic',
+        fuel: '2 Tanks',
+        address: 'Main Street, Capital Center, CO, USA'
+    },
+    {
+        id: 2,
+        time: '24-04-2024 | 8:00 AM',
+        vehicle: 'Honda Civic',
+        fuel: '2 Tanks',
+        address: 'Main Street, Capital Center, CO, USA'
+    },
+    {
+        id: 3,
+        time: '24-04-2024 | 8:00 AM',
+        vehicle: 'Honda Civic',
+        fuel: '2 Tanks',
+        address: 'Main Street, Capital Center, CO, USA'
+    },
+]
 
-
-    const data = [
-        {
-            id: 1,
-            time: '24-04-2024 | 8:00 AM',
-            vehicle: 'Honda Civic',
-            fuel: '2 Tanks',
-            address: 'Main Street, Capital Center, CO, USA'
-        },
-        {
-            id: 2,
-            time: '24-04-2024 | 8:00 AM',
-            vehicle: 'Honda Civic',
-            fuel: '2 Tanks',
-            address: 'Main Street, Capital Center, CO, USA'
-        },
-        {
-            id: 3,
-            time: '24-04-2024 | 8:00 AM',
-            vehicle: 'Honda Civic',
-            fuel: '2 Tanks',
-            address: 'Main Street, Capital Center, CO, USA'
-        },
-    ]
+const Delivered: React.FC = () => {
+   
 
     return (
-
         <View>
-
             <View style={{ marginTop: 15 }}>
                 <FlatList
                     data={data}
@@ -108,13 +111,7 @@ const Delivered = () => {
                     }}
                 />
             </View>
-
-
-
-
         </View>
-
-
     )
 }
 

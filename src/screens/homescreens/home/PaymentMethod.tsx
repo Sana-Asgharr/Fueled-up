@@ -8,36 +8,48 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 import { useNavigation } from '@react-navigation/native'
 const { width, height } = Dimensions.get('window')
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../../routers/StackNavigator'
 
-const PaymentMethod = (props) => {
-    const [selected, setSelected] = useState(null)
-    const [selected2, setSelected2] = useState(null)
-    const [placeOrder, setPlaceOrder] = useState(false)
-    const navigation = useNavigation()
+interface Data {
+    id : number,
+    name : string
+}
 
-    const method = [
-        {
-            id: 1,
-            name: 'Cash on delivery - COD'
-        },
-        {
-            id: 2,
-            name: 'Pay Online'
-        },
-    ]
+const method: Data[] = [
+    {
+        id: 1,
+        name: 'Cash on delivery - COD'
+    },
+    {
+        id: 2,
+        name: 'Pay Online'
+    },
+]
 
-    const card = [
-        {
-            id: 1,
-            number: '**** **** **** 1 2 3 4',
-            cardImg: Icons.card
-        },
-        {
-            id: 2,
-            number: '**** **** **** 1 2 3 4',
-            cardImg: Icons.visa
-        }
-    ]
+interface Card {
+    id : number,
+    name : string,
+    cardImg : any
+}
+
+const card: Card[] = [
+    {
+        id: 1,
+        number: '**** **** **** 1 2 3 4',
+        cardImg: Icons.card
+    },
+    {
+        id: 2,
+        number: '**** **** **** 1 2 3 4',
+        cardImg: Icons.visa
+    }
+]
+
+const PaymentMethod = () => {
+    const [selected, setSelected] = useState<number | null>(null)
+    const [selected2, setSelected2] = useState<number | null>(null)
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList,'PaymentMethod'>>()
 
     return (
         <SafeAreaView style={styles.safeArea}>

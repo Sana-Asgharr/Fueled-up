@@ -8,30 +8,38 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import { useNavigation } from '@react-navigation/native'
 import { Popable } from 'react-native-popable';
 import { BlurView } from "@react-native-community/blur";
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../../routers/StackNavigator'
 
 const { width, height } = Dimensions.get('window')
 
-const Cards = () => {
-    const [modalVisible, setModalVisible] = useState(false)
-    const [isVisible, setIsVisible] = useState(null);
-    const navigation = useNavigation()
-    const card = [
-        {
-            id: 1,
-            number: '**** **** **** 1 2 3 4',
-            cardImg: Icons.card
-        },
-        {
-            id: 2,
-            number: '**** **** **** 1 2 3 4',
-            cardImg: Icons.visa
-        },
-        {
-            id: 3,
-            number: '**** **** **** 1 2 3 4',
-            cardImg: Icons.visa
-        }
-    ]
+interface Card {
+    id : number,
+    number : string,
+    cardImg : any
+}
+
+const card:Card[] = [
+    {
+        id: 1,
+        number: '**** **** **** 1 2 3 4',
+        cardImg: Icons.card
+    },
+    {
+        id: 2,
+        number: '**** **** **** 1 2 3 4',
+        cardImg: Icons.visa
+    },
+    {
+        id: 3,
+        number: '**** **** **** 1 2 3 4',
+        cardImg: Icons.visa
+    }
+]
+const Cards:React.FC = () => {
+    const [modalVisible, setModalVisible] = useState<boolean>(false)
+    const [isVisible, setIsVisible] = useState<number | null>(null);
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList,'Cards'>>()
 
     return (
         <SafeAreaView style={styles.safeArea}>

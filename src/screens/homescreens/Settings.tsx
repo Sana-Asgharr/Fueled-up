@@ -7,12 +7,8 @@ const { width, height } = Dimensions.get('window')
 import ToggleSwitch from 'toggle-switch-react-native';
 import { useNavigation } from '@react-navigation/native'
 
-const Settings = () => {
+const Settings:React.FC = () => {
   const navigation = useNavigation()
-  const [isPushEnabled, setIsPushEnabled] = useState(false);
-  const handleToggle2 = isOn => {
-    setIsPushEnabled(isOn);
-  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -46,10 +42,6 @@ const Settings = () => {
           <ProfileField icon={Icons.terms} text={'Term & Conditions'} onPress={()=> navigation.navigate('Terms')} />
           <ProfileField icon={Icons.faq} text={'FAQ’s'} onPress={()=> navigation.navigate('FAQS')} />
           <ProfileField icon={Icons.logout} text={'Logout'}  color={'red'} />
-
-          
-
-
         </View>
 
       </View>

@@ -16,13 +16,39 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts, IMAGES } from '../../constants/Themes';
 import { RFPercentage } from "react-native-responsive-fontsize";
-
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../routers/StackNavigator';
 
 const { width, height } = Dimensions.get('window');
 
-const OnBoarding = () => {
-  const [step, setStep] = useState(1);
-  const navigation = useNavigation()
+interface StepsData {
+  image : any;
+  title : string;
+  description : string
+}
+
+const stepsData: StepsData[] = [
+  {
+    image: IMAGES.onBoarding1,
+    title: 'Fueling Convenience',
+    description: 'Experience the ease of fuel delivery right to your doorstep.',
+  },
+  {
+    image: IMAGES.onBoarding2,
+    title: 'Find Fueling Solution',
+    description: 'Forget about the hassle of going to a gas stations.',
+  },
+  {
+    image: IMAGES.onBoarding3,
+    title: 'Get Fuel Delivered To You',
+    description: 'Experience the convenience of direct fuel delivery',
+  }
+];
+
+
+const OnBoarding: React.FC = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'OnBoarding'>>()
+  const [step, setStep] = useState<number>(1);
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
 
@@ -55,23 +81,7 @@ const OnBoarding = () => {
     ]).start();
   }, [step]);
 
-  const stepsData = [
-    {
-      image: IMAGES.onBoarding1,
-      title: 'Fueling Convenience',
-      description: 'Experience the ease of fuel delivery right to your doorstep.',
-    },
-    {
-      image: IMAGES.onBoarding2,
-      title: 'Find Fueling Solution',
-      description: 'Forget about the hassle of going to a gas stations.',
-    },
-    {
-      image: IMAGES.onBoarding3,
-      title: 'Get Fuel Delivered To You',
-      description: 'Experience the convenience of direct fuel delivery',
-    }
-  ];
+  
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -185,8 +195,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dot: {
-    width:  RFPercentage(1.5),
-    height:  RFPercentage(1.5),
+    width: RFPercentage(1.5),
+    height: RFPercentage(1.5),
     borderRadius: 8,
     marginHorizontal: 5,
   },
