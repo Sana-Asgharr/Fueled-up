@@ -7,7 +7,7 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 const InputField = (props) => {
   return (
     <View style={styles.container} >
-      <TextInput placeholder={props.placeholder} placeholderTextColor={Colors.secondaryText} style={{color : Colors.secondaryText, fontFamily:Fonts.fontRegular, top:14, fontSize: RFPercentage(1.3),}} />
+      <TextInput placeholder={props.placeholder} placeholderTextColor={Colors.secondaryText} style={{color : Colors.secondaryText, fontFamily:Fonts.fontRegular, top:14, fontSize: RFPercentage(1.6),}} />
     </View>
   )
 }

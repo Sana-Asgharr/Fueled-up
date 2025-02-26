@@ -51,7 +51,7 @@ const Delivered = () => {
                                     <View style={{ width: 44, height: 14, backgroundColor: Colors.gradient1, alignItems: 'center', justifyContent: 'center', borderTopLeftRadius: 6 }}>
                                         <Text style={{ color: Colors.background, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1) }}>Delivered</Text>
                                     </View>
-                                    <View style={{ paddingHorizontal: 6 }}>
+                                    <View style={{ paddingHorizontal: 6, paddingBottom:6 }}>
 
 
                                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 6 }}>
@@ -96,7 +96,7 @@ const Delivered = () => {
                                         </View>
                                         <View style={{}}>
                                             <TouchableOpacity>
-                                                <View style={{width:70, height:26, borderWidth:1, borderColor:Colors.inputFieldColor, borderRadius:8, alignItems:'center', justifyContent:'center'}}>
+                                                <View style={{width:70, height:26, borderWidth:1, borderColor:Colors.inputFieldColor, borderRadius:8, alignItems:'center', justifyContent:'center', alignSelf:'flex-end'}}>
                                                     <Text style={{color:Colors.fieldColor, fontSize:10, fontFamily:Fonts.fontRegular, textAlign:'center'}}>View More</Text>
                                                 </View>
                                             </TouchableOpacity>

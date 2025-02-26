@@ -1,5 +1,5 @@
-import React,{useState, useEffect} from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, Keyboard } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, Keyboard, BackHandler } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Orders from "../screens/homescreens/Orders";
@@ -8,6 +8,7 @@ import Home from "../screens/homescreens/Home";
 import Vehicles from "../screens/homescreens/Vehicles";
 import Profile from "../screens/homescreens/Profile";
 import { Icons } from "../constants/Themes";
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -15,6 +16,24 @@ const Tab = createBottomTabNavigator();
 
 const CustomTabBar = ({ state, descriptors, navigation }) => {
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+    const screenFocused = useIsFocused();
+
+    useEffect(() => {
+        const backAction = () => {
+            if (screenFocused) {
+                navigation.goBack();
+                return true;
+            }
+            return false;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            backAction,
+        );
+
+        return () => backHandler.remove();
+    }, [screenFocused, navigation]);
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
@@ -70,8 +89,9 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                                             <Image source={isFocused ? Icons.profileActive : Icons.profile} style={{ width: 20, height: 20 }} resizeMode="contain" />
                                         )
 
+
                         }
-                        <Text style={{ color: isFocused ? "#ff9800" : "#777", fontSize: 11, top: 5, fontFamily:'Poppins-Regular' }}>{route.name === "HomeScreen" ? null : label}</Text>
+                        <Text style={{ color: isFocused ? "#ff9800" : "#777", fontSize: 11, top: 5, fontFamily: 'Poppins-Regular' }}>{route.name === "HomeScreen" ? null : label}</Text>
                     </TouchableOpacity>
                 );
             })}
@@ -82,7 +102,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
 export default function App() {
     return (
         <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}
-        
+
             initialRouteName="HomeScreen"
             screenOptions={{
                 headerShown: false,

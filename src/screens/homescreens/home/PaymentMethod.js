@@ -9,7 +9,7 @@ import { RFPercentage } from 'react-native-responsive-fontsize'
 import { useNavigation } from '@react-navigation/native'
 const { width, height } = Dimensions.get('window')
 
-const PaymentMethod = () => {
+const PaymentMethod = (props) => {
     const [selected, setSelected] = useState(null)
     const [selected2, setSelected2] = useState(null)
     const [placeOrder, setPlaceOrder] = useState(false)
@@ -44,7 +44,8 @@ const PaymentMethod = () => {
             <View style={styles.container}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between" }}>
                     <View>
-                        <TouchableOpacity style={{ bottom: 5 }}>
+                        <TouchableOpacity style={{ bottom: 5 }} onPress={() =>navigation.navigate('FuelOrder')
+                        }>
                             <Entypo name='chevron-thin-left' color={Colors.secondaryText} size={RFPercentage(1.9)} />
                         </TouchableOpacity>
                     </View>
@@ -76,7 +77,7 @@ const PaymentMethod = () => {
                                 <TouchableOpacity onPress={() => setSelected(item.id)}>
                                     <View style={{ width: width * 0.9, height: 50, alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', paddingHorizontal: 15, borderWidth: 1, borderColor: selected === item.id ? 'rgba(255, 143, 4, 1)' : 'rgba(243, 244, 246, 1)', marginTop: 15, borderRadius: 6 }}
                                     >
-                                        <Text style={{color: Colors.fieldColor, fontFamily: Fonts.fontMedium, }}>{item.name}</Text>
+                                        <Text style={{ color: Colors.fieldColor, fontFamily: Fonts.fontMedium, }}>{item.name}</Text>
                                         <View>
                                             <Image source={Icons.circle} style={{ width: 14, height: 14 }} resizeMode='contain' />
                                         </View>

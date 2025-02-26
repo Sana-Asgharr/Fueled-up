@@ -74,7 +74,7 @@ const SignIn = () => {
                 <View style={{ marginTop: 100, }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{ width: 26, height: 1, backgroundColor: Colors.inputFieldColor }}></View>
-                        <Text style={{ color: Colors.secondaryText, marginHorizontal: 8, bottom: 1,         fontSize: RFPercentage(1.3), fontFamily: Fonts.fontRegular }}>or login with</Text>
+                        <Text style={{ color: Colors.secondaryText, marginHorizontal: 8, bottom: 1,         fontSize: RFPercentage(1.4), fontFamily: Fonts.fontRegular }}>or login with</Text>
                         <View style={{ width: 26, height: 1, backgroundColor: Colors.inputFieldColor }}></View>
 
                     </View>
@@ -89,9 +89,9 @@ const SignIn = () => {
                 </View>
                 <View style={{marginTop:65}}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ color: Colors.secondaryText, fontSize: RFPercentage(1.3), fontFamily: Fonts.fontRegular }}>Don’t have an account?</Text>
+                        <Text style={{ color: Colors.secondaryText, fontSize: RFPercentage(1.4), fontFamily: Fonts.fontRegular }}>Don’t have an account?</Text>
                         <TouchableOpacity onPress={()=>navigation.navigate('SignUp')}>
-                            <Text style={{ color: Colors.gradient1,fontSize: RFPercentage(1.3), fontFamily: Fonts.fontRegular, left:3 }}>Sign Up</Text>
+                            <Text style={{ color: Colors.gradient1,fontSize: RFPercentage(1.4), fontFamily: Fonts.fontRegular, left:3 }}>Sign Up</Text>
                         </TouchableOpacity>
 
                     </View>
@@ -133,14 +133,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     radioLabel: {
-        fontSize: RFPercentage(1.3),
+        fontSize: RFPercentage(1.4),
         color: Colors.secondaryText,
-        marginLeft: 10,
+        marginLeft: 5,
         fontFamily: Fonts.fontRegular,
         bottom: 2
     },
     forgotPassword: {
-        fontSize: RFPercentage(1.3),
+        fontSize: RFPercentage(1.4),
         color: Colors.secondaryText,
         fontFamily: Fonts.fontRegular,
         bottom: 2

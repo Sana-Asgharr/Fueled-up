@@ -58,7 +58,7 @@ const OrderFuel = () => {
             <View style={styles.container}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between" }}>
                     <View>
-                        <TouchableOpacity style={{ bottom: 5 }} onPress={()=> navigation.goBack()}>
+                        <TouchableOpacity style={{ bottom: 5 }} onPress={() => navigation.navigate('Home')}>
                             <Entypo name='chevron-thin-left' color={Colors.secondaryText} size={RFPercentage(1.9)} />
                         </TouchableOpacity>
                     </View>
@@ -74,12 +74,11 @@ const OrderFuel = () => {
                     </View>
 
                 </View>
+                <View style={{ marginVertical: 15, alignSelf: 'center' }}>
+                    <Image source={Icons.timeLine} resizeMode='contain' style={{ width: width * 0.87, height: 50 }} />
+                </View>
                 <ScrollView contentContainerStyle={{ paddingBottom: 80 }} showsVerticalScrollIndicator={false}>
                     <View style={{ alignSelf: 'center' }}>
-
-                        <View style={{ marginVertical: 15, alignSelf: 'center' }}>
-                            <Image source={Icons.timeLine} resizeMode='contain' style={{ width: width * 0.87, height: 50 }} />
-                        </View>
                         <View>
                             <View style={{ marginTop: 20 }}>
                                 <Text style={styles.fieldTitle}>Category</Text>
@@ -88,7 +87,7 @@ const OrderFuel = () => {
                                         setDropDownVisible(true)
                                     }}
                                 >
-                                    <Text style={{ color: Colors.fieldColor, fontSize:RFPercentage(1.5), fontFamily:Fonts.fontRegular }}>{value.label || 'Petrol'}</Text>
+                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular }}>{value.label || 'Petrol'}</Text>
                                     <TouchableOpacity style={{}}
                                         onPress={() => {
                                             setDropDownVisible(!dropdownVisible)
@@ -130,7 +129,7 @@ const OrderFuel = () => {
                                 <Text style={styles.fieldTitle}>Phone Number</Text>
                                 <View style={styles.field}
                                 >
-                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily:Fonts.fontRegular }}>+1-501-808-1234</Text>
+                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular }}>+1-501-808-1234</Text>
                                     <View style={{}}>
                                         <AntDesign name='phone' color={Colors.fieldColor} size={RFPercentage(2)}
                                         />
@@ -148,7 +147,7 @@ const OrderFuel = () => {
                                         setDropDownVisible2(true)
                                     }}
                                 >
-                                    <Text style={{ color: Colors.fieldColor, fontSize:RFPercentage(1.5), fontFamily:Fonts.fontRegular }}>{value2.label || '1 Full Tank'}</Text>
+                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular }}>{value2.label || '1 Full Tank'}</Text>
                                     <TouchableOpacity style={{}}
                                         onPress={() => {
                                             setDropDownVisible2(!dropdownVisible2)
@@ -190,7 +189,7 @@ const OrderFuel = () => {
                                 <Text style={styles.fieldTitle}>Date and Time<Text style={{ color: 'rgba(156, 163, 175, 1)', fontSize: 10 }}> (Optional)</Text></Text>
                                 <View style={styles.field}
                                 >
-                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.4) , fontFamily:Fonts.fontRegular}}>Default date and time</Text>
+                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.4), fontFamily: Fonts.fontRegular }}>Default date and time</Text>
                                     <View style={{}}>
                                         <AntDesign name='calendar' color={Colors.fieldColor} size={RFPercentage(2)}
                                         />
@@ -211,7 +210,7 @@ const OrderFuel = () => {
                                                     setDropDownVisible3(true)
                                                 }}
                                             >
-                                                <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily:Fonts.fontRegular }}>{value3.label || 'Choose'}</Text>
+                                                <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular }}>{value3.label || 'Choose'}</Text>
                                                 <TouchableOpacity style={{}}
                                                     onPress={() => {
                                                         setDropDownVisible3(!dropdownVisible3)
@@ -233,7 +232,7 @@ const OrderFuel = () => {
                                                     <TouchableOpacity onPress={() => setVehicle(true)}>
                                                         <View style={{ width: 108, height: 34, borderRadius: 20, borderWidth: 1, borderColor: 'rgba(243, 244, 246, 1)', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
                                                             <AntDesign name='pluscircleo' color={Colors.fieldColor} size={RFPercentage(1.2)} style={{ bottom: 1, right: 2 }} />
-                                                            <Text style={{ color: Colors.heading, fontFamily:Fonts.fontRegular, fontSize: RFPercentage(1.2), left: 2 }}>Add Vehicle</Text>
+                                                            <Text style={{ color: Colors.heading, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.2), left: 2 }}>Add Vehicle</Text>
                                                         </View>
                                                     </TouchableOpacity>
                                                 </View>
@@ -310,6 +309,6 @@ const styles = StyleSheet.create({
         marginTop: 15
     },
     dropDown: {
-        width: width * 0.9, borderBottomRightRadius: 6, borderBottomLeftRadius: 6, backgroundColor: 'rgba(249, 250, 251, 1)', paddingVertical: 16, position: 'relative', borderWidth: 1, borderColor: 'rgba(241, 245, 249, 1)', paddingHorizontal: 15
+        width: width * 0.9, borderBottomRightRadius: 6, borderBottomLeftRadius: 6, backgroundColor: 'rgba(249, 250, 251, 1)', paddingVertical: 0, position: 'relative', borderWidth: 1, borderColor: 'rgba(241, 245, 249, 1)', paddingHorizontal: 15
     }
 });

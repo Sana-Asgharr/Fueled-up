@@ -51,6 +51,11 @@ const PlaceOrder = () => {
                     <OrderField text1={'Sub Total'} text2={'100$'} textStyle={{ fontFamily: Fonts.fontBold }} />
                     <OrderField text1={'Service Fee'} text2={'30$'} textStyle={{ fontFamily: Fonts.fontBold }} />
                     <OrderField text1={'Tax Fee'} text2={'20$'} textStyle={{ fontFamily: Fonts.fontBold }} />
+                    <View style={{width:'100%', height:RFPercentage(5.5), backgroundColor:'rgba(249, 250, 251, 1)', borderRadius:6, alignItems:'center', justifyContent:'space-between', flexDirection:'row', paddingHorizontal:10, marginTop:10}}>
+                        <Text style={{color:'rgba(120, 113, 108, 1)', fontFamily:Fonts.fontRegular, fontSize:RFPercentage(1.5)}}>Total</Text>
+                        <Text style={{color:Colors.gradient1, fontFamily:Fonts.fontBold, fontSize:RFPercentage(1.5)}}>150$</Text>
+
+                    </View>
                 </View>
                 <View style={{ marginTop: 50 }}>
                     <NextButton title={'Place Order'} style={{ width: '50%' }} color={Colors.background} onPress={() => navigation.navigate('OrderCompleted')} />

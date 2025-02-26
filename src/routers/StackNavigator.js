@@ -22,6 +22,7 @@ import AddCard from '../screens/homescreens/profile/AddCard';
 import FAQS from '../screens/homescreens/settings/FAQ';
 import Terms from '../screens/homescreens/settings/Terms';
 import Privacy from '../screens/homescreens/settings/Privacy';
+import AddVehicle from '../screens/homescreens/vehicles/AddVehicle';
 
 
 const Stack = createNativeStackNavigator();
@@ -32,7 +33,10 @@ const StackNavigator = () => {
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{
                     headerShown: false
-                }}>
+                    
+                }}
+                initialRouteName='SplashOne'
+                >
                     <Stack.Screen name='SplashOne' component={SplashOne} />
                     <Stack.Screen name='OnBoarding' component={OnBoarding} />
                     <Stack.Screen name='SignIn' component={SignIn} />
@@ -52,6 +56,8 @@ const StackNavigator = () => {
                     <Stack.Screen name='FAQS' component={FAQS} />
                     <Stack.Screen name='Terms' component={Terms} />
                     <Stack.Screen name='Privacy' component={Privacy} />
+                    <Stack.Screen name='AddVehicle' component={AddVehicle} />
+
                 </Stack.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>

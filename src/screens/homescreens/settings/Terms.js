@@ -43,7 +43,7 @@ const Terms = () => {
             <View style={styles.container}>
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between" }}>
-                    <TouchableOpacity style={{ bottom: 5 }} onPress={() => navigation.goBack()}>
+                    <TouchableOpacity style={{ bottom: 5 }}  onPress={() => navigation.navigate('Home')}>
                         <Entypo name='chevron-thin-left' color={Colors.secondaryText} size={RFPercentage(1.9)} />
                     </TouchableOpacity>
                     <View>
@@ -59,7 +59,7 @@ const Terms = () => {
 
                 </View>
                 <View style={{marginTop:RFPercentage(3)}}>
-                    <Text style={{ color: Colors.heading, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.7), textAlign: 'justify', lineHeight:23 }}>These Terms and Conditions ("Terms") govern your use of the fuel delivery services offered by Fueled Up ("Company," "we," "us," or "our") through our mobile application ("App"). By accessing or using our services, you agree to be bound by these Terms. If you do not agree with these Terms, you may not use our services.</Text>
+                    <Text style={{ color: Colors.heading, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.5), textAlign: 'justify', lineHeight:23 }}>These Terms and Conditions ("Terms") govern your use of the fuel delivery services offered by Fueled Up ("Company," "we," "us," or "our") through our mobile application ("App"). By accessing or using our services, you agree to be bound by these Terms. If you do not agree with these Terms, you may not use our services.</Text>
 
                 </View>
                 <View style={{ marginTop: 10 }}>
@@ -70,8 +70,8 @@ const Terms = () => {
                             return (
                                 <>
                                     <View style={{ marginTop: RFPercentage(2) }}>
-                                        <Text style={{ color: Colors.heading, fontFamily: Fonts.fontMedium, fontSize: RFPercentage(1.8) }}>{item.q}</Text>
-                                        <Text style={{ color: Colors.heading, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.7), marginTop: 5, textAlign:'justify', lineHeight:23 }}>{item.e}</Text>
+                                        <Text style={{ color: Colors.heading, fontFamily: Fonts.fontMedium, fontSize: RFPercentage(1.7) }}>{item.q}</Text>
+                                        <Text style={{ color: Colors.heading, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.5), marginTop: 5, textAlign:'justify', lineHeight:23 }}>{item.e}</Text>
                                     </View>
                                 </>
                             )

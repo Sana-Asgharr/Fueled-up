@@ -13,7 +13,7 @@ const PasswordField = (props) => {
 
     return (
         <View style={styles.container} >
-            <TextInput placeholder={props.placeholder} placeholderTextColor={Colors.secondaryText} style={{ color: Colors.secondaryText, fontFamily: Fonts.fontRegular, top: 6 ,         fontSize: RFPercentage(1.3),}} secureTextEntry={!visible} />
+            <TextInput placeholder={props.placeholder} placeholderTextColor={Colors.secondaryText} style={{ color: Colors.secondaryText, fontFamily: Fonts.fontRegular, top: 6 ,fontSize: RFPercentage(1.6),}} secureTextEntry={!visible} />
             <TouchableOpacity
                 onPress={togglePasswordVisibility}
                 style={{top:6, right: 15,}}

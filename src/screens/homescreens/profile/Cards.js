@@ -38,7 +38,7 @@ const Cards = () => {
             <View style={styles.container}>
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between" }}>
-                    <TouchableOpacity style={{ bottom: 5 }} onPress={() => navigation.goBack()}>
+                    <TouchableOpacity style={{ bottom: 5 }} onPress={() => navigation.navigate('Home')}>
                         <Entypo name='chevron-thin-left' color={Colors.secondaryText} size={RFPercentage(1.9)} />
                     </TouchableOpacity>
                     <View>
@@ -112,13 +112,13 @@ const Cards = () => {
                                                             }}
                                                         >
                                                             <Image source={Icons.trash} style={{ width: 12, height: 12 }} resizeMode="contain" />
-                                                            <Text style={{ marginLeft: 5, fontSize: RFPercentage(1) }}>Delete Card</Text>
+                                                            <Text style={{ marginLeft: 5, fontSize: RFPercentage(1),color:Colors.fieldColor }}>Delete Card</Text>
                                                         </TouchableOpacity>
                                                         <TouchableOpacity
-                                                            style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}
+                                                            style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5, right: 3, }}
                                                         >
                                                             <Image source={Icons.cardEdit} style={{ width: 12, height: 12 }} resizeMode="contain" />
-                                                            <Text style={{ marginLeft: 5, fontSize: RFPercentage(1) }}>Edit Card</Text>
+                                                            <Text style={{ marginLeft: 5, fontSize: RFPercentage(1),color:Colors.fieldColor }}>Edit Card</Text>
                                                         </TouchableOpacity>
                                                     </View>
                                                 </>

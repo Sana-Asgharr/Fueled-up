@@ -52,15 +52,15 @@ const SignUp = () => {
                 <View style={{ width: '100%', marginTop: 40 }}>
                     <NextButton title={'Sign Up'} color={Colors.background} style={{ width: '45%' }} />
                 </View>
-                <View style={{ marginTop: 90, }}>
+                <View style={{ marginTop: RFPercentage(10), }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{ width: 26, height: 1, backgroundColor: Colors.inputFieldColor }}></View>
-                        <Text style={{ color: Colors.secondaryText, marginHorizontal: 8, bottom: 1,fontSize: RFPercentage(1.3), fontFamily: Fonts.fontRegular }}>or sign up with</Text>
+                        <Text style={{ color: Colors.secondaryText, marginHorizontal: 8, bottom: 1,fontSize: RFPercentage(1.4), fontFamily: Fonts.fontRegular }}>or sign up with</Text>
                         <View style={{ width: 26, height: 1, backgroundColor: Colors.inputFieldColor }}></View>
 
                     </View>
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 30 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: RFPercentage(4) }}>
                     <TouchableOpacity>
                         <Image source={Icons.facebook} resizeMode='contain' style={{ width: RFPercentage(4), height: RFPercentage(4), right: 6, }} />
                     </TouchableOpacity>
@@ -68,11 +68,11 @@ const SignUp = () => {
                         <Image source={Icons.google} resizeMode='contain' style={{ width: RFPercentage(4), height: RFPercentage(4), left: 6 }} />
                     </TouchableOpacity>
                 </View>
-                <View style={{marginTop:40}}>
+                <View style={{marginTop:RFPercentage(5)}}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ color: Colors.secondaryText,fontSize: RFPercentage(1.3), fontFamily: Fonts.fontRegular }}>Already have an account?</Text>
+                        <Text style={{ color: Colors.secondaryText,fontSize: RFPercentage(1.4), fontFamily: Fonts.fontRegular }}>Already have an account?</Text>
                         <TouchableOpacity onPress={()=> navigation.navigate('SignIn')}>
-                            <Text style={{ color: Colors.gradient1, fontSize: RFPercentage(1.3), fontFamily: Fonts.fontRegular, left:3 }}>Sign In</Text>
+                            <Text style={{ color: Colors.gradient1, fontSize: RFPercentage(1.4), fontFamily: Fonts.fontRegular, left:3 }}>Sign In</Text>
                         </TouchableOpacity>
 
                     </View>

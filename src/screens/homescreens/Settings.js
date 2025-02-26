@@ -45,7 +45,7 @@ const Settings = () => {
           <ProfileField icon={Icons.privacy} text={'Privacy Policy'} onPress={()=>navigation.navigate('Privacy')} />
           <ProfileField icon={Icons.terms} text={'Term & Conditions'} onPress={()=> navigation.navigate('Terms')} />
           <ProfileField icon={Icons.faq} text={'FAQ’s'} onPress={()=> navigation.navigate('FAQS')} />
-          <ProfileField icon={Icons.logout} text={'Logout'} onPress={()=> navigation.navigate('ChangePasswordScreen')} color={'red'} />
+          <ProfileField icon={Icons.logout} text={'Logout'}  color={'red'} />
 
           
 
