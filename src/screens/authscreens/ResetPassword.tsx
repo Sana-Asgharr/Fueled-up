@@ -18,21 +18,32 @@ const { width, height } = Dimensions.get('window');
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../routers/StackNavigator';
+import Toast from 'react-native-toast-message';
+import * as yup from 'yup';
+import { Formik } from 'formik';
 
-const ResetPassword:React.FC = () => {
+
+const ResetPassword: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'ResetPassword'>>()
+    let validationSchema = yup.object({
+        email: yup.string().email('Invalid email').required('Email is required'),
+        phone: yup
+            .string()
+            .required('Phone number is required'),
+    });
+    
 
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={{ paddingHorizontal: width * 0.08, paddingTop: 40 }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <TouchableOpacity onPress={()=> navigation.goBack()} style={{bottom:5}}>
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={{ bottom: 5 }}>
                         <Entypo name='chevron-thin-left' color={Colors.secondaryText} size={18} />
                     </TouchableOpacity>
                     <Image
                         source={IMAGES.logo}
                         resizeMode="contain"
-                        style={{ width: 140, height: 90, alignSelf:'center', right:8 }}
+                        style={{ width: 140, height: 90, alignSelf: 'center', right: 8 }}
                     />
                     <View></View>
                 </View>

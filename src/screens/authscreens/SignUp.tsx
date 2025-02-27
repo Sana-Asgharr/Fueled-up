@@ -7,21 +7,79 @@ import {
     Dimensions,
     Image,
     TouchableOpacity,
+    Alert
 } from 'react-native';
-import { Colors } from '../../services/Colors';
 import InputField from '../../components/InputField';
 import NextButton from '../../components/NextButton';
-import { Fonts, Icons, IMAGES } from '../../constants/Themes';
+import { Fonts, Icons, IMAGES, Colors } from '../../constants/Themes';
 import { useNavigation } from '@react-navigation/native';
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../routers/StackNavigator';
+import { getAuth, createUserWithEmailAndPassword, } from "firebase/auth";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { auth, db } from '../../../firebaseConfig';
+import Toast from 'react-native-toast-message';
+import * as yup from 'yup';
+import { Formik } from 'formik';
 
 const { width, height } = Dimensions.get('window');
 
-const SignUp:React.FC = () => {
-   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList,'SignUp'>>()
-   
+const SignUp: React.FC = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'SignUp'>>()
+    const [name, setUsername] = useState('')
+    const [email, setEmail] = useState('')
+    const [phone, setPhone] = useState('')
+    const [loading, setLoading] = useState(false);
+
+    let validationSchema = yup.object({
+        name: yup.string().required('Username is required'),
+        email: yup.string().email('Invalid email').required('Email is required'),
+        phone: yup.string().required('Phone number is required'),
+        password: yup
+            .string()
+            .required('Password is required'),
+        confirmPassword: yup
+            .string()
+            .oneOf([yup.ref('password')], 'Passwords must match'),
+    });
+
+    const handleSignUp = async (values: any) => {
+        // console.log(values)
+        if (values.name && values.email && values.phone && values.password && values.confirmPassword) {
+            setLoading(true);
+            try {
+                await createUserWithEmailAndPassword(auth, values.email, values.password);
+                await addDoc(collection(db, "Users"), {
+                    name: values.name,
+                    email: values.email,
+                    phone: values.phone,
+                });
+                Toast.show({
+                    type: 'success',
+                    text1: 'Sign Up',
+                    text2: 'User registered successfully',
+                    position: 'top',
+                    text1Style: { fontFamily: Fonts.fontBold },
+                    text2Style: { fontFamily: Fonts.fontRegular }
+                });
+
+            } catch (error: any) {
+                // console.log(error)
+                Toast.show({
+                    type: 'error',
+                    text1: 'Sign Up',
+                    text2: error.code === 'auth/email-already-in-use' ? 'Email already exists' : `${error.code}`,
+                    position: 'top',
+                    text1Style: { fontFamily: Fonts.fontBold },
+                    text2Style: { fontFamily: Fonts.fontRegular }
+                });
+            } finally {
+                setLoading(false);
+            }
+        }
+    };
+
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
@@ -35,30 +93,125 @@ const SignUp:React.FC = () => {
 
                 <Text style={styles.welcomeText}>Welcome!</Text>
 
-                <View style={{ width: '100%', marginTop:20 }}>
-                    <InputField placeholder="Name" />
-                    <View style={{ marginTop: 16 }}>
-                    <InputField placeholder="Email" />
-                    </View>
-                    <View style={{ marginTop: 16 }}>
-                    <InputField placeholder="Phone Number" />
-                    </View>
-                    <View style={{ marginTop: 16 }}>
-                    <InputField placeholder="Password" />
-                    </View>
-                    <View style={{ marginTop: 16 }}>
-                    <InputField placeholder="Confirm Password" />
-                    </View>
+                <Formik
+                    initialValues={{
+                        name: '',
+                        email: '',
+                        phone: '',
+                        password: '',
+                        confirmPassword: ''
+                    }}
+                    validationSchema={validationSchema}
+                    onSubmit={values => handleSignUp(values)}>
+                    {(
+                        {
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                            values,
+                            errors,
+                            touched,
+                        }
+                    ) => (
+                        <>
+                            <View style={{ width: '100%', marginTop: RFPercentage(2),position: 'relative', }}>
+                                <InputField placeholder="Name" onChangeText={handleChange('name')}
+                                    onBlur={handleBlur('name')}
+                                    value={values.name}
+                                    customStyle={{
+                                        borderBottomColor: touched.name && errors.name ? Colors.error : Colors.inputFieldColor
+                                    }} />
+                                {
+                                    touched.name && errors.name ?
+                                        <>
+                                            <Text style={{ fontSize: RFPercentage(1.3), fontFamily: Fonts.fontRegular, color: Colors.error, top:3, }}>{errors.name}</Text>
+                                        </>
+                                        :
+                                        null
+                                }
+                                <View style={{ marginTop: RFPercentage(1) }}>
+                                    <InputField placeholder="Email" onChangeText={handleChange('email')}
+                                        onBlur={handleBlur('email')}
+                                        value={values.email}
+                                        customStyle={{
+                                            borderBottomColor: touched.email && errors.email ? Colors.error : Colors.inputFieldColor
+                                        }} />
+                                    {
+                                        touched.email && errors.email ?
+                                            <>
+                                                <Text style={{ fontSize: RFPercentage(1.3), fontFamily: Fonts.fontRegular, color: Colors.error, top: 3 }}>{errors.email}</Text>
+                                            </>
+                                            :
+                                            null
+                                    }
+                                </View>
+                                <View style={{ marginTop: RFPercentage(1) }}>
+                                    <InputField placeholder="Phone Number" onChangeText={handleChange('phone')}
+                                        onBlur={handleBlur('phone')}
+                                        value={values.phone}
+                                        customStyle={{
+                                            borderBottomColor: touched.phone && errors.phone ? Colors.error : Colors.inputFieldColor
+                                        }} />
+                                    {
+                                        touched.phone && errors.phone ?
+                                            <>
+                                                <Text style={{ fontSize: RFPercentage(1.3), fontFamily: Fonts.fontRegular, color: Colors.error, top: 3 }}>{errors.phone}</Text>
+                                            </>
+                                            :
+                                            null
+                                    }
+                                </View>
+                                <View style={{ marginTop: RFPercentage(1) }}>
+                                    <InputField placeholder="Password" onChangeText={handleChange('password')}
+                                        onBlur={handleBlur('password')}
+                                        value={values.password}
+                                        customStyle={{
+                                            borderBottomColor: touched.password && errors.password ? Colors.error : Colors.inputFieldColor
+                                        }} />
+                                    {
+                                        touched.password && errors.password ?
+                                            <>
+                                                <Text style={{ fontSize: RFPercentage(1.3), fontFamily: Fonts.fontRegular, color: Colors.error, top: 3 }}>{errors.password}</Text>
+                                            </>
+                                            :
+                                            null
+                                    }
+                                </View>
+                                <View style={{ marginTop: RFPercentage(1), }}>
+                                    <InputField placeholder="Confirm Password" onChangeText={handleChange('confirmPassword')}
+                                        onBlur={handleBlur('confirmPassword')}
+                                        value={values.confirmPassword}
+                                        customStyle={{
+                                            borderBottomColor: touched.confirmPassword && errors.confirmPassword ? Colors.error : Colors.inputFieldColor
+                                        }} />
+                                    {
+                                        touched.confirmPassword && errors.confirmPassword ?
+                                            <>
+                                                <Text style={{ fontSize: RFPercentage(1.3), fontFamily: Fonts.fontRegular, color: Colors.error, top: 3 }}>{errors.confirmPassword}</Text>
+                                            </>
+                                            :
+                                            null
+                                    }
+                                </View>
 
-                    
-                </View>
-                <View style={{ width: '100%', marginTop: 40 }}>
-                    <NextButton title={'Sign Up'} color={Colors.background} style={{ width: '45%' }} onPress={()=> console.log('sign up')} />
-                </View>
+
+                            </View>
+                            <View style={{ width: '100%', marginTop: RFPercentage(7) }}>
+                                <NextButton title={'Sign Up'} color={Colors.background} style={{ width: '45%' }} onPress={handleSubmit} loading={loading} />
+                            </View>
+
+                        </>
+                    )}
+
+
+
+
+
+                </Formik>
                 <View style={{ marginTop: RFPercentage(10), }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{ width: 26, height: 1, backgroundColor: Colors.inputFieldColor }}></View>
-                        <Text style={{ color: Colors.secondaryText, marginHorizontal: 8, bottom: 1,fontSize: RFPercentage(1.4), fontFamily: Fonts.fontRegular }}>or sign up with</Text>
+                        <Text style={{ color: Colors.secondaryText, marginHorizontal: 8, bottom: 1, fontSize: RFPercentage(1.4), fontFamily: Fonts.fontRegular }}>or sign up with</Text>
                         <View style={{ width: 26, height: 1, backgroundColor: Colors.inputFieldColor }}></View>
 
                     </View>
@@ -71,11 +224,11 @@ const SignUp:React.FC = () => {
                         <Image source={Icons.google} resizeMode='contain' style={{ width: RFPercentage(4), height: RFPercentage(4), left: 6 }} />
                     </TouchableOpacity>
                 </View>
-                <View style={{marginTop:RFPercentage(5)}}>
+                <View style={{ marginTop: RFPercentage(3) }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ color: Colors.secondaryText,fontSize: RFPercentage(1.4), fontFamily: Fonts.fontRegular }}>Already have an account?</Text>
-                        <TouchableOpacity onPress={()=> navigation.navigate('SignIn')}>
-                            <Text style={{ color: Colors.gradient1, fontSize: RFPercentage(1.4), fontFamily: Fonts.fontRegular, left:3 }}>Sign In</Text>
+                        <Text style={{ color: Colors.secondaryText, fontSize: RFPercentage(1.4), fontFamily: Fonts.fontRegular }}>Already have an account?</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
+                            <Text style={{ color: Colors.gradient1, fontSize: RFPercentage(1.4), fontFamily: Fonts.fontRegular, left: 3 }}>Sign In</Text>
                         </TouchableOpacity>
 
                     </View>
@@ -104,7 +257,7 @@ const styles = StyleSheet.create({
         color: Colors.primaryText,
         fontFamily: Fonts.fontBold,
         fontSize: RFPercentage(2.5),
-        marginTop: 40,
+        marginTop: RFPercentage(5),
     },
     radioContainer: {
         flexDirection: 'row',

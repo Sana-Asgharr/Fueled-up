@@ -7,6 +7,10 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 
 interface Props {
     placeholder:string,
+    onChangeText : (text : string) => void,
+    value : string,
+    handleBlur?: (event:any) => void;
+    customStyle? : object
 }
 
 const PasswordField:React.FC <Props> = (props:Props) => {
@@ -17,8 +21,8 @@ const PasswordField:React.FC <Props> = (props:Props) => {
     };
 
     return (
-        <View style={styles.container} >
-            <TextInput placeholder={props.placeholder} placeholderTextColor={Colors.secondaryText} style={{ color: Colors.primaryText, fontFamily: Fonts.fontRegular, top: 6 ,fontSize: RFPercentage(1.6),}} secureTextEntry={!visible} />
+         <View style={[styles.container, props.customStyle]} >
+            <TextInput placeholder={props.placeholder} placeholderTextColor={Colors.secondaryText} style={{ color: Colors.primaryText, fontFamily: Fonts.fontRegular, top: 6 ,fontSize: RFPercentage(1.6),}} secureTextEntry={!visible} value={props.value} onChangeText={props.onChangeText} onBlur={props.handleBlur} />
             <TouchableOpacity
                 onPress={togglePasswordVisibility}
                 style={{top:6, right: 15,}}

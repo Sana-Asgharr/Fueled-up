@@ -17,12 +17,19 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../routers/StackNavigator';
+import Toast from 'react-native-toast-message';
+import * as yup from 'yup';
+import { Formik } from 'formik';
 
 const { width, height } = Dimensions.get('window');
 
 const OTP:React.FC = () => {
-
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'OTP'>>()
+     let validationSchema = yup.object({
+            phone: yup
+                .string()
+                .required('Phone number is required'),
+        });
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={{ paddingHorizontal: width * 0.08, paddingTop: 40 }}>

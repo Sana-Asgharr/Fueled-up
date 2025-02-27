@@ -8,7 +8,8 @@ export const Colors:{[key: string] : string} = {
     heading : 'rgba(87, 83, 78, 1)',
     fieldColor :'rgba(100, 116, 139, 1)',
     brown : 'rgba(168, 162, 158, 1)',
-    profileField : 'rgba(243, 244, 246, 1)'
+    profileField : 'rgba(243, 244, 246, 1)',
+    error : 'rgba(248, 113, 113, 1)'
 
 }
 
