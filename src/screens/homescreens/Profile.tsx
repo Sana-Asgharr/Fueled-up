@@ -6,12 +6,14 @@ import ProfileField from '../../components/ProfileField'
 const { width, height } = Dimensions.get('window')
 import ToggleSwitch from 'toggle-switch-react-native';
 import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../routers/StackNavigator'
 
 const Profile:React.FC = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const [isPushEnabled, setIsPushEnabled] = useState<boolean>(false);
   
-  const handleToggle2 = isOn => {
+  const handleToggle2 = (isOn: boolean) => {
     setIsPushEnabled(isOn);
   };
 

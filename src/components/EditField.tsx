@@ -5,15 +5,25 @@ import { Fonts } from '../constants/Themes'
 import { RFPercentage } from "react-native-responsive-fontsize";
 import Feather from 'react-native-vector-icons/Feather';
 
-const EditField = (props) => {
+interface Props{
+    visible : boolean,
+    style?: object,
+    placeholder : string,
+    password? : boolean,
+    card? : boolean,
+    cardPic? : any
+}
 
-    const [visible, setVisible] = useState(props.visible);
+const EditField:React.FC <Props> = (props:Props) => {
+
+    const [visible, setVisible] = useState<boolean>(props.visible);
+
     const togglePasswordVisibility = () => {
         setVisible(!visible);
     };
     return (
         <View style={[styles.container,{...props.style}]} >
-            <TextInput placeholder={props.placeholder} placeholderTextColor={Colors.secondaryText} style={{ color: Colors.secondaryText, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.5), }} secureTextEntry={!visible} />
+            <TextInput placeholder={props.placeholder} placeholderTextColor={Colors.secondaryText} style={{ color: Colors.primaryText, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.5), }} secureTextEntry={!visible} />
             {
                 props.password && (
                     <>

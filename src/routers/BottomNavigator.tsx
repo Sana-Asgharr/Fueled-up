@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, Keyboard, BackHandler } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Orders from "../screens/homescreens/Orders";
 import Settings from "../screens/homescreens/Settings";
 import Home from "../screens/homescreens/Home";
@@ -64,7 +63,7 @@ const CustomTabBar:React.FC<BottomTabBarProps> = ({ state, descriptors, navigati
                         key={index}
                         onPress={() => navigation.navigate(route.name)}
                         style={[styles.tabButton, isFocused && styles.activeTab]}
-                    >
+                        >
                         {route.name === "HomeScreen" ? (
                             <View style={{ bottom: 24 }}>
                                 <Image source={isFocused ? Icons.home : Icons.homeInactive} style={{ width: 55, height: 55 }} resizeMode="contain" />
@@ -92,7 +91,7 @@ const CustomTabBar:React.FC<BottomTabBarProps> = ({ state, descriptors, navigati
 
 
                         }
-                        <Text style={{ color: isFocused ? "#ff9800" : "#777", fontSize: 11, top: 5, fontFamily: 'Poppins-Regular' }}>{route.name === "HomeScreen" ? null : label}</Text>
+                        <Text style={{ color: isFocused ? "#ff9800" : "#777", fontSize: 11, top: 5, fontFamily: 'Poppins-Regular' }}>{route.name === "HomeScreen" ? '' : label}</Text>
                     </TouchableOpacity>
                 );
             })}

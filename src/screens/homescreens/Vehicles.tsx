@@ -2,14 +2,13 @@ import { Dimensions, SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Ima
 import React, { useState } from 'react'
 import { Colors, Icons, Fonts, IMAGES } from '../../constants/Themes'
 import { RFPercentage } from 'react-native-responsive-fontsize'
-import ProfileField from '../../components/ProfileField'
 const { width, height } = Dimensions.get('window')
 import { useNavigation } from '@react-navigation/native'
-import Delivered from './orders/Delivered'
 import { BlurView } from "@react-native-community/blur";
 import SkipButton from '../../components/SkipButton'
 import NextButton from '../../components/NextButton'
-
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../routers/StackNavigator'
 
 interface Data {
   id : number;
@@ -33,7 +32,6 @@ const data: Data[] = [
   },
   {
     id: 3,
-    time: '24-04-2024 | 8:00 AM',
     vehicle: 'Audi A5',
     fuel: 'Petrol | 2023',
     quantity: '1 Full Tank | 20 US gal fuel'
@@ -41,9 +39,9 @@ const data: Data[] = [
 ]
 
 const Vehicles:React.FC = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const [modalVisible, setModalVisible] = useState<boolean>(false)
-  const [isVisible, setIsVisible] = useState<null>(null);
+  const [isVisible, setIsVisible] = useState< number | null>(null);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -79,7 +77,7 @@ const Vehicles:React.FC = () => {
           <View style={{ marginTop: 15 }}>
             <FlatList
               data={data}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => {
                 return (
                   <>
@@ -154,7 +152,7 @@ const Vehicles:React.FC = () => {
                 this card?</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
                 <SkipButton title={'Cancel'} color={Colors.secondaryText} style={{ height: 35 }} style2={{ height: 30.5 }} onPress={() => setModalVisible(false)} />
-                <NextButton title={'Delete'} color={Colors.background} style={{ height: 35 }} />
+                <NextButton title={'Delete'} color={Colors.background} style={{ height: 35 }} onPress={()=> console.log('delete')} />
 
               </View>
             </View>

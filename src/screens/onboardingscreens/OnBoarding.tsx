@@ -150,7 +150,7 @@ const OnBoarding: React.FC = () => {
 
         <View style={styles.buttonContainer}>
           <SkipButton title={'Skip'} color={Colors.secondaryText} onPress={skipPress} />
-          <NextButton title={step === 3 ? 'Get Started' : 'Next'} color={Colors.background} onPress={step === 4 ? navigation.navigate('SignIn') : nextPress} />
+          <NextButton title={step === 3 ? 'Get Started' : 'Next'} color={Colors.background} onPress={step === 4 ? ()=> navigation.navigate('SignIn') : nextPress} />
         </View>
 
       </View>

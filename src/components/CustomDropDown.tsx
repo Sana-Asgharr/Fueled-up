@@ -4,7 +4,18 @@ import { RFPercentage } from 'react-native-responsive-fontsize'
 import { Colors, Fonts, Icons } from '../constants/Themes'
 const { width, height } = Dimensions.get('window')
 
-const CustomDropDown = (props) => {
+interface Item {
+  id: number;
+  label: string;
+}
+
+interface Props {
+  data: Item[];
+  setValue: (item: Item) => void;
+  icon?: any; 
+}
+
+const CustomDropDown:React.FC <Props> = (props:Props) => {
   return (
     <View style={{
       width: width * 0.9, borderBottomRightRadius: 6, borderBottomLeftRadius: 6, backgroundColor: 'rgba(249, 250, 251, 1)', paddingVertical: 0, position: 'relative', borderWidth: 1, borderColor: 'rgba(241, 245, 249, 1)', paddingHorizontal: 15

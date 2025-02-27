@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { Colors, Fonts, Icons } from '../../../constants/Themes'
 import NextButton from '../../../components/NextButton'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import PlaceOrder from './PlaceOrder'
 import Entypo from 'react-native-vector-icons/Entypo'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 import { useNavigation } from '@react-navigation/native'
@@ -29,7 +28,7 @@ const method: Data[] = [
 
 interface Card {
     id : number,
-    name : string,
+    number : string,
     cardImg : any
 }
 
@@ -83,7 +82,7 @@ const PaymentMethod = () => {
                 <View style={{}}>
                     <FlatList
                         data={method}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => {
                             return (
                                 <TouchableOpacity onPress={() => setSelected(item.id)}>
@@ -111,7 +110,7 @@ const PaymentMethod = () => {
                             <View style={{}}>
                                 <FlatList
                                     data={card}
-                                    keyExtractor={(item) => item.id}
+                                    keyExtractor={(item) => item.id.toString()}
                                     renderItem={({ item }) => {
                                         return (
                                             <TouchableOpacity onPress={() => setSelected2(item.id)}>

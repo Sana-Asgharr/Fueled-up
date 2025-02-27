@@ -72,11 +72,10 @@ const FAQS:React.FC = () => {
                 <View style={{ marginTop: 10 }}>
                     <FlatList
                         data={data}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => {
                             return (
                                 <>
-
                                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between", borderBottomColor: Colors.inputFieldColor, borderBottomWidth: 1, paddingBottom: 8, marginTop: RFPercentage(5) }}>
                                         <Text style={{ color: Colors.secondaryText, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.7) }}>{item.q}</Text>
                                         <TouchableOpacity onPress={() => {

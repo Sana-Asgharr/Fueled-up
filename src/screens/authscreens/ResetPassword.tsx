@@ -19,7 +19,7 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../routers/StackNavigator';
 
-const ResetPassword = () => {
+const ResetPassword:React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'ResetPassword'>>()
 
     return (

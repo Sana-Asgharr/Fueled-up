@@ -2,7 +2,6 @@ import { SafeAreaView, StyleSheet, Text, View, Image, TouchableOpacity, Dimensio
 import React, { useState } from 'react'
 import { Colors, Fonts, Icons } from '../../../constants/Themes'
 import Entypo from 'react-native-vector-icons/Entypo'
-import AntDesign from 'react-native-vector-icons/AntDesign'
 import NextButton from '../../../components/NextButton'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 import { useNavigation } from '@react-navigation/native'
@@ -98,7 +97,7 @@ const AddVehicle:React.FC = () => {
                                         setDropDownVisible(true)
                                     }}
                                 >
-                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular }}>{value.label || 'Select'}</Text>
+                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular }}>{value?.label || 'Select'}</Text>
                                     <TouchableOpacity style={{}}
                                         onPress={() => {
                                             setDropDownVisible(!dropdownVisible)
@@ -134,7 +133,7 @@ const AddVehicle:React.FC = () => {
                                         setDropDownVisible2(true)
                                     }}
                                 >
-                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular }}>{value2.label || 'Year'}</Text>
+                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular }}>{value2?.label || 'Year'}</Text>
                                     <TouchableOpacity style={{}}
                                         onPress={() => {
                                             setDropDownVisible2(!dropdownVisible2)

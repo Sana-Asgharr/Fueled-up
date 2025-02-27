@@ -20,7 +20,7 @@ import { RootStackParamList } from '../../routers/StackNavigator';
 
 const { width, height } = Dimensions.get('window');
 
-const ChangePassword = () => {
+const ChangePassword:React.FC = () => {
    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'ChangePassword'>>()
    
     return (
@@ -50,7 +50,7 @@ const ChangePassword = () => {
 
                 </View>
                 <View style={{ width: '100%', marginTop: 50 }}>
-                    <NextButton title={'Save'} color={Colors.background} style={{ width: '45%' }} />
+                    <NextButton title={'Save'} color={Colors.background} style={{ width: '45%' }} onPress={()=> console.log('save')} />
                 </View>
 
 

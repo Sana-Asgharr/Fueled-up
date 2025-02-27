@@ -62,7 +62,8 @@ const EditProfile = () => {
                 </View>
 
                 <View style={{ marginTop: RFPercentage(30) }}>
-                    <NextButton title={'Edit'} style={{ width: '50%' }} color={Colors.background} />
+                    <NextButton title={'Edit'} style={{ width: '50%' }} color={Colors.background} onPress={()=> console.log('edit')
+                    } />
                 </View>
 
 

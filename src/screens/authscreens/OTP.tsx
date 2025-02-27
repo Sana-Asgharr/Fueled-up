@@ -20,7 +20,7 @@ import { RootStackParamList } from '../../routers/StackNavigator';
 
 const { width, height } = Dimensions.get('window');
 
-const OTP = () => {
+const OTP:React.FC = () => {
 
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'OTP'>>()
     return (

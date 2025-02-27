@@ -8,7 +8,7 @@ import {
     Image,
     TouchableOpacity,
 } from 'react-native';
-import RadioForm, { RadioButton, RadioButtonInput } from 'react-native-simple-radio-button';
+import { RadioButton, RadioButtonInput } from 'react-native-simple-radio-button';
 import { Colors } from '../../services/Colors';
 import InputField from '../../components/InputField';
 import PasswordField from '../../components/PasswordField';
@@ -21,7 +21,7 @@ import { RootStackParamList } from '../../routers/StackNavigator';
   
 const { width, height } = Dimensions.get('window');
 
-const SignIn = () => {
+const SignIn:React.FC = () => {
     const [selected, setSelected] = useState<boolean>(false); 
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'SignIn'>>()
 

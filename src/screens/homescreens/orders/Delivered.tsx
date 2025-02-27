@@ -45,7 +45,7 @@ const Delivered: React.FC = () => {
             <View style={{ marginTop: 15 }}>
                 <FlatList
                     data={data}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => {
                         return (
                             <>

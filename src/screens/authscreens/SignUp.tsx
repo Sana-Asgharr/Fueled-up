@@ -19,7 +19,7 @@ import { RootStackParamList } from '../../routers/StackNavigator';
 
 const { width, height } = Dimensions.get('window');
 
-const SignUp = () => {
+const SignUp:React.FC = () => {
    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList,'SignUp'>>()
    
     return (
@@ -53,7 +53,7 @@ const SignUp = () => {
                     
                 </View>
                 <View style={{ width: '100%', marginTop: 40 }}>
-                    <NextButton title={'Sign Up'} color={Colors.background} style={{ width: '45%' }} />
+                    <NextButton title={'Sign Up'} color={Colors.background} style={{ width: '45%' }} onPress={()=> console.log('sign up')} />
                 </View>
                 <View style={{ marginTop: RFPercentage(10), }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>

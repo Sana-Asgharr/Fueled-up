@@ -1,10 +1,14 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
-import { Colors } from '../services/Colors'
-import { Fonts } from '../constants/Themes'
 import { RFPercentage } from "react-native-responsive-fontsize";
 
-const OrderField = (props) => {
+interface Props{
+  text1: string,
+  textStyle?: object,
+  text2:string
+}
+
+const OrderField:React.FC<Props> = (props:Props) => {
   return (
     <View style={styles.container} >
         <Text style={{color:'rgba(120, 113, 108, 1)', fontSize:RFPercentage(1.5), fontFamily:'Poppins-Regular'}}>{props.text1}</Text>

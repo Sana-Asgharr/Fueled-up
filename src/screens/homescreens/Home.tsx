@@ -3,16 +3,16 @@ import React, { useState } from 'react'
 import { Colors, Fonts, Icons } from '../../constants/Themes'
 import SearchField from '../../components/SearchField'
 import NextButton from '../../components/NextButton'
-import OrderFuel from './home/OrderFuel'
-import Entypo from 'react-native-vector-icons/Entypo'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 import { useNavigation } from '@react-navigation/native'
-
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../routers/StackNavigator'
 
 const { width, height } = Dimensions.get('window')
 
 const Home: React.FC = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
+  
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>

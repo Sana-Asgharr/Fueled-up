@@ -50,7 +50,7 @@ const ChangePasswordScreen = () => {
                 </View>
 
                 <View style={{ marginTop: RFPercentage(40) }}>
-                    <NextButton title={'Save'} style={{ width: '50%' }} color={Colors.background} />
+                    <NextButton title={'Save'} style={{ width: '50%' }} color={Colors.background} onPress={()=>console.log('saved')} />
                 </View>
 
 

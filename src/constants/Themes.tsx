@@ -1,4 +1,4 @@
-export const Colors = {
+export const Colors:{[key: string] : string} = {
     background : 'rgba(255, 255, 255, 1)',
     primaryText : 'rgba(71, 85, 105, 1)',
     secondaryText : 'rgba(100, 116, 139, 1)',
@@ -12,7 +12,7 @@ export const Colors = {
 
 }
 
-export const Icons = {
+export const Icons : {[key : string] : any} = {
     facebook : require('../assets/images/facebook.png'),
     google : require('../assets/images/google.png'),
     home : require('../assets/images/homeTab.png'),
@@ -50,15 +50,11 @@ export const Icons = {
     logout :  require('../assets/images/log-out.png'),   
     clock :  require('../assets/images/clock.png'),    
     calender :  require('../assets/images/calendar-2.png'),   
-    car :  require('../assets/images/smart-car.png'),  
-
-
-  
- 
+    car :  require('../assets/images/smart-car.png'), 
   
 }
 
-export const IMAGES = {
+export const IMAGES:{[key : string] : any} = {
     onBoarding1 : require('../assets/images/onBoarding1.png'),
     onBoarding2 : require('../assets/images/onBoarding2.png'),
     onBoarding3 : require('../assets/images/onBoarding3.png'),
@@ -67,7 +63,7 @@ export const IMAGES = {
     profile : require('../assets/images/ProfilePicture.png')
 }
 
-export const Fonts = {
+export const Fonts:{[key : string] : string} = {
     fontRegular : 'Poppins-Regular',
     fontBold  :  'Poppins-Bold',
     fontMedium  : 'Poppins-Medium',

@@ -4,11 +4,12 @@ import { Colors, Icons, Fonts, IMAGES } from '../../constants/Themes'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 import ProfileField from '../../components/ProfileField'
 const { width, height } = Dimensions.get('window')
-import ToggleSwitch from 'toggle-switch-react-native';
 import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../routers/StackNavigator'
 
 const Settings:React.FC = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -41,7 +42,7 @@ const Settings:React.FC = () => {
           <ProfileField icon={Icons.privacy} text={'Privacy Policy'} onPress={()=>navigation.navigate('Privacy')} />
           <ProfileField icon={Icons.terms} text={'Term & Conditions'} onPress={()=> navigation.navigate('Terms')} />
           <ProfileField icon={Icons.faq} text={'FAQ’s'} onPress={()=> navigation.navigate('FAQS')} />
-          <ProfileField icon={Icons.logout} text={'Logout'}  color={'red'} />
+          <ProfileField icon={Icons.logout} text={'Logout'}  color={'red'} onPress={()=> console.log('log out')}/>
         </View>
 
       </View>

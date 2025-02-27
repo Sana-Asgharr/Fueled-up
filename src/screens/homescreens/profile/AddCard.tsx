@@ -65,7 +65,7 @@ const AddCard: React.FC = () => {
                 </View>
 
                 <View style={{ marginTop: RFPercentage(30) }}>
-                    <NextButton title={'Add'} style={{ width: '50%' }} color={Colors.background} />
+                    <NextButton title={'Add'} style={{ width: '50%' }} color={Colors.background} onPress={()=> console.log('added')} />
                 </View>
 
 

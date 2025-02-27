@@ -4,7 +4,11 @@ import { Colors } from '../services/Colors'
 import { Fonts, Icons } from '../constants/Themes'
 import { RFPercentage } from "react-native-responsive-fontsize";
 
-const SearchField = (props) => {
+interface Props{
+  placeholder: string,
+}
+
+const SearchField:React.FC<Props> = (props:Props) => {
   return (
     <View style={styles.container} >
       <TextInput placeholder={props.placeholder} placeholderTextColor={'rgba(148, 163, 184, 1)'} style={{color : Colors.secondaryText, fontFamily:Fonts.fontRegular, fontSize: RFPercentage(1.3),}} />

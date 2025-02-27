@@ -13,7 +13,15 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 
 const { width, height } = Dimensions.get('window');
 
-const SkipButton = (props) => {
+interface Props {
+    style? : object,
+    onPress : () => void,
+    style2? : object,
+    color? : string,
+    title : string
+}
+
+const SkipButton:React.FC<Props> = (props:Props) => {
     return (
         <LinearGradient 
             colors={[Colors.gradient1, Colors.gradient2]}

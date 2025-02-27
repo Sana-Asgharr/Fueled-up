@@ -2,8 +2,6 @@ import { Dimensions, SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Ima
 import React, { useState } from 'react'
 import { Colors, Icons, Fonts, IMAGES } from '../../../constants/Themes'
 import { RFPercentage } from 'react-native-responsive-fontsize'
-import NextButton from '../../../components/NextButton'
-import EditField from '../../../components/EditField'
 import Entypo from 'react-native-vector-icons/Entypo'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -64,7 +62,7 @@ const Privacy: React.FC = () => {
                 <View style={{ marginTop: 15 }}>
                     <FlatList
                         data={data}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => {
                             return (
                                 <>

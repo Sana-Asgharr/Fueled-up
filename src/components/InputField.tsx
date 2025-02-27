@@ -4,10 +4,14 @@ import { Colors } from '../services/Colors'
 import { Fonts } from '../constants/Themes'
 import { RFPercentage } from "react-native-responsive-fontsize";
 
-const InputField = (props) => {
+interface Props {
+  placeholder : string,
+}
+
+const InputField:React.FC <Props> = (props:Props) => {
   return (
     <View style={styles.container} >
-      <TextInput placeholder={props.placeholder} placeholderTextColor={Colors.secondaryText} style={{color : Colors.secondaryText, fontFamily:Fonts.fontRegular, top:14, fontSize: RFPercentage(1.6),}} />
+      <TextInput placeholder={props.placeholder} placeholderTextColor={Colors.secondaryText} style={{color : Colors.primaryText, fontFamily:Fonts.fontRegular, top:14, fontSize: RFPercentage(1.6),}} />
     </View>
   )
 }

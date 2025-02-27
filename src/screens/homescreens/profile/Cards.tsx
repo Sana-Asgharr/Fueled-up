@@ -163,8 +163,7 @@ const Cards:React.FC = () => {
                                 this card?</Text>
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
                                 <SkipButton title={'Cancel'} color={Colors.secondaryText} style={{ height: 35 }} style2={{ height: 30.5 }} onPress={() => setModalVisible(false)} />
-                                <NextButton title={'Delete'} color={Colors.background} style={{ height: 35 }} />
-
+                                <NextButton title={'Delete'} color={Colors.background} style={{ height: 35 }} onPress={()=> console.log('deleted')} />
                             </View>
                         </View>
 

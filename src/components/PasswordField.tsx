@@ -5,15 +5,20 @@ import Feather from 'react-native-vector-icons/Feather';
 import { Fonts } from '../constants/Themes';
 import { RFPercentage } from "react-native-responsive-fontsize";
 
-const PasswordField = (props) => {
-    const [visible, setVisible] = useState(false);
+interface Props {
+    placeholder:string,
+}
+
+const PasswordField:React.FC <Props> = (props:Props) => {
+    const [visible, setVisible] = useState<boolean>(false);
+
     const togglePasswordVisibility = () => {
         setVisible(!visible);
     };
 
     return (
         <View style={styles.container} >
-            <TextInput placeholder={props.placeholder} placeholderTextColor={Colors.secondaryText} style={{ color: Colors.secondaryText, fontFamily: Fonts.fontRegular, top: 6 ,fontSize: RFPercentage(1.6),}} secureTextEntry={!visible} />
+            <TextInput placeholder={props.placeholder} placeholderTextColor={Colors.secondaryText} style={{ color: Colors.primaryText, fontFamily: Fonts.fontRegular, top: 6 ,fontSize: RFPercentage(1.6),}} secureTextEntry={!visible} />
             <TouchableOpacity
                 onPress={togglePasswordVisibility}
                 style={{top:6, right: 15,}}

@@ -14,7 +14,15 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 
 const { width, height } = Dimensions.get('window');
 
-const NextButton = (props) => {
+interface Props {
+    onPress : ()=> void,
+    disabled? : boolean,
+    color? : string,
+    title : string,
+    style? : object
+}
+
+const NextButton:React.FC<Props> = (props:Props) => {
     return (
         <TouchableOpacity onPress={props.onPress} style={{flex:1}} disabled={props.disabled} >
             <LinearGradient colors={[Colors.gradient1, Colors.gradient2]} style={[styles.nextButton, {...props.style}]}>
