@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "454483361944",
+    "project_id": "fueled-up-c91cc",
+    "storage_bucket": "fueled-up-c91cc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454483361944:android:f2161a3d60e6977185d0ed",
+        "android_client_info": {
+          "package_name": "com.fueledup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "454483361944-cvj517gdbc73hkcelpdn2it3qifktosj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fueledup",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "454483361944-ejrpo23t8ai1mt5dn4d90e1s5uc6fjo8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzBAPvKVXVhwNCahYjFyN3fc3yrASN5Nk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "454483361944-ejrpo23t8ai1mt5dn4d90e1s5uc6fjo8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

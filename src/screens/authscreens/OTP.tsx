@@ -23,13 +23,20 @@ import { Formik } from 'formik';
 
 const { width, height } = Dimensions.get('window');
 
-const OTP:React.FC = () => {
+const OTP: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'OTP'>>()
-     let validationSchema = yup.object({
-            phone: yup
-                .string()
-                .required('Phone number is required'),
-        });
+    let validationSchema = yup.object({
+        otp: yup
+            .string()
+            .required('OTP is required'),
+    });
+
+    
+    const handleOtp = async (values) => {
+
+    }
+
+
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={{ paddingHorizontal: width * 0.08, paddingTop: 40 }}>
@@ -40,7 +47,7 @@ const OTP:React.FC = () => {
                     <Image
                         source={IMAGES.logo}
                         resizeMode="contain"
-                        style={{ width: 140, height: 90, alignSelf: 'center', right:8, }}
+                        style={{ width: 140, height: 90, alignSelf: 'center', right: 8, }}
                     />
                     <View></View>
                 </View>
@@ -48,15 +55,46 @@ const OTP:React.FC = () => {
             <View style={styles.container}>
                 <Text style={styles.welcomeText}>Reset Password?</Text>
 
-                <View style={{ width: '100%', marginTop: 30 }}>
-                    <InputField placeholder="Enter Sent OTP" />
+                <Formik
+                    initialValues={{
+                        otp: '',
+                    }}
+                    validationSchema={validationSchema}
+                    onSubmit={values => handleOtp(values)}>
+                    {({
+                        handleChange,
+                        handleBlur,
+                        handleSubmit,
+                        values,
+                        errors,
+                        touched,
+                    }) => (
+                        <>
 
-                </View>
-                <View style={{ width: '100%', marginTop: 50 }}>
-                    <NextButton title={'Verify'} color={Colors.background} style={{ width: '45%' }} onPress={() => navigation.navigate('ChangePassword')} />
-                </View>
+                            <View style={{ width: '100%', marginTop: 30 }}>
+                                <InputField placeholder="Enter Sent OTP" onChangeText={handleChange('otp')}
+                                    onBlur={handleBlur('otp')}
+                                    value={values.otp}
+                                    customStyle={{
+                                        borderBottomColor: touched.otp && errors.otp ? Colors.error : Colors.inputFieldColor
+                                    }}
+                                />
+                                {
+                                    touched.otp && errors.otp ?
+                                        <>
+                                            <Text style={{ fontSize: RFPercentage(1.3), fontFamily: Fonts.fontRegular, color: Colors.error, top: 3 }}>{errors.otp}</Text>
+                                        </>
+                                        :
+                                        null
+                                }
 
-
+                            </View>
+                            <View style={{ width: '100%', marginTop: 50 }}>
+                                <NextButton title={'Verify'} color={Colors.background} style={{ width: '45%' }} onPress={handleSubmit} />
+                            </View>
+                        </>
+                    )}
+                </Formik>
             </View>
         </SafeAreaView>
     );

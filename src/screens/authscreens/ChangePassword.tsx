@@ -17,12 +17,28 @@ import { useNavigation } from '@react-navigation/native';
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../routers/StackNavigator';
+import Toast from 'react-native-toast-message';
+import * as yup from 'yup';
+import { Formik } from 'formik';
 
 const { width, height } = Dimensions.get('window');
 
-const ChangePassword:React.FC = () => {
-   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'ChangePassword'>>()
-   
+const ChangePassword: React.FC = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'ChangePassword'>>()
+    let validationSchema = yup.object({
+        password: yup
+            .string()
+            .required('Password is required'),
+        confirmPassword: yup
+            .string()
+            .oneOf([yup.ref('password')], 'Passwords must match'),
+    });
+
+
+    const handleChangePassword = async () => {
+
+    }
+
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={{ paddingHorizontal: width * 0.08, paddingTop: 40 }}>
@@ -33,7 +49,7 @@ const ChangePassword:React.FC = () => {
                     <Image
                         source={IMAGES.logo}
                         resizeMode="contain"
-                        style={{ width: 140, height: 90, alignSelf: 'center', right:8 }}
+                        style={{ width: 140, height: 90, alignSelf: 'center', right: 8 }}
                     />
                     <View></View>
                 </View>
@@ -41,17 +57,64 @@ const ChangePassword:React.FC = () => {
             <View style={styles.container}>
                 <Text style={styles.welcomeText}>Reset Password?</Text>
 
-                <View style={{ width: '100%', marginTop: 30 }}>
-                    <InputField placeholder="Enter New Password" />
-                    <View style={{ marginTop: 14 }}>
-                        <InputField placeholder="Repeat New Password" />
+                <Formik
+                    initialValues={{
+                        password: '',
+                        confirmPassword : ''
 
-                    </View>
+                    }}
+                    validationSchema={validationSchema}
+                    onSubmit={values => handleOtp(values)}>
+                    {({
+                        handleChange,
+                        handleBlur,
+                        handleSubmit,
+                        values,
+                        errors,
+                        touched,
+                    }) => (
+                        <>
+                            <View style={{ width: '100%', marginTop: 30 }}>
+                                <InputField placeholder="Password" onChangeText={handleChange('password')}
+                                    onBlur={handleBlur('password')}
+                                    value={values.password}
+                                    customStyle={{
+                                        borderBottomColor: touched.password && errors.password ? Colors.error : Colors.inputFieldColor
+                                    }} />
+                                {
+                                    touched.password && errors.password ?
+                                        <>
+                                            <Text style={{ fontSize: RFPercentage(1.3), fontFamily: Fonts.fontRegular, color: Colors.error, top: 3 }}>{errors.password}</Text>
+                                        </>
+                                        :
+                                        null
+                                }
+                            </View>
+                            <View style={{ marginTop: RFPercentage(1), }}>
+                                <InputField placeholder="Confirm Password" onChangeText={handleChange('confirmPassword')}
+                                    onBlur={handleBlur('confirmPassword')}
+                                    value={values.confirmPassword}
+                                    customStyle={{
+                                        borderBottomColor: touched.confirmPassword && errors.confirmPassword ? Colors.error : Colors.inputFieldColor
+                                    }} />
+                                {
+                                    touched.confirmPassword && errors.confirmPassword ?
+                                        <>
+                                            <Text style={{ fontSize: RFPercentage(1.3), fontFamily: Fonts.fontRegular, color: Colors.error, top: 3 }}>{errors.confirmPassword}</Text>
+                                        </>
+                                        :
+                                        null
+                                }
 
-                </View>
-                <View style={{ width: '100%', marginTop: 50 }}>
-                    <NextButton title={'Save'} color={Colors.background} style={{ width: '45%' }} onPress={()=> console.log('save')} />
-                </View>
+                            </View>
+                            <View style={{ width: '100%', marginTop: 50 }}>
+                                <NextButton title={'Save'} color={Colors.background} style={{ width: '45%' }} onPress={handleSubmit} />
+                            </View>
+                        </>
+                    )}
+                </Formik>
+
+
 
 
             </View>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     SafeAreaView,
     StyleSheet,
@@ -13,64 +13,130 @@ import { RadioButton, RadioButtonInput } from 'react-native-simple-radio-button'
 import InputField from '../../components/InputField';
 import PasswordField from '../../components/PasswordField';
 import NextButton from '../../components/NextButton';
-import { Fonts, Icons, IMAGES,Colors } from '../../constants/Themes';
+import { Fonts, Icons, IMAGES, Colors } from '../../constants/Themes';
 import { useNavigation } from '@react-navigation/native';
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../routers/StackNavigator';
-import { getAuth, signInWithEmailAndPassword, } from "firebase/auth";
-import { auth, db } from '../../../firebaseConfig';
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { auth } from '../../../firebaseConfig';
 import Toast from 'react-native-toast-message';
 import * as yup from 'yup';
 import { Formik } from 'formik';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 const { width, height } = Dimensions.get('window');
+
+GoogleSignin.configure({
+    webClientId: '454483361944-ejrpo23t8ai1mt5dn4d90e1s5uc6fjo8.apps.googleusercontent.com',
+});
 
 const SignIn: React.FC = () => {
     const [selected, setSelected] = useState<boolean>(false);
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'SignIn'>>()
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [storedEmail, setStoredEmail] = useState<string>("");
+    const [storedPassword, setStoredPassword] = useState<string>("");
+
     let validationSchema = yup.object({
         email: yup.string().email('Invalid email').required('Email is required'),
-        password: yup
-            .string()
-            .required('Password is required'),
+        password: yup.string().required('Password is required'),
     });
 
+
+    useEffect(() => {
+        loadCredentials();
+    }, []);
+
+
+    const loadCredentials = async () => {
+        try {
+            const savedEmail = await AsyncStorage.getItem("email");
+            const savedPassword = await AsyncStorage.getItem("password");
+            if (savedEmail && savedPassword) {
+                setStoredEmail(savedEmail);
+                setStoredPassword(savedPassword);
+            }
+        } catch (error) {
+            console.error("Error loading credentials", error);
+        }
+    };
+
+
+    const setCredentials = async (values: any) => {
+        try {
+            await AsyncStorage.setItem("email", values.email);
+            await AsyncStorage.setItem("password", values.password);
+        } catch (error) {
+            console.error("Error loading credentials", error);
+        }
+    };
 
     const handleSignIn = async (values: any) => {
         if (values.email && values.password) {
             setLoading(true);
             try {
                 await signInWithEmailAndPassword(auth, values.email, values.password);
+                if (selected) {
+                    await setCredentials(values);
+                }
                 Toast.show({
                     type: 'success',
                     text1: 'Sign In',
-                    text2: 'Successfuly Signed In',
+                    text2: 'Successfully Signed In',
                     position: 'top',
-                    text1Style : {fontFamily:Fonts.fontBold},
-                    text2Style : {fontFamily:Fonts.fontRegular}     
-                })
-                navigation.navigate('Home')
-            }
-            catch (error: any) {
+                    text1Style: { fontFamily: Fonts.fontBold },
+                    text2Style: { fontFamily: Fonts.fontRegular }
+                });
+
+                navigation.navigate('Home');
+            } catch (error: any) {
                 Toast.show({
                     type: 'error',
                     text1: 'Sign In',
-                    text2: `Invalid Credentials`,
+                    text2: 'Invalid Credentials',
                     position: 'top',
-                    text1Style : {fontFamily:Fonts.fontBold},
-                    text2Style : {fontFamily:Fonts.fontRegular}
-                })
-            }
-            finally {
+                    text1Style: { fontFamily: Fonts.fontBold },
+                    text2Style: { fontFamily: Fonts.fontRegular }
+                });
+            } finally {
                 setLoading(false);
             }
-
         }
+    };
 
-    }
 
+    const onGoogleButtonPress = async () => {
+        try {
+            await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+            const signInResult = await GoogleSignin.signIn();
+            if (!signInResult.idToken) {
+                throw new Error('No ID token found');
+            }
+            const googleCredential = GoogleAuthProvider.credential(signInResult.idToken);
+            await signInWithCredential(auth, googleCredential);
+            Toast.show({
+                type: 'success',
+                text1: 'Sign In',
+                text2: 'Successfully Signed In with Google',
+                position: 'top',
+                text1Style: { fontFamily: Fonts.fontBold },
+                text2Style: { fontFamily: Fonts.fontRegular }
+            });
+            // navigation.navigate('Home');
+        } catch (error) {
+            console.error('Google Sign-In Error:', error);
+            Toast.show({
+                type: 'error',
+                text1: 'Google Sign In',
+                text2: 'Failed to Sign In with Google',
+                position: 'top',
+                text1Style: { fontFamily: Fonts.fontBold },
+                text2Style: { fontFamily: Fonts.fontRegular }
+            });
+        }
+    };
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -82,16 +148,17 @@ const SignIn: React.FC = () => {
                         style={{ width: 140, height: 90 }}
                     />
                 </View>
-
                 <Text style={styles.welcomeText}>Welcome Back!</Text>
 
                 <Formik
+                    enableReinitialize
                     initialValues={{
-                        email: '',
-                        password: '',
+                        email: storedEmail,
+                        password: storedPassword,
                     }}
                     validationSchema={validationSchema}
                     onSubmit={values => handleSignIn(values)}>
+
                     {({
                         handleChange,
                         handleBlur,
@@ -100,6 +167,7 @@ const SignIn: React.FC = () => {
                         errors,
                         touched,
                     }) => (
+
                         <>
                             <View style={{ width: '100%', marginTop: 40 }}>
                                 <InputField placeholder="Email" onChangeText={handleChange('email')}
@@ -110,10 +178,10 @@ const SignIn: React.FC = () => {
                                     }}
                                 />
                                 {
-                                    touched.email && errors.email ? 
-                                    <>
-                                        <Text style={{fontSize:RFPercentage(1.3), fontFamily:Fonts.fontRegular, color:Colors.error, top:3}}>Email is required</Text>
-                                    </>
+                                    touched.email && errors.email ?
+                                        <>
+                                            <Text style={{ fontSize: RFPercentage(1.3), fontFamily: Fonts.fontRegular, color: Colors.error, top: 3 }}>Email is required</Text>
+                                        </>
                                         :
                                         null
                                 }
@@ -128,13 +196,13 @@ const SignIn: React.FC = () => {
                                         }}
                                     />
                                     {
-                                    touched.password && errors.password ? 
-                                    <>
-                                        <Text style={{fontSize:RFPercentage(1.3), fontFamily:Fonts.fontRegular, color:Colors.error, top:3}}>Password is required</Text>
-                                    </>
-                                        :
-                                        null
-                                }
+                                        touched.password && errors.password ?
+                                            <>
+                                                <Text style={{ fontSize: RFPercentage(1.3), fontFamily: Fonts.fontRegular, color: Colors.error, top: 3 }}>Password is required</Text>
+                                            </>
+                                            :
+                                            null
+                                    }
                                 </View>
 
                                 <View style={styles.radioContainer}>
@@ -179,7 +247,7 @@ const SignIn: React.FC = () => {
                     <TouchableOpacity>
                         <Image source={Icons.facebook} resizeMode='contain' style={{ width: RFPercentage(4), height: RFPercentage(4), right: 6, }} />
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => onGoogleButtonPress().then(() => navigation.navigate('Home'))}>
                         <Image source={Icons.google} resizeMode='contain' style={{ width: RFPercentage(4), height: RFPercentage(4), left: 6 }} />
                     </TouchableOpacity>
                 </View>
