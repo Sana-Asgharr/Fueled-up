@@ -16,12 +16,14 @@ import { useNavigation } from '@react-navigation/native';
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../routers/StackNavigator';
-import { getAuth, createUserWithEmailAndPassword, } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithCredential, FacebookAuthProvider} from "firebase/auth";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { auth, db } from '../../../firebaseConfig';
 import Toast from 'react-native-toast-message';
 import * as yup from 'yup';
 import { Formik } from 'formik';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { AccessToken, LoginManager } from 'react-native-fbsdk-next';
 
 const { width, height } = Dimensions.get('window');
 
@@ -63,6 +65,7 @@ const SignUp: React.FC = () => {
                     text1Style: { fontFamily: Fonts.fontBold },
                     text2Style: { fontFamily: Fonts.fontRegular }
                 });
+                navigation.navigate('Home')
 
             } catch (error: any) {
                 // console.log(error)
@@ -79,6 +82,63 @@ const SignUp: React.FC = () => {
             }
         }
     };
+
+
+    const onGoogleButtonPress = async () => {
+        try {
+            await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+            const signInResult = await GoogleSignin.signIn();
+            console.log(signInResult)
+
+            if (!signInResult?.data?.user || !signInResult?.data?.idToken) {  
+                throw new Error('No ID token found');
+            }
+
+            const googleCredential = GoogleAuthProvider.credential(signInResult?.data?.idToken);
+            // console.log(googleCredential)
+            await signInWithCredential(auth, googleCredential);
+
+            Toast.show({
+                type: 'success',
+                text1: 'Sign In',
+                text2: 'Successfully Signed In with Google',
+                position: 'top',
+                text1Style: { fontFamily: Fonts.fontBold },
+                text2Style: { fontFamily: Fonts.fontRegular }
+            });
+            navigation.navigate('Home')
+
+        } catch (error) {
+            console.error('Google Sign-In Error:', error);
+            Toast.show({
+                type: 'error',
+                text1: 'Google Sign In',
+                text2: 'Failed to Sign In with Google',
+                position: 'top',
+                text1Style: { fontFamily: Fonts.fontBold },
+                text2Style: { fontFamily: Fonts.fontRegular }
+            });
+        }
+    };
+
+
+    const onFacebookButtonPress = async () => {
+        try {
+            const result = await LoginManager.logInWithPermissions(["public_profile", "email"]);
+            if (result.isCancelled) {
+                console.log("Login cancelled");
+                return;
+            }
+            const data = await AccessToken.getCurrentAccessToken();
+            if (!data) {
+                console.log("Something went wrong with obtaining access token");
+                return;
+            }
+            console.log("Facebook Access Token:", data.accessToken);
+        } catch (error) {
+            console.error("Facebook Login Error:", error);
+        }
+    }
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -217,10 +277,10 @@ const SignUp: React.FC = () => {
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: RFPercentage(4) }}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>onFacebookButtonPress().then(() => navigation.navigate('Home'))}>
                         <Image source={Icons.facebook} resizeMode='contain' style={{ width: RFPercentage(4), height: RFPercentage(4), right: 6, }} />
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={onGoogleButtonPress}>
                         <Image source={Icons.google} resizeMode='contain' style={{ width: RFPercentage(4), height: RFPercentage(4), left: 6 }} />
                     </TouchableOpacity>
                 </View>

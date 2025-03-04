@@ -56,7 +56,7 @@ const OnBoarding: React.FC = () => {
     if (step < 3) {
       setStep(step + 1);
     } else {
-      navigation.navigate('SignIn');
+      navigation.navigate('Chart');
     }
   };
 

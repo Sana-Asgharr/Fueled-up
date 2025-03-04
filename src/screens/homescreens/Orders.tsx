@@ -1,9 +1,12 @@
 import { Dimensions, SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image, FlatList } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Colors, Icons, Fonts, IMAGES } from '../../constants/Themes'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 const { width, height } = Dimensions.get('window')
 import Delivered from './orders/Delivered'
+import { collection, getDocs, query, limit } from "firebase/firestore"
+import { auth, db } from '../../../firebaseConfig'
+import moment from "moment";
 
 interface Data {
   id : number;
@@ -40,6 +43,29 @@ const data: Data[] = [
 const Orders:React.FC = () => {
   const [active, setActive] = useState<boolean>(true)
   const [deliver, setDeliver] = useState<boolean>(false)
+
+  const [order, setOrders] = useState([]);
+      // console.log(order?.[0]?.date)
+
+      useEffect(() => {
+          const fetchOrders = async () => {
+              try {
+                  const querySnapshot = await getDocs(collection(db, "orders"));
+                  console.log(querySnapshot)
+                  const orderList = querySnapshot.docs.map(doc => ({
+                      id: doc.id,
+                      ...doc.data()
+                  }));
+                  setOrders(orderList);
+              } catch (error) {
+                  console.log("Error fetching orders:", error);
+              } finally {
+                  // setLoading(false);
+              }
+          };
+  
+          fetchOrders();
+      }, []);
 
   const toggle1 = () => {
     setActive(false)
@@ -86,9 +112,12 @@ const Orders:React.FC = () => {
             <>
               <View style={{ marginTop: 15 }}>
                 <FlatList
-                  data={data}
+                  data={order}
                   keyExtractor={(item) => item.id.toString()}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{paddingBottom:RFPercentage(10)}}
                   renderItem={({ item }) => {
+                    const formattedDate = moment.unix(item.date).format("DD-MM-YYYY | h:mm A")
                     return (
                       <>
                         <View style={{ width: '100%', borderWidth: 1, borderColor: 'rgba(249, 250, 251, 1)', borderRadius: 6, marginVertical: 10 }}
@@ -106,7 +135,7 @@ const Orders:React.FC = () => {
 
                               </View>
                               <View>
-                                <Text style={{ color: Colors.fieldColor, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.3), top: 1, }}>{item.time}</Text>
+                                <Text style={{ color: Colors.fieldColor, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.3), top: 1, }}>{formattedDate}</Text>
                               </View>
                             </View>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 6 }}>

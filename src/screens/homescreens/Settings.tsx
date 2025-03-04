@@ -24,14 +24,16 @@ const Settings: React.FC = () => {
     try {
       await AsyncStorage.removeItem('email');
       await AsyncStorage.removeItem('password');
+      await AsyncStorage.removeItem('google');
+      await AsyncStorage.removeItem('facebook');
       await signOut(auth);
+      navigation.navigate('SignIn');
       Toast.show({
         type: 'success',
         text1: 'Log Out',
         text2: 'Logged out successfully',
         position: 'top',
       });
-      navigation.navigate('SignIn');
     } catch (error) {
       console.log('Logout Error:', error);
     }

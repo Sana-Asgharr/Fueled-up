@@ -9,10 +9,11 @@ import { useNavigation } from '@react-navigation/native'
 const { width, height } = Dimensions.get('window')
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../routers/StackNavigator'
+import Toast from 'react-native-toast-message'
 
 interface Data {
-    id : number,
-    name : string
+    id: number,
+    name: string
 }
 
 const method: Data[] = [
@@ -27,9 +28,9 @@ const method: Data[] = [
 ]
 
 interface Card {
-    id : number,
-    number : string,
-    cardImg : any
+    id: number,
+    number: string,
+    cardImg: any
 }
 
 const card: Card[] = [
@@ -48,14 +49,36 @@ const card: Card[] = [
 const PaymentMethod = () => {
     const [selected, setSelected] = useState<number | null>(null)
     const [selected2, setSelected2] = useState<number | null>(null)
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList,'PaymentMethod'>>()
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'PaymentMethod'>>()
+    const [loading, setLoading] = useState<boolean>(false)
+
+    const handleNext = () => {
+        if (selected) {
+            setLoading(true);
+            setTimeout(() => {
+                navigation.navigate('PlaceOrder');
+                setLoading(false);
+            }, 2000);
+        }
+        else {
+            Toast.show({
+                type: 'info',
+                text1: 'Payment Method',
+                text2: 'Please select payment method',
+                position: 'top',
+                text1Style: { fontFamily: Fonts.fontBold },
+                text2Style: { fontFamily: Fonts.fontRegular }
+            });
+        }
+
+    };
 
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between" }}>
                     <View>
-                        <TouchableOpacity style={{ bottom: 5 }} onPress={() =>navigation.navigate('FuelOrder')
+                        <TouchableOpacity style={{ bottom: 5 }} onPress={() => navigation.navigate('FuelOrder')
                         }>
                             <Entypo name='chevron-thin-left' color={Colors.secondaryText} size={RFPercentage(1.9)} />
                         </TouchableOpacity>
@@ -146,7 +169,7 @@ const PaymentMethod = () => {
                 }
 
                 <View style={{ marginTop: height * 0.8, position: 'absolute', width: '100%', alignSelf: 'center' }}>
-                    <NextButton title={selected === 1 ? 'Next' : 'Checkout'} style={{ width: '50%' }} color={Colors.background} disabled={selected ? false : true} onPress={() => navigation.navigate('PlaceOrder')} />
+                    <NextButton title={selected === 1 ? 'Next' : 'Checkout'} style={{ width: '50%' }} color={Colors.background} onPress={handleNext} />
                 </View>
 
 

@@ -8,6 +8,7 @@ import {
     Image,
     TouchableOpacity,
     Alert,
+    ActivityIndicator
 } from 'react-native';
 import { RadioButton, RadioButtonInput } from 'react-native-simple-radio-button';
 import InputField from '../../components/InputField';
@@ -18,13 +19,14 @@ import { useNavigation } from '@react-navigation/native';
 import { RFPercentage } from "react-native-responsive-fontsize";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../routers/StackNavigator';
-import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithCredential, FacebookAuthProvider } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { auth } from '../../../firebaseConfig';
 import Toast from 'react-native-toast-message';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { AccessToken, LoginManager } from 'react-native-fbsdk-next';
 
 const { width, height } = Dimensions.get('window');
 
@@ -38,6 +40,10 @@ const SignIn: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [storedEmail, setStoredEmail] = useState<string>("");
     const [storedPassword, setStoredPassword] = useState<string>("");
+    const [loading2, setLoading2] = useState<boolean>(false);
+    const [googleToken, setGoogleToken] = useState<string | undefined>("")
+    const [facebookToken, setFaceBookToken] = useState<string | undefined>("")
+
 
     let validationSchema = yup.object({
         email: yup.string().email('Invalid email').required('Email is required'),
@@ -64,12 +70,14 @@ const SignIn: React.FC = () => {
     };
 
 
-    const setCredentials = async (values: any) => {
+    const setCredentials = async (values: any, googleToken?: string, facebookToken?: string) => {
         try {
             await AsyncStorage.setItem("email", values.email);
             await AsyncStorage.setItem("password", values.password);
+            if (googleToken) await AsyncStorage.setItem("google", googleToken);
+            if (facebookToken) await AsyncStorage.setItem("facebook", facebookToken);
         } catch (error) {
-            console.error("Error loading credentials", error);
+            console.error("Error saving credentials", error);
         }
     };
 
@@ -109,12 +117,18 @@ const SignIn: React.FC = () => {
 
     const onGoogleButtonPress = async () => {
         try {
+            setLoading2(true)
             await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
             const signInResult = await GoogleSignin.signIn();
-            if (!signInResult.idToken) {
+            // console.log(signInResult)
+
+            if (!signInResult?.data?.user || !signInResult?.data?.idToken) {
                 throw new Error('No ID token found');
             }
-            const googleCredential = GoogleAuthProvider.credential(signInResult.idToken);
+
+            const googleCredential = GoogleAuthProvider.credential(signInResult?.data?.idToken);
+            setGoogleToken(googleCredential?.idToken)
+            await setCredentials({ email: "", password: "" }, googleCredential.idToken, undefined);
             await signInWithCredential(auth, googleCredential);
             Toast.show({
                 type: 'success',
@@ -124,7 +138,8 @@ const SignIn: React.FC = () => {
                 text1Style: { fontFamily: Fonts.fontBold },
                 text2Style: { fontFamily: Fonts.fontRegular }
             });
-            // navigation.navigate('Home');
+            navigation.navigate('Home')
+
         } catch (error) {
             console.error('Google Sign-In Error:', error);
             Toast.show({
@@ -135,8 +150,35 @@ const SignIn: React.FC = () => {
                 text1Style: { fontFamily: Fonts.fontBold },
                 text2Style: { fontFamily: Fonts.fontRegular }
             });
+        } finally {
+            setLoading2(false)
         }
     };
+
+
+    const onFacebookButtonPress = async () => {
+        try {
+            setLoading2(true)
+            const result = await LoginManager.logInWithPermissions(["public_profile", "email"]);
+            if (result.isCancelled) {
+                console.log("Login cancelled");
+                return;
+            }
+            const data = await AccessToken.getCurrentAccessToken();
+            if (!data) {
+                console.log("Something went wrong with obtaining access token");
+                return;
+            }
+            // console.log("Facebook Access Token:", data.accessToken);
+            setFaceBookToken(data?.accessToken)
+            await setCredentials({ email: "", password: "" }, undefined, data.accessToken);
+
+        } catch (error) {
+            console.error("Facebook Login Error:", error);
+        } finally {
+            setLoading2(false)
+        }
+    }
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -244,12 +286,22 @@ const SignIn: React.FC = () => {
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 30 }}>
-                    <TouchableOpacity>
-                        <Image source={Icons.facebook} resizeMode='contain' style={{ width: RFPercentage(4), height: RFPercentage(4), right: 6, }} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => onGoogleButtonPress().then(() => navigation.navigate('Home'))}>
-                        <Image source={Icons.google} resizeMode='contain' style={{ width: RFPercentage(4), height: RFPercentage(4), left: 6 }} />
-                    </TouchableOpacity>
+                    {
+                        loading2 ?
+                            <>
+                                <ActivityIndicator size={'small'} color={'grey'} />
+                            </>
+                            :
+                            <>
+                                <TouchableOpacity onPress={() => onFacebookButtonPress().then(() => navigation.navigate('Home'))}>
+                                    <Image source={Icons.facebook} resizeMode='contain' style={{ width: RFPercentage(4), height: RFPercentage(4), right: 6, }} />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={onGoogleButtonPress}>
+                                    <Image source={Icons.google} resizeMode='contain' style={{ width: RFPercentage(4), height: RFPercentage(4), left: 6 }} />
+                                </TouchableOpacity>
+                            </>
+                    }
+
                 </View>
                 <View style={{ marginTop: 65 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>

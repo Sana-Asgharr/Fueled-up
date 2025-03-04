@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, Text, View, Image, TouchableOpacity, Dimensions, FlatList, ScrollView } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View, Image, TouchableOpacity, Dimensions, FlatList, ScrollView, TextInput } from 'react-native'
 import React, { useState } from 'react'
 import { Colors, Fonts, Icons } from '../../../constants/Themes'
 import Entypo from 'react-native-vector-icons/Entypo'
@@ -10,8 +10,12 @@ import DatePicker from 'react-native-date-picker'
 import CustomDropDown from '../../../components/CustomDropDown'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../routers/StackNavigator'
-
+import Ionicons from 'react-native-vector-icons/Ionicons'
 const { width, height } = Dimensions.get('window')
+import { auth, db } from '../../../../firebaseConfig';
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+import moment from 'moment';
+
 
 interface DropDown {
     id : number,
@@ -23,13 +27,16 @@ const OrderFuel: React.FC = () => {
     const [value, setValue] = useState<DropDown | null>(null);
     const [value2, setValue2] =useState<DropDown | null>(null);
     const [value3, setValue3] = useState<DropDown | null>(null);
+    const[phone, setPhone] = useState <string>("")
+    const[address, setAddress] = useState <string>("")
     const [dropdownVisible, setDropDownVisible] = useState<boolean>(false)
     const [dropdownVisible2, setDropDownVisible2] = useState<boolean>(false)
     const [dropdownVisible3, setDropDownVisible3] = useState<boolean>(false)
     const [vehicle, setVehicle] = useState<boolean>(false)
     const [date, setDate] = useState<Date>(new Date())
     const [open, setOpen] = useState<boolean>(false)
-    //    console.log(date)
+    const formattedDate = moment(date).format("YYYY-MM-DD HH:mm:ss");
+    const [loading, setLoading]  = useState<boolean>(false)
   
     const category: DropDown[] = [
         {
@@ -62,6 +69,48 @@ const OrderFuel: React.FC = () => {
         },
 
     ]
+
+    const vehicles: DropDown[] = [
+        {
+            id: 1,
+            label: 'Civic'
+        },
+        {
+            id: 2,
+            label: 'Alto'
+        },
+        {
+            id: 3,
+            label: 'Tesla'
+        },
+
+    ]
+
+
+
+    const orderFuel = async ()=>{
+        navigation.navigate('PaymentMethod')
+        try {
+            setLoading(true)
+            await addDoc(collection(db, "orders") ,{
+                category : value?.label,
+                phone : phone,
+                address : address,
+                fuel : value2?.label,
+                vehicle : value3?.label,
+                date : date
+            })
+            // navigation.navigate('PaymentMethod')
+        }
+        catch(e) {
+         console.log(e)
+
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -127,9 +176,23 @@ const OrderFuel: React.FC = () => {
                                 <Text style={styles.fieldTitle}>Phone Number</Text>
                                 <View style={styles.field}
                                 >
-                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular }}>+1-501-808-1234</Text>
+                                    <TextInput style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular }}  placeholder='+1-501-808-1234' value={phone} onChangeText={t=>setPhone(t)} />
                                     <View style={{}}>
                                         <AntDesign name='phone' color={Colors.fieldColor} size={RFPercentage(2)}
+                                        />
+                                    </View>
+
+                                </View>
+
+                            </View>
+
+                            <View style={{ marginTop: 20 }}>
+                                <Text style={styles.fieldTitle}>Address</Text>
+                                <View style={styles.field}
+                                >
+                                    <TextInput style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular }}  placeholder='Bahawalpur' value={address} onChangeText={t=> setAddress(t)}/>
+                                    <View style={{}}>
+                                        <Ionicons name='location-sharp' color={Colors.fieldColor} size={RFPercentage(2)}
                                         />
                                     </View>
 
@@ -174,7 +237,7 @@ const OrderFuel: React.FC = () => {
                                 <Text style={styles.fieldTitle}>Date and Time<Text style={{ color: 'rgba(156, 163, 175, 1)', fontSize: 10 }}> (Optional)</Text></Text>
                                 <View style={styles.field}
                                 >
-                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.4), fontFamily: Fonts.fontRegular }}> {`Default date and time`} </Text>
+                                    <Text style={{ color: Colors.fieldColor, fontSize: RFPercentage(1.4), fontFamily: Fonts.fontRegular }}> {formattedDate} </Text>
                                     <TouchableOpacity onPress={() => setOpen(true)}>
                                         <AntDesign name='calendar' color={Colors.fieldColor} size={RFPercentage(2)}
                                         />
@@ -242,7 +305,7 @@ const OrderFuel: React.FC = () => {
                                 {
                                     dropdownVisible3 && (
                                         <>
-                                            <CustomDropDown data={category} setValue={(item) => {
+                                            <CustomDropDown data={vehicles} setValue={(item) => {
                                                 setValue3(item);
                                                 setDropDownVisible3(false)
                                             }} />
@@ -253,8 +316,8 @@ const OrderFuel: React.FC = () => {
 
                             </View>
                         </View>
-                        <View style={{ marginTop: 40 }}>
-                            <NextButton title={'Next'} style={{ width: '50%' }} color={Colors.background} onPress={() => navigation.navigate('PaymentMethod')} />
+                        <View style={{ marginTop: 30 }}>
+                            <NextButton title={'Next'} style={{ width: '50%' }} color={Colors.background} onPress={orderFuel} loading={loading} />
                         </View>
                     </View>
                 </ScrollView>
@@ -274,7 +337,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: width * 0.04,
-        paddingTop: height * 0.05
+        paddingTop: height * 0.02
     },
     fieldTitle: {
         color: Colors.heading,

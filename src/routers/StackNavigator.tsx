@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { DarkTheme, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import SplashOne from '../screens/splashscreens/SplashOne';
@@ -23,7 +23,9 @@ import FAQS from '../screens/homescreens/settings/FAQ';
 import Terms from '../screens/homescreens/settings/Terms';
 import Privacy from '../screens/homescreens/settings/Privacy';
 import AddVehicle from '../screens/homescreens/vehicles/AddVehicle';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import messaging from '@react-native-firebase/messaging';
+import Chart from '../screens/chart/Chart';
 
 export type RootStackParamList = {
     SplashOne: undefined;
@@ -46,20 +48,76 @@ export type RootStackParamList = {
     Terms: undefined;
     Privacy: undefined;
     AddVehicle: undefined;
+    Chart : undefined
 };
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const StackNavigator:React.FC = () => {
+const StackNavigator: React.FC = () => {
+
+    const [email, setEmail] = useState<string | null>(null);
+    const [password, setPassword] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [google, setGoogle] = useState<string | null>(null);
+    const [facebook, setFaceBook] = useState<string | null>(null);
+
+    async function requestUserPermission() {
+        const authStatus = await messaging().requestPermission();
+        const enabled =
+            authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+            authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+        if (enabled) {
+            console.log('FCM Permission Granted');
+        }
+    }
+
+    const getToken = async () => {
+        try {
+            const token = await messaging().getToken();
+            console.log('FCM Token:', token);
+            await AsyncStorage.setItem('fcmToken', token);
+        } catch (error) {
+            console.error('Error getting FCM Token:', error);
+        }
+    };
+
+    useEffect(() => {
+        const fetchCredentials = async () => {
+            try {
+                const storedEmail = await AsyncStorage.getItem('email');
+                const storedPassword = await AsyncStorage.getItem('password');
+                const storedGoogle = await AsyncStorage.getItem('google');
+                const storedFacebook = await AsyncStorage.getItem('facebook');
+
+                setFaceBook(storedFacebook);
+                setGoogle(storedGoogle);
+                setEmail(storedEmail);
+                setPassword(storedPassword);
+                if (storedEmail && storedPassword || storedGoogle || storedFacebook) {
+                    await requestUserPermission();
+                    await getToken();
+                }
+            } catch (error) {
+                console.error('Error fetching credentials:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCredentials();
+    }, []);
+
+    if (loading) return null;
+
+
     return (
         <SafeAreaProvider>
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{
                     headerShown: false
-                    
                 }}
-                initialRouteName='SplashOne'
+                    initialRouteName={(email && password) || facebook || google ? 'Home' : 'SplashOne'}
                 >
                     <Stack.Screen name='SplashOne' component={SplashOne} />
                     <Stack.Screen name='OnBoarding' component={OnBoarding} />
@@ -81,6 +139,7 @@ const StackNavigator:React.FC = () => {
                     <Stack.Screen name='Terms' component={Terms} />
                     <Stack.Screen name='Privacy' component={Privacy} />
                     <Stack.Screen name='AddVehicle' component={AddVehicle} />
+                    <Stack.Screen name='Chart' component={Chart} />
 
                 </Stack.Navigator>
             </NavigationContainer>
