@@ -10,9 +10,14 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../routers/StackNavigator'
 import { collection, getDocs, query, limit } from "firebase/firestore"
 import { auth, db } from '../../../../firebaseConfig'
-import moment from 'moment'
+// import moment from 'moment'
+// import axios from "axios";
+import messaging from "@react-native-firebase/messaging";
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 const { width, height } = Dimensions.get('window')
+
 
 type Order = {
     category: string;
@@ -27,9 +32,8 @@ type Order = {
 const PlaceOrder: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'PlaceOrder'>>()
     const [order, setOrders] = useState([]);
-    // console.log(order[0])
+    const [token, setToken] = useState<string | null>(null)
     const fetchedData = order?.[0]
-    // console.log(fetchedData)
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -50,6 +54,54 @@ const PlaceOrder: React.FC = () => {
 
         fetchOrders();
     }, []);
+
+
+    // useEffect(() => {
+    //     const fetchToken = async () => {
+    //         try {
+    //             const storedToken = await AsyncStorage.getItem('fcmToken');
+    //             setToken(storedToken)
+    //         } catch (error) {
+    //             console.error('Error fetching credentials:', error);
+    //         }
+    //     };
+    //     fetchToken();
+    // }, []);
+
+
+    // const sendNotification = async () => {
+    //     const deviceToken = token;
+    //     const notificationData = {
+    //         to: deviceToken,
+    //         notification: {
+    //             title: "Order Placed",
+    //             body: "Your order has been successfully placed!",
+    //             sound: "default",
+    //         },
+    //         data: {
+    //             orderId: "12345",
+    //         },
+    //     };
+
+    //     try {
+    //         await axios.post("https://fcm.googleapis.com/fcm/send", notificationData, {
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 Authorization: "key=",
+    //             },
+    //         });
+    //         console.log("Notification sent!");
+    //     } catch (error) {
+    //         console.log("Error sending notification:", error);
+    //     }
+    // };
+
+    const handlePlaceOrder = async () => {
+        // await sendNotification();
+        navigation.navigate("OrderCompleted");
+    };
+
+
 
 
     return (
@@ -97,7 +149,7 @@ const PlaceOrder: React.FC = () => {
                     </View>
                 </View>
                 <View style={{ marginTop: 50 }}>
-                    <NextButton title={'Place Order'} style={{ width: '50%' }} color={Colors.background} onPress={() => navigation.navigate('OrderCompleted')} />
+                    <NextButton title={'Place Order'} style={{ width: '50%' }} color={Colors.background} onPress={handlePlaceOrder} />
                 </View>
 
             </View>

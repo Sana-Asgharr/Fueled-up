@@ -25,7 +25,8 @@ import Privacy from '../screens/homescreens/settings/Privacy';
 import AddVehicle from '../screens/homescreens/vehicles/AddVehicle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
-import Chart from '../screens/chart/Chart';
+import VitalsDetails from '../screens/chart/VitalsDetails';
+import BarChartScreen from '../screens/chart/BarChart';
 
 export type RootStackParamList = {
     SplashOne: undefined;
@@ -48,7 +49,8 @@ export type RootStackParamList = {
     Terms: undefined;
     Privacy: undefined;
     AddVehicle: undefined;
-    Chart : undefined
+    VitalsDetails : undefined;
+    BarChartScreen : undefined
 };
 
 
@@ -139,7 +141,8 @@ const StackNavigator: React.FC = () => {
                     <Stack.Screen name='Terms' component={Terms} />
                     <Stack.Screen name='Privacy' component={Privacy} />
                     <Stack.Screen name='AddVehicle' component={AddVehicle} />
-                    <Stack.Screen name='Chart' component={Chart} />
+                    <Stack.Screen name='VitalsDetails' component={VitalsDetails} />
+                    <Stack.Screen name='BarChartScreen' component={BarChartScreen} />
 
                 </Stack.Navigator>
             </NavigationContainer>
