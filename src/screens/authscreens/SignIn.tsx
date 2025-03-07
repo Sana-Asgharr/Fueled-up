@@ -21,12 +21,15 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../routers/StackNavigator';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithCredential, FacebookAuthProvider } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { auth } from '../../../firebaseConfig';
+import { auth, db } from '../../../firebaseConfig';
 import Toast from 'react-native-toast-message';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { AccessToken, LoginManager } from 'react-native-fbsdk-next';
+import messaging from '@react-native-firebase/messaging';
+import { doc, updateDoc, getDoc, setDoc } from "firebase/firestore";
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -85,10 +88,41 @@ const SignIn: React.FC = () => {
         if (values.email && values.password) {
             setLoading(true);
             try {
-                await signInWithEmailAndPassword(auth, values.email, values.password);
+                const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+                const user = userCredential.user;
+    
+                console.log("Signed in User:", user.uid);  // Debugging UID
+    
+                // Get the FCM token
+                const fcmToken = await messaging().getToken();
+                console.log("FCM Token:", fcmToken);
+    
+                // Reference to the user's Firestore document
+                const userDocRef = doc(db, "Users", user.uid);
+                const userDoc = await getDoc(userDocRef);
+    
+                console.log("User document exists:", userDoc.exists());
+    
+                if (!userDoc.exists()) {
+                    console.warn("Firestore document does NOT exist for UID:", user.uid);
+    
+                    await setDoc(userDocRef, {
+                        name: values.name || "Unknown",
+                        email: values.email,
+                        phone: values.phone || "",
+                        fcmToken: fcmToken
+                    });
+    
+                    console.log("Created new Firestore user document.");
+                } else {
+                    console.log("Updating FCM Token...");
+                    await updateDoc(userDocRef, { fcmToken: fcmToken });
+                }
+    
                 if (selected) {
                     await setCredentials(values);
                 }
+    
                 Toast.show({
                     type: 'success',
                     text1: 'Sign In',
@@ -97,9 +131,17 @@ const SignIn: React.FC = () => {
                     text1Style: { fontFamily: Fonts.fontBold },
                     text2Style: { fontFamily: Fonts.fontRegular }
                 });
-
+    
                 navigation.navigate('Home');
+    
+                // Listen for token refresh
+                messaging().onTokenRefresh(async (newToken) => {
+                    console.log("FCM Token refreshed:", newToken);
+                    await updateDoc(userDocRef, { fcmToken: newToken });
+                });
+    
             } catch (error: any) {
+                console.error("Sign-in error:", error);
                 Toast.show({
                     type: 'error',
                     text1: 'Sign In',
@@ -113,7 +155,6 @@ const SignIn: React.FC = () => {
             }
         }
     };
-
 
     const onGoogleButtonPress = async () => {
         try {

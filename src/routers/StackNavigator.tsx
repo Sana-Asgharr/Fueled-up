@@ -64,25 +64,6 @@ const StackNavigator: React.FC = () => {
     const [google, setGoogle] = useState<string | null>(null);
     const [facebook, setFaceBook] = useState<string | null>(null);
 
-    async function requestUserPermission() {
-        const authStatus = await messaging().requestPermission();
-        const enabled =
-            authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-            authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-        if (enabled) {
-            console.log('FCM Permission Granted');
-        }
-    }
-
-    const getToken = async () => {
-        try {
-            const token = await messaging().getToken();
-            console.log('FCM Token:', token);
-            await AsyncStorage.setItem('fcmToken', token);
-        } catch (error) {
-            console.error('Error getting FCM Token:', error);
-        }
-    };
 
     useEffect(() => {
         const fetchCredentials = async () => {
@@ -96,10 +77,6 @@ const StackNavigator: React.FC = () => {
                 setGoogle(storedGoogle);
                 setEmail(storedEmail);
                 setPassword(storedPassword);
-                if (storedEmail && storedPassword || storedGoogle || storedFacebook) {
-                    await requestUserPermission();
-                    await getToken();
-                }
             } catch (error) {
                 console.error('Error fetching credentials:', error);
             } finally {

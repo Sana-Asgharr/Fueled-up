@@ -17,7 +17,7 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../routers/StackNavigator';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithCredential, FacebookAuthProvider} from "firebase/auth";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, setDoc, doc } from "firebase/firestore";
 import { auth, db } from '../../../firebaseConfig';
 import Toast from 'react-native-toast-message';
 import * as yup from 'yup';
@@ -47,41 +47,66 @@ const SignUp: React.FC = () => {
     });
 
     const handleSignUp = async (values: any) => {
-        // console.log(values)
-        if (values.name && values.email && values.phone && values.password && values.confirmPassword) {
-            setLoading(true);
-            try {
-                await createUserWithEmailAndPassword(auth, values.email, values.password);
-                await addDoc(collection(db, "Users"), {
-                    name: values.name,
-                    email: values.email,
-                    phone: values.phone,
-                });
-                Toast.show({
-                    type: 'success',
-                    text1: 'Sign Up',
-                    text2: 'User registered successfully',
-                    position: 'top',
-                    text1Style: { fontFamily: Fonts.fontBold },
-                    text2Style: { fontFamily: Fonts.fontRegular }
-                });
-                navigation.navigate('Home')
-
-            } catch (error: any) {
-                // console.log(error)
-                Toast.show({
-                    type: 'error',
-                    text1: 'Sign Up',
-                    text2: error.code === 'auth/email-already-in-use' ? 'Email already exists' : `${error.code}`,
-                    position: 'top',
-                    text1Style: { fontFamily: Fonts.fontBold },
-                    text2Style: { fontFamily: Fonts.fontRegular }
-                });
-            } finally {
-                setLoading(false);
-            }
+        if (!values.name || !values.email || !values.phone || !values.password || !values.confirmPassword) {
+            Toast.show({
+                type: 'error',
+                text1: 'Sign Up',
+                text2: 'All fields are required',
+                position: 'top',
+                text1Style: { fontFamily: Fonts.fontBold },
+                text2Style: { fontFamily: Fonts.fontRegular }
+            });
+            return;
+        }
+    
+        if (values.password !== values.confirmPassword) {
+            Toast.show({
+                type: 'error',
+                text1: 'Sign Up',
+                text2: 'Passwords do not match',
+                position: 'top',
+                text1Style: { fontFamily: Fonts.fontBold },
+                text2Style: { fontFamily: Fonts.fontRegular }
+            });
+            return;
+        }
+    
+        setLoading(true);
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+            const user = userCredential.user;
+    
+            await setDoc(doc(db, "Users", user.uid), {
+                name: values.name,
+                email: values.email,
+                phone: values.phone,
+                uid: user.uid,  // Store UID in Firestore
+            });
+    
+            Toast.show({
+                type: 'success',
+                text1: 'Sign Up',
+                text2: 'User registered successfully',
+                position: 'top',
+                text1Style: { fontFamily: Fonts.fontBold },
+                text2Style: { fontFamily: Fonts.fontRegular }
+            });
+    
+            navigation.navigate('Home');
+        } catch (error: any) {
+            Toast.show({
+                type: 'error',
+                text1: 'Sign Up',
+                text2: error.code === 'auth/email-already-in-use' ? 'Email already exists' : `${error.message}`,
+                position: 'top',
+                text1Style: { fontFamily: Fonts.fontBold },
+                text2Style: { fontFamily: Fonts.fontRegular }
+            });
+        } finally {
+            setLoading(false);
         }
     };
+    
 
 
     const onGoogleButtonPress = async () => {

@@ -10,11 +10,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../routers/StackNavigator'
 import { collection, getDocs, query, limit } from "firebase/firestore"
 import { auth, db } from '../../../../firebaseConfig'
-// import moment from 'moment'
-// import axios from "axios";
-import messaging from "@react-native-firebase/messaging";
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import { doc, updateDoc, getDoc, setDoc } from "firebase/firestore";
 
 const { width, height } = Dimensions.get('window')
 
@@ -35,6 +32,8 @@ const PlaceOrder: React.FC = () => {
     const [token, setToken] = useState<string | null>(null)
     const fetchedData = order?.[0]
 
+    console.log(token)
+    
     useEffect(() => {
         const fetchOrders = async () => {
             try {
@@ -56,59 +55,55 @@ const PlaceOrder: React.FC = () => {
     }, []);
 
 
-    // useEffect(() => {
-    //     const fetchToken = async () => {
-    //         try {
-    //             const storedToken = await AsyncStorage.getItem('fcmToken');
-    //             setToken(storedToken)
-    //         } catch (error) {
-    //             console.error('Error fetching credentials:', error);
-    //         }
-    //     };
-    //     fetchToken();
-    // }, []);
+    const fetchFCMToken = async () => {
+        const user = auth.currentUser;
+        if (user) {
+            const userDocRef = doc(db, "Users", user.uid);
+            const userDocSnap = await getDoc(userDocRef);
+    
+            if (userDocSnap.exists()) {
+                const data = userDocSnap.data();
+                console.log("Fetched FCM Token:", data.fcmToken);
+                setToken(data.fcmToken)
 
-
-    // const sendNotification = async () => {
-    //     const deviceToken = token;
-    //     const notificationData = {
-    //         to: deviceToken,
-    //         notification: {
-    //             title: "Order Placed",
-    //             body: "Your order has been successfully placed!",
-    //             sound: "default",
-    //         },
-    //         data: {
-    //             orderId: "12345",
-    //         },
-    //     };
-
-    //     try {
-    //         await axios.post("https://fcm.googleapis.com/fcm/send", notificationData, {
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //                 Authorization: "key=",
-    //             },
-    //         });
-    //         console.log("Notification sent!");
-    //     } catch (error) {
-    //         console.log("Error sending notification:", error);
-    //     }
-    // };
-
-    const handlePlaceOrder = async () => {
-        // await sendNotification();
-        navigation.navigate("OrderCompleted");
+            } else {
+                console.warn("User document does NOT exist.");
+            }
+        }
     };
 
 
+    useEffect(() => {
+        fetchFCMToken()
+    }, []);
 
+
+    const sendPushNotification = async () => {
+        try {
+            const response = await fetch('http://10.0.2.2:5000/send-notification', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    fcmToken: token,
+                    title: "Fuel Order",
+                    body: "Your order has been placed!",
+                }),
+            });
+            const result = await response.json();
+            console.log(result);
+        } catch (error) {
+            console.error("Error sending notification:", error);
+        }
+    };
+
+    const handlePlaceOrder = async () => {
+        await sendPushNotification();
+        navigation.navigate("OrderCompleted");
+    };
 
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
-
-
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between" }}>
                     <View>
                         <TouchableOpacity style={{ bottom: 5 }} onPress={() => navigation.goBack()}>
