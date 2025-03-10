@@ -89,7 +89,6 @@ const OrderFuel: React.FC = () => {
 
 
     const orderFuel = async ()=>{
-        navigation.navigate('PaymentMethod')
         try {
             setLoading(true)
             await addDoc(collection(db, "orders") ,{
@@ -100,7 +99,8 @@ const OrderFuel: React.FC = () => {
                 vehicle : value3?.label,
                 date : date
             })
-            // navigation.navigate('PaymentMethod')
+            console.log('order addeed ')
+            navigation.navigate('PaymentMethod')
         }
         catch(e) {
          console.log(e)

@@ -73,9 +73,10 @@ const SignIn: React.FC = () => {
     };
 
 
-    const setCredentials = async (values: any, googleToken?: string, facebookToken?: string) => {
+    const setCredentials = async (values: any, googleToken?: string, facebookToken?: string, id?: any) => {
         try {
             await AsyncStorage.setItem("email", values.email);
+            await AsyncStorage.setItem("uid", id);
             await AsyncStorage.setItem("password", values.password);
             if (googleToken) await AsyncStorage.setItem("google", googleToken);
             if (facebookToken) await AsyncStorage.setItem("facebook", facebookToken);
@@ -90,37 +91,29 @@ const SignIn: React.FC = () => {
             try {
                 const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
                 const user = userCredential.user;
+                console.log("Signed in User UID:", user.uid);  
     
-                console.log("Signed in User:", user.uid);  // Debugging UID
-    
-                // Get the FCM token
                 const fcmToken = await messaging().getToken();
                 console.log("FCM Token:", fcmToken);
     
-                // Reference to the user's Firestore document
                 const userDocRef = doc(db, "Users", user.uid);
                 const userDoc = await getDoc(userDocRef);
     
-                console.log("User document exists:", userDoc.exists());
-    
                 if (!userDoc.exists()) {
-                    console.warn("Firestore document does NOT exist for UID:", user.uid);
-    
                     await setDoc(userDocRef, {
                         name: values.name || "Unknown",
                         email: values.email,
                         phone: values.phone || "",
                         fcmToken: fcmToken
                     });
-    
                     console.log("Created new Firestore user document.");
                 } else {
-                    console.log("Updating FCM Token...");
                     await updateDoc(userDocRef, { fcmToken: fcmToken });
                 }
     
+                // Store credentials including UID
                 if (selected) {
-                    await setCredentials(values);
+                    await setCredentials(values, undefined, undefined, user.uid);
                 }
     
                 Toast.show({
@@ -134,11 +127,12 @@ const SignIn: React.FC = () => {
     
                 navigation.navigate('Home');
     
-                // Listen for token refresh
                 messaging().onTokenRefresh(async (newToken) => {
                     console.log("FCM Token refreshed:", newToken);
                     await updateDoc(userDocRef, { fcmToken: newToken });
                 });
+    
+                return user.uid; 
     
             } catch (error: any) {
                 console.error("Sign-in error:", error);
@@ -150,11 +144,14 @@ const SignIn: React.FC = () => {
                     text1Style: { fontFamily: Fonts.fontBold },
                     text2Style: { fontFamily: Fonts.fontRegular }
                 });
+    
+                return null; 
             } finally {
                 setLoading(false);
             }
         }
     };
+    
 
     const onGoogleButtonPress = async () => {
         try {

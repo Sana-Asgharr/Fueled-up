@@ -12,7 +12,17 @@ const { width, height } = Dimensions.get('window')
 
 const Home: React.FC = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
-  
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const handelNext = () => {
+    setLoading(true);
+    setTimeout(() => {
+      navigation.navigate('FuelOrder');
+      setLoading(false);
+    }, 1000);
+  }
+
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -52,7 +62,7 @@ const Home: React.FC = () => {
         <View>
           <Image source={Icons.mapImage} resizeMode='contain' style={{ width: RFPercentage(49), height: RFPercentage(49), alignSelf: 'center' }} />
         </View>
-        <NextButton title={'Order Fuel'} style={{ width: '48%', marginTop: RFPercentage(5) }} color={Colors.background} onPress={() => navigation.navigate('FuelOrder')} />
+        <NextButton title={'Order Fuel'} style={{ width: '48%', marginTop: RFPercentage(5) }} color={Colors.background} onPress={handelNext} loading={loading} />
 
       </View>
     </SafeAreaView>

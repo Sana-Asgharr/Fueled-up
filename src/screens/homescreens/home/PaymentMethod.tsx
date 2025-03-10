@@ -169,7 +169,7 @@ const PaymentMethod = () => {
                 }
 
                 <View style={{ marginTop: height * 0.8, position: 'absolute', width: '100%', alignSelf: 'center' }}>
-                    <NextButton title={selected === 1 ? 'Next' : 'Checkout'} style={{ width: '50%' }} color={Colors.background} onPress={handleNext} />
+                    <NextButton title={selected === 1 ? 'Next' : 'Checkout'} style={{ width: '50%' }} color={Colors.background} onPress={handleNext} loading={loading} />
                 </View>
 
 

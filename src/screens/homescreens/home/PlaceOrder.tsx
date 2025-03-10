@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, Image, Dimensions, SafeAreaView, TouchableOpacity } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import { StyleSheet, Text, View, Image, Dimensions, SafeAreaView, TouchableOpacity , Platform} from 'react-native'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Colors, Fonts, Icons } from '../../../constants/Themes'
 import OrderField from '../../../components/OrderedFiled'
 import NextButton from '../../../components/NextButton'
@@ -12,8 +12,10 @@ import { collection, getDocs, query, limit } from "firebase/firestore"
 import { auth, db } from '../../../../firebaseConfig'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { doc, updateDoc, getDoc, setDoc } from "firebase/firestore";
-
+import { onAuthStateChanged } from "firebase/auth";
+import { useFocusEffect } from '@react-navigation/native'
 const { width, height } = Dimensions.get('window')
+import moment from "moment";
 
 
 type Order = {
@@ -26,24 +28,44 @@ type Order = {
     id: string
 };
 
+
+const SERVER_URL = Platform.OS === 'android' 
+  ? 'http://10.0.2.2:5000' 
+  : 'http://192.168.100.30:5000';
+
 const PlaceOrder: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'PlaceOrder'>>()
     const [order, setOrders] = useState([]);
     const [token, setToken] = useState<string | null>(null)
-    const fetchedData = order?.[0]
+    const fetchedData = order
+    const [loading, setLoading] = useState(false);
+    const [id, setId] = useState(null)
 
-    console.log(token)
+    // console.log('order................', order)
+
+    useEffect(() => {
+        const fetchUID = async () => {
+            try {
+                const storedID = await AsyncStorage.getItem('uid'); 
+                setId(storedID); 
+            } catch (error) {
+                console.error("Error retrieving UID:", error);
+            }
+        };
     
+        fetchUID();
+    }, []);
+
     useEffect(() => {
         const fetchOrders = async () => {
             try {
                 const querySnapshot = await getDocs(collection(db, "orders"));
-                console.log(querySnapshot)
                 const orderList = querySnapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data()
                 }));
-                setOrders(orderList);
+                console.log(orderList?.[0])
+                setOrders(orderList?.[0]);
             } catch (error) {
                 console.log("Error fetching orders:", error);
             } finally {
@@ -55,32 +77,31 @@ const PlaceOrder: React.FC = () => {
     }, []);
 
 
-    const fetchFCMToken = async () => {
-        const user = auth.currentUser;
-        if (user) {
-            const userDocRef = doc(db, "Users", user.uid);
+
+
+    const fetchFCMToken = async (id) => {
+        if (id) {
+            const userDocRef = doc(db, "Users", id);
             const userDocSnap = await getDoc(userDocRef);
-    
             if (userDocSnap.exists()) {
                 const data = userDocSnap.data();
                 console.log("Fetched FCM Token:", data.fcmToken);
                 setToken(data.fcmToken)
-
             } else {
                 console.warn("User document does NOT exist.");
             }
         }
     };
 
-
-    useEffect(() => {
-        fetchFCMToken()
-    }, []);
-
+    useFocusEffect(
+        useCallback(() => {
+            fetchFCMToken(id);
+        }, [id])
+    );
 
     const sendPushNotification = async () => {
         try {
-            const response = await fetch('http://10.0.2.2:5000/send-notification', {
+            const response = await fetch(`${SERVER_URL}/send-notification`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -97,8 +118,15 @@ const PlaceOrder: React.FC = () => {
     };
 
     const handlePlaceOrder = async () => {
-        await sendPushNotification();
-        navigation.navigate("OrderCompleted");
+        setLoading(true);
+        try {
+            await sendPushNotification();
+            navigation.navigate("OrderCompleted");
+        } catch (error) {
+            console.error("Error placing order:", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -133,7 +161,7 @@ const PlaceOrder: React.FC = () => {
                     <OrderField text1={'Card Selected'} text2={'VISA *1 2 3 4'} />
                     <OrderField text1={'Fuel Quantity'} text2={fetchedData?.fuel} />
                     <OrderField text1={'Vehicle Selected'} text2={fetchedData?.vehicle} />
-                    <OrderField text1={'Delivery Time And Date'} text2={'8/12/2024'} />
+                    <OrderField text1={'Delivery Time And Date'} text2={`${moment.unix(fetchedData?.date?.seconds).format("DD/MM/YYYY")}`} />
                     <OrderField text1={'Sub Total'} text2={'100$'} textStyle={{ fontFamily: Fonts.fontBold }} />
                     <OrderField text1={'Service Fee'} text2={'30$'} textStyle={{ fontFamily: Fonts.fontBold }} />
                     <OrderField text1={'Tax Fee'} text2={'20$'} textStyle={{ fontFamily: Fonts.fontBold }} />
@@ -144,7 +172,7 @@ const PlaceOrder: React.FC = () => {
                     </View>
                 </View>
                 <View style={{ marginTop: 50 }}>
-                    <NextButton title={'Place Order'} style={{ width: '50%' }} color={Colors.background} onPress={handlePlaceOrder} />
+                    <NextButton title={'Place Order'} style={{ width: '50%' }} color={Colors.background} onPress={handlePlaceOrder} loading={loading} />
                 </View>
 
             </View>

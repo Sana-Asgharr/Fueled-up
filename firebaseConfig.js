@@ -2,15 +2,16 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "@firebase/firestore";
+import { FIREBASE_API_KEY, FIREBASE_AUTH_DOMAIN, FIREBASE_PROJECT_ID, FIREBASE_STORAGE_BUCKET, FIREBASE_MESSAGING_SENDER_ID, FIREBASE_APP_ID, FIREBASE_MEASUREMENT_ID } from "@env";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyB2ewXfIi5TXVxd88tistYjnxxBH8lUJbg",
-    authDomain: "fueled-up-c91cc.firebaseapp.com",
-    projectId: "fueled-up-c91cc",
-    storageBucket: "fueled-up-c91cc.firebasestorage.app",
-    messagingSenderId: "454483361944",
-    appId: "1:454483361944:web:d4c333f99209998385d0ed",
-    measurementId: "G-CZ4BSRN4XN"
+    apiKey: FIREBASE_API_KEY,
+    authDomain: FIREBASE_AUTH_DOMAIN,
+    projectId: FIREBASE_PROJECT_ID,
+    storageBucket: FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+    appId: FIREBASE_APP_ID,
+    measurementId: FIREBASE_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);

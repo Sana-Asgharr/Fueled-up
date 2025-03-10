@@ -1,34 +1,19 @@
 import React, { useEffect } from 'react';
 import { View, Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
-import PushNotification from 'react-native-push-notification';
+import notifee from '@notifee/react-native';
 import Toast from 'react-native-toast-message';
 import StackNavigator from './src/routers/StackNavigator';
 
 const App: React.FC = () => {
-  
-  useEffect(() => {
-    if (Platform.OS === 'android') {
-      PushNotification.createChannel(
-        {
-          channelId: 'default-channel-id',
-          channelName: 'Default Channel',
-          channelDescription: 'Used for general notifications',
-          playSound: true,
-          soundName: 'default',
-          importance: 4, 
-          vibrate: true,
-        },
-        (created) => console.log(`Default notification channel created: ${created}`)
-      );
-    }
 
+  useEffect(() => {
     const requestPermission = async () => {
       const authStatus = await messaging().requestPermission();
       const enabled =
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-      
+
       if (enabled) {
         console.log('Notification permission granted.');
       } else {
@@ -39,23 +24,43 @@ const App: React.FC = () => {
     requestPermission();
 
     const unsubscribeOnMessage = messaging().onMessage(async remoteMessage => {
-      console.log('Foreground Notification:', remoteMessage);
-
-      PushNotification.localNotification({
-        channelId: 'default-channel-id', 
-        title: remoteMessage.notification?.title || 'New Notification',
-        message: remoteMessage.notification?.body || 'You have a new message!',
-        playSound: true,
-        soundName: 'default',
-      });
+      console.log('Foreground Notification:', remoteMessage)
+      onDisplayNotification(remoteMessage)
     });
 
     messaging().setBackgroundMessageHandler(async remoteMessage => {
       console.log('Background Notification:', remoteMessage);
     });
-
     return unsubscribeOnMessage;
   }, []);
+
+  const onDisplayNotification = async (remoteMessage) => {
+    console.log('remoteMessage..........', remoteMessage);
+  
+    await notifee.requestPermission();
+  
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+    });
+  
+    const { title, body } = remoteMessage.notification || {};
+  
+    await notifee.displayNotification({
+      title: title || 'No Title',
+      body: body || 'No Body',
+      android: {
+        channelId,
+        smallIcon: 'ic_launcher', 
+        pressAction: {
+          id: 'default',
+        },
+      },
+    });
+  };
+  
+
+
 
   return (
     <View style={{ flex: 1 }}>

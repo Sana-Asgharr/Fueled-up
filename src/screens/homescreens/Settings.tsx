@@ -26,6 +26,7 @@ const Settings: React.FC = () => {
       await AsyncStorage.removeItem('password');
       await AsyncStorage.removeItem('google');
       await AsyncStorage.removeItem('facebook');
+      await AsyncStorage.removeItem('uid');
       await signOut(auth);
       navigation.navigate('SignIn');
       Toast.show({
