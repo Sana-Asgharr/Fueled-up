@@ -29,9 +29,11 @@ type Order = {
 };
 
 
-const SERVER_URL = Platform.OS === 'android' 
-  ? 'http://10.0.2.2:5000' 
-  : 'http://192.168.100.30:5000';
+const SERVER_URL = 
+// Platform.OS === 'android' 
+//   ? 'http://10.0.2.2:5000' 
+//   : 
+  'http://192.168.100.30:5000';
 
 const PlaceOrder: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'PlaceOrder'>>()

@@ -27,6 +27,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import VitalsDetails from '../screens/chart/VitalsDetails';
 import BarChartScreen from '../screens/chart/BarChart';
+import { navigationRef } from '../../index'
 
 export type RootStackParamList = {
     SplashOne: undefined;
@@ -92,7 +93,7 @@ const StackNavigator: React.FC = () => {
 
     return (
         <SafeAreaProvider>
-            <NavigationContainer>
+            <NavigationContainer ref={navigationRef}>
                 <Stack.Navigator screenOptions={{
                     headerShown: false
                 }}
