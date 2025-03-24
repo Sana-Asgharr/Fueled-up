@@ -38,15 +38,15 @@ const Profile:React.FC = () => {
 
         </View>
 
-        <View style={{ alignSelf: 'center', marginTop: RFPercentage(6) }}>
+        <View style={{ alignSelf: 'center', marginTop: RFPercentage(4.5) }}>
           <View style={{ width: RFPercentage(16), height: RFPercentage(16), borderRadius: RFPercentage(30), alignItems: 'center', justifyContent: 'center' }}>
             <Image source={IMAGES.profile} resizeMode='contain' style={{ width: RFPercentage(15), height: RFPercentage(15) }} borderRadius={RFPercentage(16)} />
-            <View style={{ bottom: RFPercentage(4.5), left: RFPercentage(4) }}>
+            {/* <View style={{ bottom: RFPercentage(4.5), left: RFPercentage(4) }}>
               <TouchableOpacity>
                 <Image source={Icons.edit} resizeMode='contain' style={{ width: RFPercentage(3.5), height: RFPercentage(3.5) }} />
               </TouchableOpacity>
 
-            </View>
+            </View> */}
           </View>
         </View>
         <View style={{ marginTop: RFPercentage(2) }}>

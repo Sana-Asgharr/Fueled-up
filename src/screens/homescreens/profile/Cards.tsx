@@ -40,6 +40,17 @@ const Cards:React.FC = () => {
     const [modalVisible, setModalVisible] = useState<boolean>(false)
     const [isVisible, setIsVisible] = useState<number | null>(null);
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList,'Cards'>>()
+    const [loading, setLoading] = useState(false)
+
+
+    const handelNext = () => {
+        setLoading(true);
+        setTimeout(() => {
+          navigation.navigate('AddCard');
+          setLoading(false);
+        }, 1000);
+      }
+
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -143,7 +154,7 @@ const Cards:React.FC = () => {
                 </View>
 
                 <View style={{ marginTop: RFPercentage(40) }}>
-                    <NextButton title={'Add Cards'} style={{ width: '50%' }} color={Colors.background} onPress={() => navigation.navigate('AddCard')} />
+                    <NextButton title={'Add Cards'} style={{ width: '50%' }} color={Colors.background} onPress={handelNext} loading={loading} />
                 </View>
 
 

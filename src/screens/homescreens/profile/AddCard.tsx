@@ -13,6 +13,20 @@ const { width, height } = Dimensions.get('window')
 
 const AddCard: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList,'AddCard'>>()
+
+     const [loading, setLoading] = useState(false)
+    
+    
+        const handelNext = () => {
+            setLoading(true);
+            setTimeout(() => {
+              navigation.navigate('Home');
+              setLoading(false);
+            }, 1000);
+          }
+    
+
+
     
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -65,7 +79,7 @@ const AddCard: React.FC = () => {
                 </View>
 
                 <View style={{ marginTop: RFPercentage(30) }}>
-                    <NextButton title={'Add'} style={{ width: '50%' }} color={Colors.background} onPress={()=> console.log('added')} />
+                    <NextButton title={'Add'} style={{ width: '50%' }} color={Colors.background} onPress={handelNext} loading={loading} />
                 </View>
 
 

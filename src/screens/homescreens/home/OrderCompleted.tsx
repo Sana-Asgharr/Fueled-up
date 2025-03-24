@@ -16,7 +16,7 @@ const OrderCompleted = () => {
                 <AntDesign name='checkcircleo' color={Colors.background} size={120} />
                 <Text style={{ color: Colors.background, fontFamily: Fonts.fontBold, fontSize: RFPercentage(2.2), marginTop: RFPercentage(4) }}>Order Placed Successfully!</Text>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=> navigation.navigate('Home')}>
                 <View style={{ width: RFPercentage(18), height: RFPercentage(5), backgroundColor: Colors.background, borderRadius: 30, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', bottom: 50 }}>
                     <Text style={{ color: 'rgba(255, 143, 4, 1)', fontFamily: Fonts.fontBold }}>Shop More</Text>
 

@@ -14,19 +14,29 @@ import { RootStackParamList } from '../../../routers/StackNavigator'
 const { width, height } = Dimensions.get('window')
 
 interface DropDown {
-    id : number,
-    label : string
+    id: number,
+    label: string
 }
 
-const AddVehicle:React.FC = () => {
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList,'AddVehicle'>>()
+const AddVehicle: React.FC = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'AddVehicle'>>()
     const [value, setValue] = useState<DropDown | null>(null);
     const [value2, setValue2] = useState<DropDown | null>(null);
     const [dropdownVisible, setDropDownVisible] = useState<boolean>(false)
     const [dropdownVisible2, setDropDownVisible2] = useState<boolean>(false)
 
+    const [loading, setLoading] = useState(false)
 
-    const category : DropDown[] = [
+    const handelNext = () => {
+        setLoading(true);
+        setTimeout(() => {
+            navigation.navigate('Home');
+            setLoading(false);
+        }, 1000);
+    }
+
+
+    const category: DropDown[] = [
         {
             id: 1,
             label: 'Petrol'
@@ -42,7 +52,7 @@ const AddVehicle:React.FC = () => {
 
     ]
 
-    const fuel:DropDown[] = [
+    const fuel: DropDown[] = [
         {
             id: 1,
             label: 'Half Tank'
@@ -161,7 +171,7 @@ const AddVehicle:React.FC = () => {
 
                         </View>
                         <View style={{ marginTop: RFPercentage(20) }}>
-                            <NextButton title={'Add'} style={{ width: '50%' }} color={Colors.background} onPress={() => navigation.navigate('PaymentMethod')} />
+                            <NextButton title={'Add'} style={{ width: '50%' }} color={Colors.background} onPress={handelNext} loading={loading} />
                         </View>
                     </View>
                 </ScrollView>

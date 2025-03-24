@@ -4,9 +4,10 @@ import { Colors, Icons, Fonts, IMAGES } from '../../constants/Themes'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 const { width, height } = Dimensions.get('window')
 import Delivered from './orders/Delivered'
-import { collection, getDocs, query, limit } from "firebase/firestore"
+import { collection, getDocs, query, limit, where } from "firebase/firestore"
 import { auth, db } from '../../../firebaseConfig'
 import moment from "moment";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface Data {
   id : number;
@@ -43,19 +44,38 @@ const data: Data[] = [
 const Orders:React.FC = () => {
   const [active, setActive] = useState<boolean>(true)
   const [deliver, setDeliver] = useState<boolean>(false)
-
   const [order, setOrders] = useState([]);
-      // console.log(order?.[0]?.date)
+
+  const [id, setId] = useState(null)
+
+  useEffect(() => {
+          const fetchUID = async () => {
+              try {
+                  const storedID = await AsyncStorage.getItem('uid'); 
+                  setId(storedID); 
+              } catch (error) {
+                  console.error("Error retrieving UID:", error);
+              }
+          };
+      
+          fetchUID();
+      }, []);
+
+
+      // console.log(id)
 
       useEffect(() => {
+        if (!id) return;
           const fetchOrders = async () => {
               try {
-                  const querySnapshot = await getDocs(collection(db, "orders"));
-                  console.log(querySnapshot)
-                  const orderList = querySnapshot.docs.map(doc => ({
+                const q = query(collection(db, "orders"), where("userId", "==", id));
+                const querySnapshot = await getDocs(q);
+                  const orderList = querySnapshot.docs.map(doc => (  
+                    {
                       id: doc.id,
                       ...doc.data()
                   }));
+                  console.log(orderList)
                   setOrders(orderList);
               } catch (error) {
                   console.log("Error fetching orders:", error);
@@ -65,7 +85,7 @@ const Orders:React.FC = () => {
           };
   
           fetchOrders();
-      }, []);
+      }, [id]);
 
   const toggle1 = () => {
     setActive(false)
@@ -76,6 +96,8 @@ const Orders:React.FC = () => {
     setActive(true)
     setDeliver(false)
   }
+
+
 
   
   return (
@@ -115,7 +137,7 @@ const Orders:React.FC = () => {
                   data={order}
                   keyExtractor={(item) => item.id.toString()}
                   showsVerticalScrollIndicator={false}
-                  contentContainerStyle={{paddingBottom:RFPercentage(10)}}
+                  contentContainerStyle={{paddingBottom:RFPercentage(20)}}
                   renderItem={({ item }) => {
                     const formattedDate = moment.unix(item.date).format("DD-MM-YYYY | h:mm A")
                     return (

@@ -14,7 +14,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BlurView } from "@react-native-community/blur";
 import NextButton from '../../components/NextButton'
 import SkipButton from '../../components/SkipButton'
-
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../../firebaseConfig';
 
 const Settings: React.FC = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
@@ -22,24 +23,31 @@ const Settings: React.FC = () => {
 
   const logOut = async () => {
     try {
-      await AsyncStorage.removeItem('email');
-      await AsyncStorage.removeItem('password');
-      await AsyncStorage.removeItem('google');
-      await AsyncStorage.removeItem('facebook');
-      await AsyncStorage.removeItem('uid');
+      const uid = await AsyncStorage.getItem('uid');
+      
+      if (uid) {
+        const userDocRef = doc(db, "Users", uid);
+        await updateDoc(userDocRef, { fcmToken: "" }); // Remove FCM token
+      }
+  
+      await AsyncStorage.multiRemove(['email', 'password', 'google', 'facebook', 'uid']);
       await signOut(auth);
+  
       navigation.navigate('SignIn');
+      setModalVisible(false)
+      
       Toast.show({
         type: 'success',
         text1: 'Log Out',
         text2: 'Logged out successfully',
         position: 'top',
       });
+  
     } catch (error) {
       console.log('Logout Error:', error);
     }
   };
-
+  
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -80,11 +88,11 @@ const Settings: React.FC = () => {
       }
       {
         modalVisible && (
-          <View style={{ width: RFPercentage(35), height: RFPercentage(22), borderRadius: RFPercentage(2), backgroundColor: "rgba(243, 244, 246, 1)", alignSelf: 'center', alignItems: 'center', justifyContent: 'center', position: "absolute", paddingHorizontal: 16, top: RFPercentage(40) }}>
+          <View style={{ width: RFPercentage(38), height: RFPercentage(22), borderRadius: RFPercentage(2), backgroundColor: "rgba(243, 244, 246, 1)", alignSelf: 'center', alignItems: 'center', justifyContent: 'center', position: "absolute", paddingHorizontal: 16, top: RFPercentage(40) }}>
             <View>
               <Text style={{ textAlign: 'center', fontSize: RFPercentage(1.5), fontFamily: Fonts.fontRegular, color: Colors.fieldColor }}>Are you sure you want to log out?</Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
-                <SkipButton title={'Cancel'} color={Colors.secondaryText} style={{ height: 35 }} style2={{ height: 30.5 }} onPress={() => setModalVisible(false)} />
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15, justifyContent:'space-between' }}>
+                <SkipButton title={'Cancel'} color={Colors.secondaryText} style={{ height: 35, }} style2={{ height: 30.5 }} onPress={() => setModalVisible(false)} />
                 <NextButton title={'Logout'} color={Colors.background} style={{ height: 35 }} onPress={logOut} />
               </View>
             </View>

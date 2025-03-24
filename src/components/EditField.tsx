@@ -5,16 +5,18 @@ import { Fonts } from '../constants/Themes'
 import { RFPercentage } from "react-native-responsive-fontsize";
 import Feather from 'react-native-vector-icons/Feather';
 
-interface Props{
-    visible : boolean,
+interface Props {
+    visible: boolean,
     style?: object,
-    placeholder : string,
-    password? : boolean,
-    card? : boolean,
-    cardPic? : any
+    placeholder: string,
+    password?: boolean,
+    card?: boolean,
+    cardPic?: any,
+    onChangeText: (text: string) => void,
+    value: string,
 }
 
-const EditField:React.FC <Props> = (props:Props) => {
+const EditField: React.FC<Props> = (props: Props) => {
 
     const [visible, setVisible] = useState<boolean>(props.visible);
 
@@ -22,8 +24,8 @@ const EditField:React.FC <Props> = (props:Props) => {
         setVisible(!visible);
     };
     return (
-        <View style={[styles.container,{...props.style}]} >
-            <TextInput placeholder={props.placeholder} placeholderTextColor={Colors.secondaryText} style={{ color: Colors.primaryText, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.5), }} secureTextEntry={!visible} />
+        <View style={[styles.container, { ...props.style }]} >
+            <TextInput placeholder={props.placeholder} placeholderTextColor={Colors.secondaryText} style={{ color: Colors.primaryText, fontFamily: Fonts.fontRegular, fontSize: RFPercentage(1.5), }} secureTextEntry={!visible} value={props.value} onChangeText={props.onChangeText} />
             {
                 props.password && (
                     <>
@@ -38,8 +40,8 @@ const EditField:React.FC <Props> = (props:Props) => {
             }
             {
                 props.card && (
-                    <Image  source={props.cardPic} resizeMode='contain' style={{width:20, height:20}} />
-                ) 
+                    <Image source={props.cardPic} resizeMode='contain' style={{ width: 20, height: 20 }} />
+                )
             }
 
         </View>
@@ -58,6 +60,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 10,
-        borderRadius:6
+        borderRadius: 6
     }
 })

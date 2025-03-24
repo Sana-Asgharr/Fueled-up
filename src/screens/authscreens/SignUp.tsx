@@ -80,7 +80,8 @@ const SignUp: React.FC = () => {
                 name: values.name,
                 email: values.email,
                 phone: values.phone,
-                uid: user.uid,  // Store UID in Firestore
+                uid: user.uid,
+                profile : ''
             });
     
             Toast.show({
@@ -92,7 +93,7 @@ const SignUp: React.FC = () => {
                 text2Style: { fontFamily: Fonts.fontRegular }
             });
     
-            navigation.navigate('Home');
+            navigation.navigate('SignIn');
         } catch (error: any) {
             Toast.show({
                 type: 'error',

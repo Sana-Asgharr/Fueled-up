@@ -59,12 +59,14 @@ const App: React.FC = () => {
         return;
       }
   
-      await notifee.requestPermission();
-  
+      await notifee.requestPermission({
+        sound: true,
+      });
+        
       const channelId = await notifee.createChannel({
         id: 'default',
+        sound:'default',
         name: 'Default Channel',
-        sound: 'default'
       });
   
       if (!channelId) {
@@ -79,7 +81,6 @@ const App: React.FC = () => {
         body: body || 'No Body',
         android: {
           channelId,
-          sound: 'default',
           pressAction: { id: 'default' },
         },
       });

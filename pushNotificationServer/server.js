@@ -54,11 +54,11 @@ app.post('/send-notification', async (req, res) => {
 
     try {
       await admin.messaging().send(message);
-      console.log('Notification sent after 1-minute delay!');
+      console.log('Notification sent after 30-seconds delay!');
     } catch (error) {
       console.error('Error sending notification:', error);
     }
-  }, 60000); 
+  }, 30000); 
 });
 
 app.listen(PORT, '0.0.0.0', () => {

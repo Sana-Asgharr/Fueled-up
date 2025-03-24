@@ -29,12 +29,6 @@ type Order = {
 };
 
 
-const SERVER_URL = 
-// Platform.OS === 'android' 
-//   ? 'http://10.0.2.2:5000' 
-//   : 
-  'http://192.168.100.30:5000';
-
 const PlaceOrder: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'PlaceOrder'>>()
     const [order, setOrders] = useState([]);
@@ -103,7 +97,7 @@ const PlaceOrder: React.FC = () => {
 
     const sendPushNotification = async () => {
         try {
-            const response = await fetch(`${SERVER_URL}/send-notification`, {
+            const response = await fetch(`http://192.168.100.30:5000/send-notification`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -113,7 +107,7 @@ const PlaceOrder: React.FC = () => {
                 }),
             });
             const result = await response.json();
-            console.log(result);
+            console.log('response..................',result);
         } catch (error) {
             console.error("Error sending notification:", error);
         }
@@ -173,7 +167,7 @@ const PlaceOrder: React.FC = () => {
 
                     </View>
                 </View>
-                <View style={{ marginTop: 50 }}>
+                <View style={{marginTop:RFPercentage(5)}}>
                     <NextButton title={'Place Order'} style={{ width: '50%' }} color={Colors.background} onPress={handlePlaceOrder} loading={loading} />
                 </View>
 

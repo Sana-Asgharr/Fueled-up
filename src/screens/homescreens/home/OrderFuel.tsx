@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet, Text, View, Image, TouchableOpacity, Dimensions, FlatList, ScrollView, TextInput } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Colors, Fonts, Icons } from '../../../constants/Themes'
 import Entypo from 'react-native-vector-icons/Entypo'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -15,7 +15,7 @@ const { width, height } = Dimensions.get('window')
 import { auth, db } from '../../../../firebaseConfig';
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import moment from 'moment';
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface DropDown {
     id : number,
@@ -87,12 +87,26 @@ const OrderFuel: React.FC = () => {
     ]
 
 
+    const [id, setId] = useState(null)
+
+    useEffect(() => {
+            const fetchUID = async () => {
+                try {
+                    const storedID = await AsyncStorage.getItem('uid'); 
+                    setId(storedID); 
+                } catch (error) {
+                    console.error("Error retrieving UID:", error);
+                }
+            };
+        
+            fetchUID();
+        }, []);
 
     const orderFuel = async ()=>{
-        navigation.navigate('PaymentMethod')
         try {
             setLoading(true)
             await addDoc(collection(db, "orders") ,{
+                userId : id,
                 category : value?.label,
                 phone : phone,
                 address : address,
@@ -101,7 +115,7 @@ const OrderFuel: React.FC = () => {
                 date : date
             })
             console.log('order addeed ')
-            // navigation.navigate('PaymentMethod')
+            navigation.navigate('PaymentMethod')
         }
         catch(e) {
          console.log(e)
@@ -317,7 +331,7 @@ const OrderFuel: React.FC = () => {
 
                             </View>
                         </View>
-                        <View style={{ marginTop: 30 }}>
+                        <View style={{ marginTop: RFPercentage(10) }}>
                             <NextButton title={'Next'} style={{ width: '50%' }} color={Colors.background} onPress={orderFuel} loading={loading} />
                         </View>
                     </View>

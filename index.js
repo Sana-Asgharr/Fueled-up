@@ -11,8 +11,10 @@ export const navigationRef = createNavigationContainerRef();
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Background Notification:', remoteMessage);
   
-  await notifee.requestPermission();
-
+  await notifee.requestPermission({
+    sound: true,
+  });
+  
   const channelId = await notifee.createChannel({
     id: 'default',
     name: 'Default Channel',

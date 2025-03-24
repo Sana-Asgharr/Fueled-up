@@ -121,7 +121,6 @@ const StackNavigator: React.FC = () => {
                     <Stack.Screen name='AddVehicle' component={AddVehicle} />
                     <Stack.Screen name='VitalsDetails' component={VitalsDetails} />
                     <Stack.Screen name='BarChartScreen' component={BarChartScreen} />
-
                 </Stack.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>
