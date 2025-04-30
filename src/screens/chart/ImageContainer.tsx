@@ -8,55 +8,42 @@ import {
 } from 'react-native';
 import React from 'react';
 import {RFPercentage} from 'react-native-responsive-fontsize';
-import {Fonts} from '../../constants/Themes';
+// import {Fonts} from '../../constants/Themes';
 
-const ImageContainer = () => {
+interface Props {
+  background: any;
+  img: any;
+  cross: any;
+  title: string;
+  subTitle: string;
+}
+
+const ImageContainer = (props: Props) => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../../assets/images/Stability.png')}
+        source={props.background}
         resizeMode="cover"
-        style={{width: '100%', height: '100%'}}>
-        <View style={{width: '85%', height: '100%', alignSelf: 'center'}}>
-          <View style={{marginTop: RFPercentage(8)}}>
-            <TouchableOpacity style={{alignSelf: 'flex-end'}}>
+        style={styles.imageBackground}>
+        <View style={styles.innerContainer}>
+          <View style={styles.crossContainer}>
+            <TouchableOpacity style={styles.crossButton}>
               <Image
-                source={require('../../assets/images/Cross.png')}
+                source={props.cross}
                 resizeMode="contain"
-                style={{width: RFPercentage(6), height: RFPercentage(6)}}
+                style={styles.crossImage}
               />
             </TouchableOpacity>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginTop:RFPercentage(5.5)
-            }}>
+          <View style={styles.contentRow}>
             <View>
-              <Text
-                style={{
-                  color: 'white',
-                  fontSize: RFPercentage(2.8),
-                  fontFamily: Fonts.fontMedium,
-                }}>
-                About Stability
-              </Text>
-              <Text
-                style={{
-                  color: 'white',
-                  fontSize: RFPercentage(1.8),
-                  fontFamily: Fonts.fontRegular,
-                }}>
-                Circadian balance monitor
-              </Text>
+              <Text style={styles.title}>{props.title}</Text>
+              <Text style={styles.subTitle}>{props.subTitle}</Text>
             </View>
             <Image
-              source={require('../../assets/images/Stability2.png')}
+              source={props.img}
               resizeMode="contain"
-              style={{width: RFPercentage(7), height: RFPercentage(7)}}
+              style={styles.image}
             />
           </View>
         </View>
@@ -71,5 +58,45 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: RFPercentage(35),
+  },
+  imageBackground: {
+    width: '100%',
+    height: '100%',
+  },
+  innerContainer: {
+    width: '85%',
+    height: '100%',
+    alignSelf: 'center',
+  },
+  crossContainer: {
+    marginTop: RFPercentage(8),
+  },
+  crossButton: {
+    alignSelf: 'flex-end',
+  },
+  crossImage: {
+    width: RFPercentage(6),
+    height: RFPercentage(6),
+  },
+  contentRow: {
+    flexDirection: 'row',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: RFPercentage(5.5),
+  },
+  title: {
+    color: 'white',
+    fontSize: RFPercentage(2.8),
+    // fontFamily: Fonts.fontMedium,
+  },
+  subTitle: {
+    color: 'white',
+    fontSize: RFPercentage(1.8),
+    // fontFamily: Fonts.fontRegular,
+  },
+  image: {
+    width: RFPercentage(7),
+    height: RFPercentage(7),
   },
 });

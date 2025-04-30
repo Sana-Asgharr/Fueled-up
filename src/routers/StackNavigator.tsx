@@ -98,7 +98,7 @@ const StackNavigator: React.FC = () => {
           screenOptions={{
             headerShown: false,
           }}
-          initialRouteName={'WelcomeScreen'}>
+          initialRouteName={'VitalDetailsAbout'}>
           <Stack.Screen
             name="VitalDetailsAbout"
             component={VitalDetailsAbout}

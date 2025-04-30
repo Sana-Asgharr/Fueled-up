@@ -8,7 +8,7 @@ import {
   } from 'react-native';
   import React, {useState} from 'react';
   import LinearGradient from 'react-native-linear-gradient';
-  import {Fonts} from '../../constants/Themes';
+  // import {Fonts} from '../../constants/Themes';
   import {RFPercentage} from 'react-native-responsive-fontsize';
   import CustomButton from './CustomButton';
   import Entypo from 'react-native-vector-icons/Entypo';
@@ -19,42 +19,42 @@ import {
       title: 'Tracking our Vital Health',
       subTitle:
         'Watt tracks our lifestyle’s Rest, Vitality and Stability levels to help us remain healthy, active and balanced.',
-      image: require('../../assets/images/OnBoardingOne.png'),
+      image: require('../../assets/images/watt/OnBoardingOne.png'),
     },
     {
       id: 2,
       title: 'Rest: Sleep and Recovery Quality',
       subTitle:
         'Getting sufficient sleep is the core pillar of good health, productivity and well-being. ',
-      image: require('../../assets/images/OnBoardingTwo.png'),
+      image: require('../../assets/images/watt/OnBoardingTwo.png'),
     },
     {
       id: 3,
       title: 'Vitality: Physical Activity Level',
       subTitle:
         'Having an active lifestyle is the key to having a healthy mind and body.',
-      image: require('../../assets/images/OnBoardingThree.png'),
+      image: require('../../assets/images/watt/OnBoardingThree.png'),
     },
     {
       id: 4,
       title: 'Stability: Lifestyle Equilibrium',
       subTitle:
         'Keeping a consistent sleep and physical activity helps us reach our fullest potential and mental wellbeing.',
-      image: require('../../assets/images/OnBoardingFour.png'),
+      image: require('../../assets/images/watt/OnBoardingFour.png'),
     },
     {
       id: 5,
       title: 'Vital Power: Unified Vital Score',
       subTitle:
         'Watt combines our vital health scores into one to help us quickly visualize and adjust our lifestyle everyday.',
-      image: require('../../assets/images/OnBoardingFive.png'),
+      image: require('../../assets/images/watt/OnBoardingFive.png'),
     },
     {
       id: 6,
       title: 'Plug In: Connect Wearable',
       subTitle:
         'Watt requires us to wear our fitness tracker at all times to calculate our Vital Health metrics. The self-awareness will be worth it. ',
-      image: require('../../assets/images/OnBoardingSix.png'),
+      image: require('../../assets/images/watt/OnBoardingSix.png'),
     },
   ];
   
@@ -99,7 +99,7 @@ import {
   
             <View style={styles.imageWrapper}>
               <Image
-                source={require('../../assets/images/checkBox.png')}
+                source={require('../../assets/images/watt/checkBox.png')}
                 resizeMode="contain"
                 style={styles.finalImage}
               />
@@ -172,7 +172,7 @@ import {
     },
     finalStepTitle: {
       color: 'rgba(248, 253, 255, 1)',
-      fontFamily: Fonts.fontMedium,
+      // fontFamily: Fonts.fontMedium,
       fontSize: RFPercentage(2.3),
       lineHeight: RFPercentage(2.8),
       textAlign: 'center',
@@ -207,13 +207,13 @@ import {
     },
     title: {
       color: 'rgba(248, 253, 255, 1)',
-      fontFamily: Fonts.fontMedium,
+      // fontFamily: Fonts.fontMedium,
       fontSize: RFPercentage(2.3),
       lineHeight: RFPercentage(2.8),
     },
     subTitle: {
       color: 'rgba(248, 253, 255, 1)',
-      fontFamily: Fonts.fontRegular,
+      // fontFamily: Fonts.fontRegular,
       fontSize: RFPercentage(1.8),
       lineHeight: RFPercentage(2.8),
       marginTop: RFPercentage(1.5),
@@ -234,7 +234,7 @@ import {
     },
     returnText: {
       color: 'rgba(248, 253, 255, 1)',
-      fontFamily: Fonts.fontMedium,
+      // fontFamily: Fonts.fontMedium,
       fontSize: RFPercentage(2),
       marginTop: RFPercentage(1.5),
       bottom: RFPercentage(0.7),
